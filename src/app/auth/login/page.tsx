@@ -26,7 +26,7 @@ const LogIn = () => {
 
       <div className={classes.rightSide}>
         <Paper className={classes.form}>
-          <Title size={30} mb={10} ta="center">
+          <Title size={30} mb={20} ta="center">
             Welcome back!
           </Title>
 

@@ -24,7 +24,7 @@ const SignUp = () => {
 
       <div className={classes.rightSide}>
         <Paper className={classes.form}>
-          <Title size={30} mb={20}>
+          <Title size={30} mb={30}>
             Create your account
           </Title>
 
