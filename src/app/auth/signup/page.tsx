@@ -10,9 +10,10 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useRouter } from "next/navigation";
+
 import classes from "./AuthenticationImage.module.css";
 import { LeftSideInAuth } from "./LeftSideInAuth";
-import { useRouter } from "next/navigation";
 
 const SignUp = () => {
   const router = useRouter();
@@ -72,7 +73,7 @@ const SignUp = () => {
             <Anchor
               href="#"
               fw={500}
-              onClick={(event) => event.preventDefault()}
+              onClick={() => router.push("/auth/login")}
             >
               Login
             </Anchor>
