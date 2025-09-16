@@ -15,7 +15,6 @@ import {
   IconInfoCircle,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
-import { TablerIconsProps } from "@tabler/icons-react";
 
 export interface AccordionStepProps {
   step: number;
@@ -25,7 +24,7 @@ export interface AccordionStepProps {
   isActive: boolean;
   isCompleted: boolean;
   onStepClick: (step: number) => void;
-  icon: React.ComponentType<TablerIconsProps>;
+  icon: React.ComponentType<any>;
   isLast: boolean;
   onCompleteStep: () => void;
   isFinalStep: boolean;
