@@ -45,10 +45,10 @@ const ForgetPassword = () => {
               label="Step 1"
               description="Verify email or Phone number"
             >
-              <Stack gap={"lg"}>
+              <Stack gap={"lg"} mt={"md"}>
                 <TextInput
-                  label="Email"
-                  placeholder="you@mantine.dev"
+                  label="Email or Phone number"
+                  placeholder="Enter email or phone number"
                   required
                   size="md"
                   radius="md"
@@ -65,7 +65,7 @@ const ForgetPassword = () => {
 
                 <Button
                   fullWidth
-                  mt="xl"
+                  mt="md"
                   size="md"
                   radius="md"
                   onClick={() => setActive(1)}
@@ -101,7 +101,7 @@ const ForgetPassword = () => {
                 mt="xl"
                 size="md"
                 radius="md"
-                onClick={() => router.push("onboarding")}
+                onClick={() => router.push("/onboarding")}
               >
                 Continue
               </Button>
