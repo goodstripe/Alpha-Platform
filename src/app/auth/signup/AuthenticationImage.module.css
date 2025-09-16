@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.leftSide {
+  flex: 1;
+  background-color: var(--mantine-color-blue-filled, #228be6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.centeredText {
+  max-width: 600px;
+}
+
+.rightSide {
+  flex: 1;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--mantine-color-white, #fff);
+}
+
+.form {
+  width: 100%;
+  max-width: 600px;
+  padding: 30px;
+  border-radius: 8px;
+}
