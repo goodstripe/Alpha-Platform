@@ -12,8 +12,11 @@ import {
 } from "@mantine/core";
 import classes from "./AuthenticationImage.module.css";
 import { LeftSideInAuth } from "./LeftSideInAuth";
+import { useRouter } from "next/navigation";
 
 const SignUp = () => {
+  const router = useRouter();
+
   return (
     <div className={classes.wrapper}>
       <LeftSideInAuth />
@@ -54,7 +57,13 @@ const SignUp = () => {
             radius="md"
           />
 
-          <Button fullWidth mt="xl" size="md" radius="md">
+          <Button
+            fullWidth
+            mt="xl"
+            size="md"
+            radius="md"
+            onClick={() => router.push("/auth/set-password")}
+          >
             Sign Up
           </Button>
 
