@@ -17,7 +17,12 @@ const Onboarding = () => {
         </Text>
       </Stack>
 
-      <Stepper active={active} onStepClick={setActive} mt={30}>
+      <Stepper
+        active={active}
+        onStepClick={setActive}
+        mt={30}
+        orientation="vertical"
+      >
         <Stepper.Step label="First step" description="Customer Verification">
           Step 1 content: Create an account
         </Stepper.Step>
