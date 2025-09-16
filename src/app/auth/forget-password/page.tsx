@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import {
   Anchor,
   Button,
+  Group,
   Paper,
   PasswordInput,
   Stack,
@@ -107,6 +108,16 @@ const ForgetPassword = () => {
               </Button>
             </Stepper.Step>
           </Stepper>
+
+          <Group justify="center" mt={20}>
+            <Anchor
+              href="#"
+              fw={500}
+              onClick={() => router.push("/auth/login")}
+            >
+              Return
+            </Anchor>
+          </Group>
         </Paper>
       </div>
     </div>
