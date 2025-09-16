@@ -1,13 +1,21 @@
 "use client";
 
 import React from "react";
-import { Group, Box, Collapse, UnstyledButton, rem } from "@mantine/core";
+import {
+  Group,
+  Box,
+  Collapse,
+  UnstyledButton,
+  rem,
+  Tooltip,
+} from "@mantine/core";
 import {
   IconChevronDown,
   IconCircleCheck,
-  TablerIconsProps,
+  IconInfoCircle,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
+import { TablerIconsProps } from "@tabler/icons-react";
 
 export interface AccordionStepProps {
   step: number;
@@ -21,6 +29,7 @@ export interface AccordionStepProps {
   isLast: boolean;
   onCompleteStep: () => void;
   isFinalStep: boolean;
+  tooltip?: string;
 }
 
 const AccordionStep: React.FC<AccordionStepProps> = ({
@@ -35,6 +44,7 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
   isLast,
   onCompleteStep,
   isFinalStep,
+  tooltip,
 }) => {
   const [opened, { toggle }] = useDisclosure(isActive);
 
@@ -115,10 +125,28 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
           }}
         >
           <Group justify="space-between" wrap="nowrap">
-            <div>
-              <span style={{ fontWeight: 700, fontSize: rem(18) }}>
-                {label}
-              </span>
+            <div style={{ flex: 1 }}>
+              <div
+                style={{ display: "flex", alignItems: "center", gap: rem(8) }}
+              >
+                <span style={{ fontWeight: 700, fontSize: rem(18) }}>
+                  {label}
+                </span>
+                {tooltip && (
+                  <Tooltip label={tooltip} position="right" withArrow>
+                    <IconInfoCircle
+                      size={18}
+                      color="var(--mantine-color-blue-6)"
+                    />
+                  </Tooltip>
+                )}
+                {isCompleted && (
+                  <IconCircleCheck
+                    size={20}
+                    color="var(--mantine-color-teal-6)"
+                  />
+                )}
+              </div>
               <div
                 style={{ fontSize: rem(14), color: "gray", fontWeight: 400 }}
               >
@@ -152,7 +180,7 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
             }}
           >
             {children}
-            {isActive && (
+            {isActive && !isCompleted && (
               <button
                 onClick={onCompleteStep}
                 style={{
@@ -168,6 +196,24 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
               >
                 {isFinalStep ? "Finish" : "Complete Step"}
               </button>
+            )}
+            {isCompleted && (
+              <div
+                style={{
+                  marginTop: "1rem",
+                  padding: "0.5rem",
+                  backgroundColor: "var(--mantine-color-teal-1)",
+                  color: "var(--mantine-color-teal-7)",
+                  borderRadius: "var(--mantine-radius-sm)",
+                  fontWeight: 500,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: rem(8),
+                }}
+              >
+                <IconCircleCheck size={18} />
+                <span>Step completed</span>
+              </div>
             )}
           </Box>
         </Collapse>
