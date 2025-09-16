@@ -42,7 +42,13 @@ const SetPassword = () => {
             radius="md"
           />
 
-          <Button fullWidth mt="xl" size="md" radius="md">
+          <Button
+            fullWidth
+            mt="xl"
+            size="md"
+            radius="md"
+            onClick={() => router.push("/auth/forget-password")}
+          >
             Set Password
           </Button>
 

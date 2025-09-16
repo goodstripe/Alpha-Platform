@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import {
   Anchor,
@@ -10,10 +12,14 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useRouter } from "next/navigation";
+
 import classes from "../signup/AuthenticationImage.module.css";
 import { LeftSideInAuth } from "../signup/LeftSideInAuth";
 
 const LogIn = () => {
+  const router = useRouter();
+
   return (
     <div className={classes.wrapper}>
       <LeftSideInAuth />
@@ -48,11 +54,22 @@ const LogIn = () => {
           />
           <Group justify="space-between" mt="lg">
             <Checkbox label="Remember me" />
-            <Anchor component="button" size="sm">
+            <Anchor
+              component="button"
+              size="sm"
+              onClick={() => router.push("/auth/forget-password")}
+            >
               Forgot password?
             </Anchor>
           </Group>
-          <Button fullWidth mt="xl" size="md" radius="md">
+
+          <Button
+            fullWidth
+            mt="xl"
+            size="md"
+            radius="md"
+            onClick={() => router.push("/onboarding")}
+          >
             Sign in
           </Button>
         </Paper>
