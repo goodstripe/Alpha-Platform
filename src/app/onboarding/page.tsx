@@ -15,6 +15,7 @@ import {
   rem,
   Button,
   Flex,
+  PasswordInput,
 } from "@mantine/core";
 import {
   IconUserCircle,
@@ -406,6 +407,40 @@ const TrustedContactPersonForm = () => {
   );
 };
 
+const AccountCredentialsForm = () => {
+  const [userId, setUserId] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  return (
+    <Stack gap="md" style={{ maxWidth: 400, margin: "0 auto" }}>
+      <TextInput
+        label="User ID"
+        placeholder="Choose a user ID"
+        value={userId}
+        onChange={(event) => setUserId(event.currentTarget.value)}
+        required
+      />
+
+      <PasswordInput
+        label="Password"
+        placeholder="Create a password"
+        value={password}
+        onChange={(event) => setPassword(event.currentTarget.value)}
+        required
+      />
+
+      <PasswordInput
+        label="Confirm Password"
+        placeholder="Confirm your password"
+        value={confirmPassword}
+        onChange={(event) => setConfirmPassword(event.currentTarget.value)}
+        required
+      />
+    </Stack>
+  );
+};
+
 const Onboarding: React.FC = () => {
   const [active, setActive] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -552,6 +587,16 @@ const Onboarding: React.FC = () => {
       detailedInfo:
         "These questions help us comply with financial regulations and identify potential conflicts of interest.",
       content: <TrustedContactPersonForm />,
+      icon: IconScale,
+      tooltip: "Click for more information about compliance requirements",
+    },
+    {
+      label: "Account Credentials",
+      description:
+        "Sources of net worth and funding (Significant sources only)",
+      detailedInfo:
+        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+      content: <AccountCredentialsForm />,
       icon: IconScale,
       tooltip: "Click for more information about compliance requirements",
     },
