@@ -72,7 +72,7 @@ export default function ResponsiveHeader() {
       <AppShell.Header>
         <Container fluid h="100%" p={"0px 30px"}>
           <Flex align="center" justify="space-between" h="100%">
-            <Group gap="xs">
+            <Group gap="70px">
               <Image
                 src="/aeonx_logo.png"
                 alt="AEONX Logo"
@@ -83,12 +83,13 @@ export default function ResponsiveHeader() {
               {/* Search Section */}
               <Box
                 style={{
-                  maxWidth: 180,
+                  maxWidth: 250,
                 }}
                 visibleFrom="md"
               >
                 <TextInput
                   placeholder="Search"
+                  w={250}
                   leftSection={
                     <IconSearch
                       style={{ width: rem(16), height: rem(16) }}
