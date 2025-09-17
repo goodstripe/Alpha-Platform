@@ -13,7 +13,6 @@ import {
   Select,
   Radio,
   rem,
-  Button,
 } from "@mantine/core";
 import {
   IconUserCircle,
@@ -22,7 +21,7 @@ import {
   IconBuildingBank,
   IconUser,
   IconUsers,
-  IconBuilding,
+  IconScale,
 } from "@tabler/icons-react";
 import AccordionStep, {
   AccordionStepProps,
@@ -48,12 +47,9 @@ export interface Step
 const BrokerageOptions: React.FC = () => {
   return (
     <div>
-      <Stack gap={5}>
-        <Text size="md">Account Type(s)</Text>
-        <Text size="xs" mb="md">
-          Select an account
-        </Text>
-      </Stack>
+      <Text size="md" mb={"md"}>
+        Select an Account -
+      </Text>
 
       <Radio.Group>
         <Stack mt="xs">
@@ -72,11 +68,11 @@ const RetirementOptions: React.FC = () => {
       <Stack gap={5}>
         <Text size="md">Account Details</Text>
         <Text size="xs" mb="md">
-          Select Type of account
+          Select Type of Account -
         </Text>
       </Stack>
 
-      <Radio.Group>
+      <Radio.Group withAsterisk>
         <Stack mt="xs">
           <Radio value="traditional" label="Traditional IRA" />
           <Radio value="rollover" label="Rollover IRA" />
@@ -108,6 +104,7 @@ const CitizenshipForm: React.FC = () => {
       <Stack mt="md" gap="md">
         {(citizenship === "US Citizen" || citizenship === "Dual Citizen") && (
           <TextInput
+            withAsterisk
             label="Social Security Number"
             placeholder="Enter your SSN"
           />
@@ -115,13 +112,18 @@ const CitizenshipForm: React.FC = () => {
 
         {citizenship === "Dual Citizen" && (
           <TextInput
+            withAsterisk
             label="Second Country Citizenship"
             placeholder="Enter second country's citizenship"
           />
         )}
 
         {citizenship === "Non US Citizen" && (
-          <TextInput label="Tax ID" placeholder="Enter your Tax ID" />
+          <TextInput
+            withAsterisk
+            label="Tax ID"
+            placeholder="Enter your Tax ID"
+          />
         )}
       </Stack>
     </Box>
@@ -149,6 +151,7 @@ const FinancialInformationForm: React.FC = () => {
       <TextInput
         label="Annual Income"
         placeholder="Enter annual income"
+        withAsterisk
         value={annualIncome}
         onChange={(event) => setAnnualIncome(event.currentTarget.value)}
       />
@@ -156,6 +159,7 @@ const FinancialInformationForm: React.FC = () => {
       <Select
         label="Liquid Net Worth"
         placeholder="Select Range"
+        withAsterisk
         data={netOptions}
         value={liquidNetWorth}
         onChange={(value) => value !== null && setLiquidNetWorth(value)}
@@ -164,6 +168,7 @@ const FinancialInformationForm: React.FC = () => {
       <Select
         label="Total Net Worth"
         placeholder="Select Range"
+        withAsterisk
         data={netOptions}
         value={totalNetWorth}
         onChange={(value) => value !== null && setTotalNetWorth(value)}
@@ -172,6 +177,7 @@ const FinancialInformationForm: React.FC = () => {
       <Select
         label="Investment Experience"
         placeholder="Select Experience Level"
+        withAsterisk
         data={[
           { value: "no", label: "No Experience" },
           { value: "beginner", label: "Beginner" },
@@ -181,11 +187,65 @@ const FinancialInformationForm: React.FC = () => {
         value={investmentExperience}
         onChange={(value) => value !== null && setInvestmentExperience(value)}
       />
+    </Stack>
+  );
+};
 
-      <Group justify="apart" mt="xl">
-        <Button variant="default">← Previous</Button>
-        <Button>Next →</Button>
-      </Group>
+const ComplianceQuestions: React.FC = () => {
+  return (
+    <Stack gap="lg">
+      <div>
+        <Text size="sm" fw={500} mb={5}>
+          Do you, or does a family or household member, work for a broker-dealer
+          or a securities or futures exchange, futures commission merchant,
+          retail foreign exchange dealer, or securities or futures regulator?
+        </Text>
+        <Radio.Group name="compliance1">
+          <Group mt="xs">
+            <Radio value="yes" label="Yes" />
+            <Radio value="no" label="No" />
+          </Group>
+        </Radio.Group>
+      </div>
+
+      <div>
+        <Text size="sm" fw={500} mb={5}>
+          Do you, or does a family or household member, serve on a board of
+          directors, or as another policymaker at a public company?
+        </Text>
+        <Radio.Group name="compliance2">
+          <Group mt="xs">
+            <Radio value="yes" label="Yes" />
+            <Radio value="no" label="No" />
+          </Group>
+        </Radio.Group>
+      </div>
+
+      <div>
+        <Text size="sm" fw={500} mb={5}>
+          Do you, or does a family or household member, own 10% or more of a
+          public company?
+        </Text>
+        <Radio.Group name="compliance3">
+          <Group mt="xs">
+            <Radio value="yes" label="Yes" />
+            <Radio value="no" label="No" />
+          </Group>
+        </Radio.Group>
+      </div>
+
+      <div>
+        <Text size="sm" fw={500} mb={5}>
+          Have you been notified by the IRS that you are subject to backup
+          withholding?
+        </Text>
+        <Radio.Group name="compliance4">
+          <Group mt="xs">
+            <Radio value="yes" label="Yes" />
+            <Radio value="no" label="No" />
+          </Group>
+        </Radio.Group>
+      </div>
     </Stack>
   );
 };
@@ -246,9 +306,13 @@ const Onboarding: React.FC = () => {
       content: (
         <div>
           <Text size="md" mb="md">
-            Select Account Type
+            Select Account Type -
           </Text>
-          <Radio.Group value={accountType} onChange={setAccountType}>
+          <Radio.Group
+            value={accountType}
+            onChange={setAccountType}
+            withAsterisk
+          >
             <Stack mt="xs">
               <Radio value="brokerage" label="Brokerage Account" />
               <Radio value="retirement" label="Retirement Account" />
@@ -297,46 +361,13 @@ const Onboarding: React.FC = () => {
       tooltip: "Click for more information about joint accounts",
     },
     {
-      label: "Entity Information",
-      description: "Step 7: Business details",
+      label: "Compliance Questions",
+      description: "Step X: Answer compliance questions",
       detailedInfo:
-        "Business accounts require documentation to verify the legal existence of the entity and the authority of individuals to act on its behalf. You may need to provide articles of incorporation, partnership agreements, or other formation documents depending on your entity type.",
-      content: (
-        <div>
-          <Text size="sm" mb="md">
-            Provide information about your business entity:
-          </Text>
-          <Stack gap="md">
-            <TextInput
-              label="Business Name"
-              placeholder="Legal business name"
-            />
-            <TextInput
-              label="EIN"
-              placeholder="Employer Identification Number"
-            />
-            <TextInput
-              label="Business Address"
-              placeholder="Registered business address"
-            />
-            <Select
-              label="Entity Type"
-              placeholder="Select entity type"
-              data={[
-                { value: "llc", label: "LLC" },
-                { value: "corporation", label: "Corporation" },
-                { value: "partnership", label: "Partnership" },
-                { value: "sole-proprietorship", label: "Sole Proprietorship" },
-              ]}
-            />
-            <TextInput
-              label="Authorized Signer"
-              placeholder="Name of authorized signer"
-            />
-          </Stack>
-        </div>
-      ),
-      icon: IconBuilding,
+        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+      content: <ComplianceQuestions />,
+      icon: IconScale,
+      tooltip: "Click for more information about compliance requirements",
     },
   ];
 
