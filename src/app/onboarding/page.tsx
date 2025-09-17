@@ -28,7 +28,6 @@ import AccordionStep, {
   AccordionStepProps,
 } from "../components/AccordionStep/AccordionStep";
 
-// Custom content components
 const PersonalInfoForm: React.FC = () => {
   return (
     <div>
@@ -151,6 +150,7 @@ export interface Step
 const Onboarding: React.FC = () => {
   const [active, setActive] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
+  const [accountType, setAccountType] = useState("");
 
   const handleStepClick = (step: number) => {
     const maxAllowedStep =
@@ -206,7 +206,7 @@ const Onboarding: React.FC = () => {
           <Text size="md" mb="md">
             Select Account Type
           </Text>
-          <Radio.Group>
+          <Radio.Group value={accountType} onChange={setAccountType}>
             <Stack mt="xs">
               <Radio value="brokerage" label="Brokerage Account" />
               <Radio value="retirement" label="Retirement Account" />
@@ -222,7 +222,12 @@ const Onboarding: React.FC = () => {
       description: "Step 3: Brokerage details",
       detailedInfo:
         "Configure your investment preferences to match your experience level and risk tolerance. Options and margin trading involve higher risks and require additional approvals. Cryptocurrency trading is available for qualified investors seeking exposure to digital assets.",
-      content: <BrokerageOptions />,
+      content:
+        accountType === "brokerage" ? (
+          <BrokerageOptions />
+        ) : (
+          <RetirementOptions />
+        ),
       icon: IconPigMoney,
       tooltip: "Click for more information about brokerage options",
     },
