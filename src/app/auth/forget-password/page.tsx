@@ -5,6 +5,7 @@ import {
   Anchor,
   Button,
   Group,
+  NumberInput,
   Paper,
   PasswordInput,
   Stack,
@@ -55,7 +56,7 @@ const ForgetPassword = () => {
                   radius="md"
                 />
 
-                <TextInput
+                <NumberInput
                   placeholder="Verification Code"
                   required
                   size="md"

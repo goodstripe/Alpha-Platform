@@ -5,6 +5,7 @@ import {
   Anchor,
   Button,
   Group,
+  NumberInput,
   Paper,
   Text,
   TextInput,
@@ -14,6 +15,7 @@ import { useRouter } from "next/navigation";
 
 import classes from "./AuthenticationImage.module.css";
 import { LeftSideInAuth } from "./LeftSideInAuth";
+import PhoneNumberInputWithCountryCode from "@/app/onboarding/components/NumberInputWithCountryCode/NumberInputWithCountryCode";
 
 const SignUp = () => {
   const router = useRouter();
@@ -50,12 +52,17 @@ const SignUp = () => {
             size="md"
             radius="md"
           />
-          <TextInput
-            label="Phone Number"
-            placeholder="+1 234 567 8901"
-            mt="md"
+
+          <PhoneNumberInputWithCountryCode />
+
+          <NumberInput
+            placeholder="Verification Code"
+            required
+            mt={"lg"}
             size="md"
             radius="md"
+            rightSectionWidth={"20%"}
+            rightSection={<Anchor>Send Code</Anchor>}
           />
 
           <Button
