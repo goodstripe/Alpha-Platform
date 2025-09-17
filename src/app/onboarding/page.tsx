@@ -14,6 +14,7 @@ import {
   Radio,
   rem,
   Button,
+  Flex,
 } from "@mantine/core";
 import {
   IconUserCircle,
@@ -29,6 +30,7 @@ import AccordionStep, {
   AccordionStepProps,
 } from "../components/AccordionStep/AccordionStep";
 import PersonalInfoForm from "./components/Personal-Information/PersonalInfoForm";
+import PhoneNumberInputWithCountryCode from "./components/NumberInputWithCountryCode/NumberInputWithCountryCode";
 
 export interface Step
   extends Omit<
@@ -195,20 +197,17 @@ const FinancialInformationForm: React.FC = () => {
 
 const QuestionWithDot = ({ children }: { children: React.ReactNode }) => {
   return (
-    <Group align="start" gap="xs">
-      <div
-        style={{
-          width: 6,
-          height: 6,
-          borderRadius: "50%",
-          backgroundColor: "black",
-          marginTop: 8,
-        }}
+    <Flex align="start" gap="xs" wrap="nowrap">
+      <Box
+        w={6}
+        h={6}
+        bg="black"
+        style={{ borderRadius: "50%", marginTop: 8, flexShrink: 0 }}
       />
       <Text size="sm" fw={500}>
         {children}
       </Text>
-    </Group>
+    </Flex>
   );
 };
 
@@ -369,6 +368,44 @@ const AccreditationForm = () => {
   );
 };
 
+const TrustedContactPersonForm = () => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  return (
+    <Stack gap="md">
+      <QuestionWithDot>
+        Important note about designating a trusted contact person.
+      </QuestionWithDot>
+
+      <Radio.Group value={selectedOption} onChange={setSelectedOption}>
+        <Stack>
+          <Radio value="yes" label="Yes" />
+          <Radio value="no" label="No" />
+        </Stack>
+      </Radio.Group>
+
+      {selectedOption === "yes" && (
+        <Stack gap="md">
+          <TextInput label="First Name" placeholder="Enter first name" />
+          <TextInput label="Last Name" placeholder="Enter last name" />
+          <Select
+            label="Country Code"
+            placeholder="Select Country Code"
+            data={[
+              { value: "+1", label: "+1 (USA)" },
+              { value: "+44", label: "+44 (UK)" },
+              { value: "+91", label: "+91 (India)" },
+            ]}
+          />
+          <PhoneNumberInputWithCountryCode />
+          <TextInput label="Email Address" placeholder="Enter email address" />
+          <TextInput label="Relationship" placeholder="Enter relationship" />
+        </Stack>
+      )}
+    </Stack>
+  );
+};
+
 const Onboarding: React.FC = () => {
   const [active, setActive] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -505,6 +542,16 @@ const Onboarding: React.FC = () => {
       detailedInfo:
         "These questions help us comply with financial regulations and identify potential conflicts of interest.",
       content: <AccreditationForm />,
+      icon: IconScale,
+      tooltip: "Click for more information about compliance requirements",
+    },
+    {
+      label: "Trusted Contact Person",
+      description:
+        "Sources of net worth and funding (Significant sources only)",
+      detailedInfo:
+        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+      content: <TrustedContactPersonForm />,
       icon: IconScale,
       tooltip: "Click for more information about compliance requirements",
     },
