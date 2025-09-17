@@ -29,16 +29,48 @@ import {
   IconArrowsExchange,
 } from "@tabler/icons-react";
 import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function ResponsiveHeader() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const dark = colorScheme === "dark";
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const navigationItems = [
+    {
+      icon: IconHomeFilled,
+      route: "/dashboard",
+      label: "Dashboard",
+    },
+    {
+      icon: IconClockHour9Filled,
+      route: "/history",
+      label: "History",
+    },
+    {
+      icon: IconArrowsExchange,
+      route: "/transfer",
+      label: "Transfer",
+    },
+  ];
+
+  const isActiveRoute = (route: string) => {
+    if (route === "/dashboard") {
+      return pathname === "/" || pathname === "/dashboard";
+    }
+    return pathname === route;
+  };
+
+  const handleNavigation = (route: string) => {
+    router.push(route);
+  };
 
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
-        <Container h="100%" p={0}>
+        <Container fluid h="100%" p={"0px 30px"}>
           <Flex align="center" justify="space-between" h="100%">
             <Group gap="xs">
               <Image
@@ -82,7 +114,7 @@ export default function ResponsiveHeader() {
               </Box>
             </Group>
 
-            {/* Center Section - Navigation Icons (absolutely centered) */}
+            {/* Center Section - Navigation Icons with active states */}
             <Group
               gap="sm"
               style={{
@@ -92,19 +124,51 @@ export default function ResponsiveHeader() {
               }}
               visibleFrom="md"
             >
-              <ActionIcon variant="subtle" size="lg" radius="md">
-                <IconHomeFilled style={{ width: rem(20), height: rem(20) }} />
-              </ActionIcon>
-              <ActionIcon variant="subtle" size="lg" radius="md">
-                <IconClockHour9Filled
-                  style={{ width: rem(20), height: rem(20) }}
-                />
-              </ActionIcon>
-              <ActionIcon variant="subtle" size="lg" radius="md">
-                <IconArrowsExchange
-                  style={{ width: rem(20), height: rem(20) }}
-                />
-              </ActionIcon>
+              {navigationItems.map((item) => {
+                const Icon = item.icon;
+                const isActive = isActiveRoute(item.route);
+
+                return (
+                  <ActionIcon
+                    key={item.route}
+                    variant={isActive ? "filled" : "subtle"}
+                    size="lg"
+                    radius="md"
+                    color={isActive ? "blue" : undefined}
+                    onClick={() => handleNavigation(item.route)}
+                    title={item.label}
+                    style={{
+                      backgroundColor: isActive
+                        ? dark
+                          ? theme.colors.blue[8]
+                          : theme.colors.blue[6]
+                        : undefined,
+                      color: isActive
+                        ? "white"
+                        : dark
+                        ? theme.colors.gray[4]
+                        : theme.colors.gray[6],
+                      "&:hover": {
+                        backgroundColor: isActive
+                          ? dark
+                            ? theme.colors.blue[7]
+                            : theme.colors.blue[5]
+                          : dark
+                          ? theme.colors.dark[6]
+                          : theme.colors.gray[1],
+                      },
+                    }}
+                  >
+                    <Icon
+                      style={{
+                        width: rem(20),
+                        height: rem(20),
+                        color: isActive ? "white" : undefined,
+                      }}
+                    />
+                  </ActionIcon>
+                );
+              })}
             </Group>
 
             {/* Right Section - Theme Toggle and User Menu (very close to edge) */}
