@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Text, TextInput, Group, Box, Anchor } from "@mantine/core";
-import PhoneNumberInputWithCountryCode from "@/app/onboarding/components/NumberInputWithCountryCode/NumberInputWithCountryCode";
+import PhoneNumberInputWithCountryCode from "@/app/components/NumberInputWithCountryCode/NumberInputWithCountryCode";
 
 const LoginSwitcher = () => {
   const [loginMethod, setLoginMethod] = useState<"phone" | "email">("phone");

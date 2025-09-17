@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 
 import classes from "./AuthenticationImage.module.css";
 import { LeftSideInAuth } from "./LeftSideInAuth";
-import PhoneNumberInputWithCountryCode from "@/app/onboarding/components/NumberInputWithCountryCode/NumberInputWithCountryCode";
+import PhoneNumberInputWithCountryCode from "@/app/components/NumberInputWithCountryCode/NumberInputWithCountryCode";
 
 const SignUp = () => {
   const router = useRouter();

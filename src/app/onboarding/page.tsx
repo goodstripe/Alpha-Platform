@@ -30,8 +30,8 @@ import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import AccordionStep, {
   AccordionStepProps,
 } from "../components/AccordionStep/AccordionStep";
-import PersonalInfoForm from "./components/Personal-Information/PersonalInfoForm";
-import PhoneNumberInputWithCountryCode from "./components/NumberInputWithCountryCode/NumberInputWithCountryCode";
+import PersonalInfoForm from "../components/AccordionStep/Personal-Information/PersonalInfoForm";
+import PhoneNumberInputWithCountryCode from "../components/NumberInputWithCountryCode/NumberInputWithCountryCode";
 
 export interface Step
   extends Omit<
