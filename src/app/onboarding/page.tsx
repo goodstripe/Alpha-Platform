@@ -250,6 +250,49 @@ const ComplianceQuestions: React.FC = () => {
   );
 };
 
+const AccountPurposeForm = () => {
+  return (
+    <Stack>
+      <Select
+        label="Select Source"
+        placeholder="Select Source"
+        data={[
+          { value: "employment", label: "Employment Income" },
+          { value: "business", label: "Business Income" },
+          { value: "investment", label: "Investment Income" },
+          { value: "inheritance", label: "Inheritance" },
+          { value: "other", label: "Other" },
+        ]}
+      />
+
+      <Text size="sm" fw={500}>
+        Does any portion of your net worth and funding come from outside the US?
+      </Text>
+      <Radio.Group>
+        <Stack>
+          <Radio value="yes" label="Yes" />
+          <Radio value="no" label="No" />
+        </Stack>
+      </Radio.Group>
+
+      <Text size="sm" fw={500}>
+        What is the purpose and expected use of this account?
+      </Text>
+      <Select
+        label="Select Purpose"
+        placeholder="Select Purpose"
+        data={[
+          { value: "retirement", label: "Retirement Planning" },
+          { value: "active", label: "Active Trading" },
+          { value: "longterm", label: "Long-term Investment" },
+          { value: "education", label: "Education Funding" },
+          { value: "other", label: "Other" },
+        ]}
+      />
+    </Stack>
+  );
+};
+
 const Onboarding: React.FC = () => {
   const [active, setActive] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
@@ -366,6 +409,16 @@ const Onboarding: React.FC = () => {
       detailedInfo:
         "These questions help us comply with financial regulations and identify potential conflicts of interest.",
       content: <ComplianceQuestions />,
+      icon: IconScale,
+      tooltip: "Click for more information about compliance requirements",
+    },
+    {
+      label: "Account Purpose",
+      description:
+        "Sources of net worth and funding (Significant sources only)",
+      detailedInfo:
+        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+      content: <AccountPurposeForm />,
       icon: IconScale,
       tooltip: "Click for more information about compliance requirements",
     },
