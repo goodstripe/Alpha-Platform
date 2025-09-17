@@ -471,14 +471,12 @@ const Onboarding: React.FC = () => {
   const steps: (Step & { detailedInfo: string })[] = [
     {
       label: "Customer Verification",
-      description: "Step 1: Verify your identity",
+      description: "Step 1: Verify your identity status",
       detailedInfo:
-        "Identity verification is required by financial regulations to prevent fraud. We use bank-level encryption to protect your personal information. You'll need to provide a government-issued ID and may need to take a photo for verification purposes.",
+        "Identity verification is required by financial regulations to prevent fraud. We use bank-level encryption to protect your personal information. Existing customers may have a streamlined verification process.",
       content: (
         <div>
-          <Text size="md" mb="md">
-            Are you an existing customer?
-          </Text>
+          <QuestionWithDot>Are you an existing customer?</QuestionWithDot>
           <Radio.Group>
             <Stack mt="xs">
               <Radio value="yes" label="Yes" />
@@ -488,17 +486,17 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconUserCircle,
+      tooltip:
+        "Verification helps protect your account from unauthorized access",
     },
     {
       label: "Account Type",
-      description: "Step 2: Choose account type",
+      description: "Step 2: Choose your account category",
       detailedInfo:
-        "Select the account type that best fits your financial goals. Individual accounts are for personal use, joint accounts allow shared access with another person, corporate accounts are for business entities, and retirement accounts offer tax advantages for long-term savings.",
+        "Select the account type that best fits your financial goals. Brokerage accounts are for general investing, while retirement accounts offer tax advantages for long-term savings. Your choice will determine available investment options and tax treatment.",
       content: (
         <div>
-          <Text size="md" mb="md">
-            Select Account Type -
-          </Text>
+          <QuestionWithDot>Select Account Type -</QuestionWithDot>
           <Radio.Group
             value={accountType}
             onChange={setAccountType}
@@ -512,12 +510,13 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconBuildingBank,
+      tooltip: "Learn about different account types and their benefits",
     },
     {
       label: "Account Details",
-      description: "Step 3: Account details",
+      description: "Step 3: Configure account specifics",
       detailedInfo:
-        "Configure your investment preferences to match your experience level and risk tolerance. Options and margin trading involve higher risks and require additional approvals. Cryptocurrency trading is available for qualified investors seeking exposure to digital assets.",
+        "Configure your account ownership structure and investment preferences. Individual accounts are for personal use, joint accounts allow shared access, and entity accounts are for businesses or trusts. Retirement accounts have specific tax-advantaged structures.",
       content:
         accountType === "brokerage" ? (
           <BrokerageOptions />
@@ -525,80 +524,80 @@ const Onboarding: React.FC = () => {
           <RetirementOptions />
         ),
       icon: IconPigMoney,
+      tooltip: "Customize your account based on your investment needs",
     },
     {
       label: "Personal Information",
-      description: "Step 4: Retirement options",
+      description: "Step 4: Provide basic identification details",
       detailedInfo:
-        "Retirement accounts offer tax advantages to help you save for the future. Traditional IRAs provide tax-deferred growth, Roth IRAs offer tax-free withdrawals in retirement, and SEP IRAs are designed for self-employed individuals and small business owners.",
+        "Accurate personal information ensures we can properly service your account and comply with regulatory requirements. This includes legal name, date of birth, and contact information. Your data is protected with industry-standard security measures.",
       content: <PersonalInfoForm />,
-      icon: IconKey,
-    },
-    {
-      label: "Citizenship Information",
-      description: "Step 5: Citizenship Information",
-      detailedInfo:
-        "Providing accurate personal information ensures we can properly service your account and comply with regulatory requirements. Your information is protected with industry-standard security measures and will only be used for account management and required reporting.",
-      content: <CitizenshipForm />,
       icon: IconUser,
+      tooltip: "Your information is securely stored and encrypted",
     },
     {
-      label: "Financial Information",
-      description: "Step 6: Annual Income",
+      label: "Citizenship & Tax Information",
+      description: "Step 5: Provide citizenship and tax details",
       detailedInfo:
-        "For joint accounts, both holders have equal access and rights to the account. Each account holder will need to complete identity verification separately. Joint accounts can be set up with rights of survivorship or other ownership arrangements depending on your needs.",
+        "Citizenship status determines tax reporting requirements and account eligibility. US citizens and residents have different tax obligations than non-residents. Accurate tax identification numbers are required for IRS reporting purposes.",
+      content: <CitizenshipForm />,
+      icon: IconKey,
+      tooltip: "Tax information is required for regulatory compliance",
+    },
+    {
+      label: "Financial Profile",
+      description: "Step 6: Share your financial background",
+      detailedInfo:
+        "Understanding your financial situation helps us provide appropriate investment recommendations and comply with suitability requirements. This information is used to ensure investment recommendations align with your financial capacity and experience level.",
       content: <FinancialInformationForm />,
       icon: IconUsers,
-      tooltip: "Click for more information about joint accounts",
+      tooltip: "This helps us tailor investment options to your situation",
     },
     {
-      label: "Compliance Questions",
-      description: "Step X: Answer compliance questions",
+      label: "Regulatory Compliance",
+      description: "Step 7: Answer required compliance questions",
       detailedInfo:
-        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+        "These questions help identify potential conflicts of interest and ensure compliance with FINRA and SEC regulations. They screen for relationships with financial institutions, public company affiliations, and other situations that might require special handling.",
       content: <ComplianceQuestions />,
       icon: IconScale,
-      tooltip: "Click for more information about compliance requirements",
+      tooltip: "Required by financial regulatory authorities",
     },
     {
-      label: "Account Purpose",
-      description:
-        "Sources of net worth and funding (Significant sources only)",
+      label: "Account Funding & Purpose",
+      description: "Step 8: Describe funding sources and account objectives",
       detailedInfo:
-        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+        "Understanding the source of your funds and your investment objectives helps us comply with anti-money laundering regulations and provide suitable investment recommendations. This includes identifying foreign sources of funds and specific account purposes.",
       content: <AccountPurposeForm />,
-      icon: IconScale,
-      tooltip: "Click for more information about compliance requirements",
+      icon: IconPigMoney,
+      tooltip: "Helps ensure appropriate account usage and compliance",
     },
     {
       label: "Investor Accreditation",
-      description:
-        "Sources of net worth and funding (Significant sources only)",
+      description: "Step 9: Verify investor qualification status",
       detailedInfo:
-        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+        "Accredited investor status determines eligibility for certain private investment opportunities. Verification can be done through third-party services or self-attestation with supporting documentation. Different accreditation criteria apply based on income, net worth, or professional credentials.",
       content: <AccreditationForm />,
       icon: IconScale,
-      tooltip: "Click for more information about compliance requirements",
+      tooltip: "Determines access to certain investment opportunities",
     },
     {
       label: "Trusted Contact Person",
       description:
-        "Sources of net worth and funding (Significant sources only)",
+        "Step 10: Designate emergency contact for account protection",
       detailedInfo:
-        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+        "A trusted contact person helps protect your account by providing someone we can contact in case of concerns about your health, cognitive ability, or potential financial exploitation. This person cannot transact on your account but can help ensure your financial safety.",
       content: <TrustedContactPersonForm />,
-      icon: IconScale,
-      tooltip: "Click for more information about compliance requirements",
+      icon: IconUserCircle,
+      tooltip: "Added security feature for account protection",
     },
     {
-      label: "Account Credentials",
-      description:
-        "Sources of net worth and funding (Significant sources only)",
+      label: "Account Security",
+      description: "Step 11: Set up login credentials",
       detailedInfo:
-        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+        "Create secure login credentials to protect your account. Your user ID must be unique, and your password should include a combination of letters, numbers, and special characters. Strong credentials help prevent unauthorized access to your investment account.",
       content: <AccountCredentialsForm />,
-      icon: IconScale,
-      tooltip: "Click for more information about compliance requirements",
+      icon: IconKey,
+      tooltip: "Create strong credentials to protect your account",
     },
   ];
 
