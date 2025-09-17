@@ -22,6 +22,7 @@ import {
   IconMailOpened,
   IconShieldCheck,
 } from "@tabler/icons-react";
+import LoginSwitcher from "../login/components/LoginSwitcher/LoginSwitcher";
 
 const ForgetPassword = () => {
   const router = useRouter();
@@ -48,13 +49,7 @@ const ForgetPassword = () => {
               description="Verify email or Phone number"
             >
               <Stack gap={"lg"} mt={"md"}>
-                <TextInput
-                  label="Email or Phone number"
-                  placeholder="Enter email or phone number"
-                  required
-                  size="md"
-                  radius="md"
-                />
+                <LoginSwitcher />
 
                 <NumberInput
                   placeholder="Verification Code"

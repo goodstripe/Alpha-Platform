@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Text, TextInput, Select, Group, Box, Anchor } from "@mantine/core";
+import { Text, TextInput, Group, Box, Anchor } from "@mantine/core";
+import PhoneNumberInputWithCountryCode from "@/app/onboarding/components/NumberInputWithCountryCode/NumberInputWithCountryCode";
 
 const LoginSwitcher = () => {
   const [loginMethod, setLoginMethod] = useState<"phone" | "email">("phone");
@@ -7,7 +8,7 @@ const LoginSwitcher = () => {
   return (
     <Box>
       <Group justify="space-between" mb="md">
-        <Text size="sm" c={loginMethod === "phone" ? "dark" : "gray"}>
+        <Text size="sm" c={"dark"}>
           {loginMethod === "phone" ? "Phone Login" : "Email Login"}
         </Text>
 
@@ -24,16 +25,7 @@ const LoginSwitcher = () => {
       </Group>
 
       {loginMethod === "phone" ? (
-        <Select
-          label=""
-          placeholder="Select country code"
-          data={[
-            { value: "+1", label: "+1 (US)" },
-            { value: "+44", label: "+44 (UK)" },
-            { value: "+30", label: "+30 (Greece)" },
-          ]}
-          defaultValue="+1"
-        />
+        <PhoneNumberInputWithCountryCode />
       ) : (
         <TextInput label="" placeholder="Enter your email" />
       )}
