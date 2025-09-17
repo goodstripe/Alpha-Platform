@@ -9,11 +9,11 @@ import {
   Box,
   Center,
   TextInput,
-  Checkbox,
   Group,
   Select,
   Radio,
   rem,
+  Button,
 } from "@mantine/core";
 import {
   IconUserCircle,
@@ -27,66 +27,23 @@ import {
 import AccordionStep, {
   AccordionStepProps,
 } from "../components/AccordionStep/AccordionStep";
+import PersonalInfoForm from "./components/Personal-Information/PersonalInfoForm";
 
-const PersonalInfoForm: React.FC = () => {
-  return (
-    <div>
-      <Text size="sm" mb="md">
-        Please provide your personal information to complete your account setup.
-      </Text>
-      <Stack gap="md">
-        <Group grow>
-          <TextInput
-            label="First Name"
-            placeholder="Enter your first name"
-            required
-          />
-          <TextInput
-            label="Last Name"
-            placeholder="Enter your last name"
-            required
-          />
-        </Group>
-        <TextInput
-          label="Email"
-          type="email"
-          placeholder="Enter your email"
-          required
-        />
-        <TextInput label="Phone Number" placeholder="Enter your phone number" />
-        <TextInput label="Address" placeholder="Enter your street address" />
-        <Group grow>
-          <TextInput label="City" placeholder="Enter your city" />
-          <TextInput label="ZIP Code" placeholder="Enter ZIP code" />
-        </Group>
-        <Checkbox
-          label="I confirm that the information provided is accurate"
-          mt="md"
-        />
-      </Stack>
-    </div>
-  );
-};
-
-const AccountTypeSelection: React.FC = () => {
-  return (
-    <div>
-      <Text size="sm" mb="md">
-        Select the type of account you want to create:
-      </Text>
-      <Stack gap="md">
-        <Radio.Group name="accountType">
-          <Stack gap="xs">
-            <Radio value="individual" label="Individual Account" />
-            <Radio value="joint" label="Joint Account" />
-            <Radio value="corporate" label="Corporate Account" />
-            <Radio value="retirement" label="Retirement Account (IRA)" />
-          </Stack>
-        </Radio.Group>
-      </Stack>
-    </div>
-  );
-};
+export interface Step
+  extends Omit<
+    AccordionStepProps,
+    | "step"
+    | "isActive"
+    | "isCompleted"
+    | "onStepClick"
+    | "isLast"
+    | "onCompleteStep"
+    | "isFinalStep"
+    | "children"
+    | "completedSteps"
+  > {
+  content: React.ReactNode;
+}
 
 const BrokerageOptions: React.FC = () => {
   return (
@@ -131,21 +88,107 @@ const RetirementOptions: React.FC = () => {
   );
 };
 
-export interface Step
-  extends Omit<
-    AccordionStepProps,
-    | "step"
-    | "isActive"
-    | "isCompleted"
-    | "onStepClick"
-    | "isLast"
-    | "onCompleteStep"
-    | "isFinalStep"
-    | "children"
-    | "completedSteps"
-  > {
-  content: React.ReactNode;
-}
+const CitizenshipForm: React.FC = () => {
+  const [citizenship, setCitizenship] = useState<string>("");
+
+  return (
+    <Box>
+      <Radio.Group
+        label="Select your citizenship status"
+        value={citizenship}
+        onChange={setCitizenship}
+      >
+        <Stack mt={"xs"}>
+          <Radio value="US Citizen" label="US Citizen" />
+          <Radio value="Dual Citizen" label="Dual Citizen" />
+          <Radio value="Non US Citizen" label="Non US Citizen" />
+        </Stack>
+      </Radio.Group>
+
+      <Stack mt="md" gap="md">
+        {(citizenship === "US Citizen" || citizenship === "Dual Citizen") && (
+          <TextInput
+            label="Social Security Number"
+            placeholder="Enter your SSN"
+          />
+        )}
+
+        {citizenship === "Dual Citizen" && (
+          <TextInput
+            label="Second Country Citizenship"
+            placeholder="Enter second country's citizenship"
+          />
+        )}
+
+        {citizenship === "Non US Citizen" && (
+          <TextInput label="Tax ID" placeholder="Enter your Tax ID" />
+        )}
+      </Stack>
+    </Box>
+  );
+};
+
+const FinancialInformationForm: React.FC = () => {
+  const [annualIncome, setAnnualIncome] = useState("");
+  const [liquidNetWorth, setLiquidNetWorth] = useState("");
+  const [totalNetWorth, setTotalNetWorth] = useState("");
+  const [investmentExperience, setInvestmentExperience] = useState("");
+
+  const netOptions = [
+    { value: "0-25000", label: "$0 - $25,000" },
+    { value: "25001-50000", label: "$25,001 - 50,000" },
+    { value: "50001-100000", label: "$50,001 - $100,000" },
+    { value: "100001-250000", label: "$100,001 - 250,000" },
+    { value: "250001-500000", label: "$250,001 - 500,000" },
+  ];
+
+  return (
+    <Stack gap="md">
+      <Title order={4}>Financial Information</Title>
+
+      <TextInput
+        label="Annual Income"
+        placeholder="Enter annual income"
+        value={annualIncome}
+        onChange={(event) => setAnnualIncome(event.currentTarget.value)}
+      />
+
+      <Select
+        label="Liquid Net Worth"
+        placeholder="Select Range"
+        data={netOptions}
+        value={liquidNetWorth}
+        onChange={(value) => value !== null && setLiquidNetWorth(value)}
+      />
+
+      <Select
+        label="Total Net Worth"
+        placeholder="Select Range"
+        data={netOptions}
+        value={totalNetWorth}
+        onChange={(value) => value !== null && setTotalNetWorth(value)}
+      />
+
+      <Select
+        label="Investment Experience"
+        placeholder="Select Experience Level"
+        data={[
+          { value: "no", label: "No Experience" },
+          { value: "beginner", label: "Beginner" },
+          { value: "intermediate", label: "Intermediate" },
+          { value: "expert", label: "Expert" },
+        ]}
+        value={investmentExperience}
+        onChange={(value) => value !== null && setInvestmentExperience(value)}
+      />
+
+      <Group justify="apart" mt="xl">
+        <Button variant="default">← Previous</Button>
+        <Button>Next →</Button>
+      </Group>
+    </Stack>
+  );
+};
 
 const Onboarding: React.FC = () => {
   const [active, setActive] = useState(0);
@@ -194,7 +237,6 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconUserCircle,
-      tooltip: "Click for more information about verification",
     },
     {
       label: "Account Type",
@@ -215,11 +257,10 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconBuildingBank,
-      tooltip: "Click for more information about account types",
     },
     {
-      label: "Brokerage Account",
-      description: "Step 3: Brokerage details",
+      label: "Account Details",
+      description: "Step 3: Account details",
       detailedInfo:
         "Configure your investment preferences to match your experience level and risk tolerance. Options and margin trading involve higher risks and require additional approvals. Cryptocurrency trading is available for qualified investors seeking exposure to digital assets.",
       content:
@@ -229,83 +270,29 @@ const Onboarding: React.FC = () => {
           <RetirementOptions />
         ),
       icon: IconPigMoney,
-      tooltip: "Click for more information about brokerage options",
-    },
-    {
-      label: "Retirement Account",
-      description: "Step 4: Retirement options",
-      detailedInfo:
-        "Retirement accounts offer tax advantages to help you save for the future. Traditional IRAs provide tax-deferred growth, Roth IRAs offer tax-free withdrawals in retirement, and SEP IRAs are designed for self-employed individuals and small business owners.",
-      content: (
-        <div>
-          <Text size="sm" mb="md">
-            Select your retirement account options:
-          </Text>
-          <Stack gap="md">
-            <Radio.Group name="retirementType">
-              <Stack gap="xs">
-                <Radio value="traditional" label="Traditional IRA" />
-                <Radio value="roth" label="Roth IRA" />
-                <Radio value="sep" label="SEP IRA" />
-              </Stack>
-            </Radio.Group>
-            <TextInput
-              label="Beneficiary Name"
-              placeholder="Enter beneficiary full name"
-            />
-          </Stack>
-        </div>
-      ),
-      icon: IconKey,
-      tooltip: "Click for more information about retirement accounts",
     },
     {
       label: "Personal Information",
-      description: "Step 5: Your details",
+      description: "Step 4: Retirement options",
       detailedInfo:
-        "Providing accurate personal information ensures we can properly service your account and comply with regulatory requirements. Your information is protected with industry-standard security measures and will only be used for account management and required reporting.",
+        "Retirement accounts offer tax advantages to help you save for the future. Traditional IRAs provide tax-deferred growth, Roth IRAs offer tax-free withdrawals in retirement, and SEP IRAs are designed for self-employed individuals and small business owners.",
       content: <PersonalInfoForm />,
-      icon: IconUser,
-      tooltip: "Click for more information about data collection",
+      icon: IconKey,
     },
     {
-      label: "Joint Account Info",
-      description: "Step 6: Joint account holder",
+      label: "Citizenship Information",
+      description: "Step 5: Citizenship Information",
+      detailedInfo:
+        "Providing accurate personal information ensures we can properly service your account and comply with regulatory requirements. Your information is protected with industry-standard security measures and will only be used for account management and required reporting.",
+      content: <CitizenshipForm />,
+      icon: IconUser,
+    },
+    {
+      label: "Financial Information",
+      description: "Step 6: Annual Income",
       detailedInfo:
         "For joint accounts, both holders have equal access and rights to the account. Each account holder will need to complete identity verification separately. Joint accounts can be set up with rights of survivorship or other ownership arrangements depending on your needs.",
-      content: (
-        <div>
-          <Text size="sm" mb="md">
-            Provide information for the joint account holder:
-          </Text>
-          <Stack gap="md">
-            <Group grow>
-              <TextInput
-                label="First Name"
-                placeholder="Joint holder first name"
-              />
-              <TextInput
-                label="Last Name"
-                placeholder="Joint holder last name"
-              />
-            </Group>
-            <TextInput
-              label="Email"
-              type="email"
-              placeholder="Joint holder email"
-            />
-            <TextInput
-              label="SSN/Tax ID"
-              placeholder="Joint holder SSN or Tax ID"
-            />
-            <TextInput
-              label="Date of Birth"
-              type="date"
-              placeholder="Joint holder date of birth"
-            />
-          </Stack>
-        </div>
-      ),
+      content: <FinancialInformationForm />,
       icon: IconUsers,
       tooltip: "Click for more information about joint accounts",
     },
@@ -350,7 +337,6 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconBuilding,
-      tooltip: "Click for more information about business accounts",
     },
   ];
 
