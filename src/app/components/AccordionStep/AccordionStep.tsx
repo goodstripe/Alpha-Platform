@@ -34,6 +34,7 @@ export interface AccordionStepProps {
   tooltip?: string;
   detailedInfo?: string;
   completedSteps: number[];
+  hideFutureSteps?: boolean;
 }
 
 const AccordionStep: React.FC<AccordionStepProps> = ({
@@ -51,15 +52,25 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
   tooltip,
   detailedInfo,
   completedSteps,
+  hideFutureSteps = true,
 }) => {
-  const [opened, { toggle }] = useDisclosure(isActive);
+  const [opened, { toggle, open, close }] = useDisclosure(isActive);
   const [infoExpanded, { toggle: toggleInfo }] = useDisclosure(false);
+
   const isDisabled = !isCompleted && !isActive && step > completedSteps.length;
+  const isFutureStep = step > completedSteps.length;
 
   React.useEffect(() => {
-    if (isActive && !opened) toggle();
-    if (!isActive && opened) toggle();
+    if (isActive && !opened) {
+      open();
+    } else if (!isActive && opened) {
+      close();
+    }
   }, [isActive]);
+
+  if (hideFutureSteps && isFutureStep) {
+    return null;
+  }
 
   return (
     <Group align="flex-start" gap={0} wrap="nowrap">
