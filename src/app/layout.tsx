@@ -8,6 +8,7 @@ import "@mantine/dropzone/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/core/styles.layer.css";
 import "@mantine/notifications/styles.css";
+import Header from "./components/Header/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -46,6 +47,7 @@ export default function RootLayout({
             fontFamily: "Lato, sans-serif",
           }}
         >
+          <Header />
           {children}
         </MantineProvider>
       </body>
