@@ -174,7 +174,7 @@ const Onboarding: React.FC = () => {
         "Identity verification is required by financial regulations to prevent fraud. We use bank-level encryption to protect your personal information. You'll need to provide a government-issued ID and may need to take a photo for verification purposes.",
       content: (
         <div>
-          <Text size="sm" mb="md">
+          <Text size="md" mb="md">
             Are you an existing customer?
           </Text>
           <Radio.Group>
@@ -193,7 +193,19 @@ const Onboarding: React.FC = () => {
       description: "Step 2: Choose account type",
       detailedInfo:
         "Select the account type that best fits your financial goals. Individual accounts are for personal use, joint accounts allow shared access with another person, corporate accounts are for business entities, and retirement accounts offer tax advantages for long-term savings.",
-      content: <AccountTypeSelection />,
+      content: (
+        <div>
+          <Text size="md" mb="md">
+            Select Account Type
+          </Text>
+          <Radio.Group>
+            <Group mt="xs">
+              <Radio value="yes" label="Brokerage Account" />
+              <Radio value="no" label="Retirement Account" />
+            </Group>
+          </Radio.Group>
+        </div>
+      ),
       icon: IconBuildingBank,
       tooltip: "Click for more information about account types",
     },
