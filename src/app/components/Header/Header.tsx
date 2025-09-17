@@ -38,9 +38,8 @@ export default function ResponsiveHeader() {
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
-        <Container h="100%" style={{ paddingInline: rem(8) }}>
+        <Container h="100%" p={0}>
           <Flex align="center" justify="space-between" h="100%">
-            {/* Left Section - Logo and Search (very close together) */}
             <Group gap="xs">
               <Image
                 src="/aeonx_logo.png"
