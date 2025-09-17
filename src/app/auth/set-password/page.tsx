@@ -28,7 +28,8 @@ const SetPassword = () => {
 
           <PasswordInput
             label="Password"
-            placeholder="Enter your password"
+            placeholder="Enter your new password"
+            withAsterisk
             mt="md"
             size="md"
             radius="md"
@@ -36,7 +37,8 @@ const SetPassword = () => {
 
           <PasswordInput
             label="Confirm Password"
-            placeholder="Confirm your password"
+            placeholder="Confirm your new password"
+            withAsterisk
             mt="md"
             size="md"
             radius="md"
@@ -47,9 +49,9 @@ const SetPassword = () => {
             mt="xl"
             size="md"
             radius="md"
-            onClick={() => router.push("/auth/forget-password")}
+            onClick={() => router.push("/onboarding")}
           >
-            Set Password
+            Set New Password
           </Button>
 
           <Group justify="center" mt={20}>

@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 
 import classes from "../signup/AuthenticationImage.module.css";
 import { LeftSideInAuth } from "../signup/LeftSideInAuth";
+import LoginSwitcher from "./components/LoginSwitcher/LoginSwitcher";
 
 const LogIn = () => {
   const router = useRouter();
@@ -29,7 +30,6 @@ const LogIn = () => {
           <Title size={30} mb={20} ta="center">
             Welcome back!
           </Title>
-
           <Text c="dimmed" size="sm" ta="center" mt={5} mb={30}>
             Do not have an account yet?{" "}
             <Anchor size="sm" href="/auth/signup">
@@ -37,13 +37,8 @@ const LogIn = () => {
             </Anchor>
           </Text>
 
-          <TextInput
-            label="Email"
-            placeholder="you@mantine.dev"
-            required
-            size="md"
-            radius="md"
-          />
+          <LoginSwitcher />
+
           <PasswordInput
             label="Password"
             placeholder="Your password"
@@ -62,7 +57,6 @@ const LogIn = () => {
               Forgot password?
             </Anchor>
           </Group>
-
           <Button
             fullWidth
             mt="xl"
