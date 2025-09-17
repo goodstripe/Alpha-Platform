@@ -175,16 +175,14 @@ const Onboarding: React.FC = () => {
       content: (
         <div>
           <Text size="sm" mb="md">
-            To verify your identity, please upload the required documents:
+            Are you an existing customer?
           </Text>
-          <Stack gap="md">
-            <TextInput
-              label="Government ID Number"
-              placeholder="Enter your ID number"
-              required
-            />
-            <Checkbox label="I agree to the terms of identity verification" />
-          </Stack>
+          <Radio.Group>
+            <Group mt="xs">
+              <Radio value="yes" label="Yes" />
+              <Radio value="no" label="No" />
+            </Group>
+          </Radio.Group>
         </div>
       ),
       icon: IconUserCircle,

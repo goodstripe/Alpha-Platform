@@ -234,7 +234,7 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
             {children}
             {isActive && !isCompleted && (
               <Group align="end">
-                <Button onClick={onCompleteStep} mt={"md"}>
+                <Button onClick={onCompleteStep} mt={"lg"}>
                   {isFinalStep ? "Finish" : "Next"}
                 </Button>
               </Group>
