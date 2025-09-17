@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Title,
   Text,
@@ -13,6 +13,7 @@ import {
   Select,
   Radio,
   rem,
+  Button,
 } from "@mantine/core";
 import {
   IconUserCircle,
@@ -23,6 +24,7 @@ import {
   IconUsers,
   IconScale,
 } from "@tabler/icons-react";
+import { Dropzone, MIME_TYPES } from "@mantine/dropzone";
 import AccordionStep, {
   AccordionStepProps,
 } from "../components/AccordionStep/AccordionStep";
@@ -191,15 +193,34 @@ const FinancialInformationForm: React.FC = () => {
   );
 };
 
+const QuestionWithDot = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <Group align="start" gap="xs">
+      <div
+        style={{
+          width: 6,
+          height: 6,
+          borderRadius: "50%",
+          backgroundColor: "black",
+          marginTop: 8,
+        }}
+      />
+      <Text size="sm" fw={500}>
+        {children}
+      </Text>
+    </Group>
+  );
+};
+
 const ComplianceQuestions: React.FC = () => {
   return (
     <Stack gap="lg">
       <div>
-        <Text size="sm" fw={500} mb={5}>
+        <QuestionWithDot>
           Do you, or does a family or household member, work for a broker-dealer
           or a securities or futures exchange, futures commission merchant,
           retail foreign exchange dealer, or securities or futures regulator?
-        </Text>
+        </QuestionWithDot>
         <Radio.Group name="compliance1">
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
@@ -209,10 +230,10 @@ const ComplianceQuestions: React.FC = () => {
       </div>
 
       <div>
-        <Text size="sm" fw={500} mb={5}>
+        <QuestionWithDot>
           Do you, or does a family or household member, serve on a board of
           directors, or as another policymaker at a public company?
-        </Text>
+        </QuestionWithDot>
         <Radio.Group name="compliance2">
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
@@ -222,10 +243,10 @@ const ComplianceQuestions: React.FC = () => {
       </div>
 
       <div>
-        <Text size="sm" fw={500} mb={5}>
+        <QuestionWithDot>
           Do you, or does a family or household member, own 10% or more of a
           public company?
-        </Text>
+        </QuestionWithDot>
         <Radio.Group name="compliance3">
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
@@ -235,10 +256,10 @@ const ComplianceQuestions: React.FC = () => {
       </div>
 
       <div>
-        <Text size="sm" fw={500} mb={5}>
+        <QuestionWithDot>
           Have you been notified by the IRS that you are subject to backup
           withholding?
-        </Text>
+        </QuestionWithDot>
         <Radio.Group name="compliance4">
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
@@ -252,7 +273,7 @@ const ComplianceQuestions: React.FC = () => {
 
 const AccountPurposeForm = () => {
   return (
-    <Stack>
+    <Stack gap="md">
       <Select
         label="Select Source"
         placeholder="Select Source"
@@ -265,9 +286,9 @@ const AccountPurposeForm = () => {
         ]}
       />
 
-      <Text size="sm" fw={500}>
+      <QuestionWithDot>
         Does any portion of your net worth and funding come from outside the US?
-      </Text>
+      </QuestionWithDot>
       <Radio.Group>
         <Stack>
           <Radio value="yes" label="Yes" />
@@ -275,9 +296,9 @@ const AccountPurposeForm = () => {
         </Stack>
       </Radio.Group>
 
-      <Text size="sm" fw={500}>
+      <QuestionWithDot>
         What is the purpose and expected use of this account?
-      </Text>
+      </QuestionWithDot>
       <Select
         label="Select Purpose"
         placeholder="Select Purpose"
@@ -289,6 +310,61 @@ const AccountPurposeForm = () => {
           { value: "other", label: "Other" },
         ]}
       />
+    </Stack>
+  );
+};
+
+const AccreditationForm = () => {
+  const [isAccredited, setIsAccredited] = useState<string | null>(null);
+  const [verificationMethod, setVerificationMethod] = useState<string | null>(
+    null
+  );
+  const openRef = useRef<() => void>(null);
+
+  return (
+    <Stack gap="md">
+      <QuestionWithDot>Are you an accredited investor?</QuestionWithDot>
+      <Radio.Group value={isAccredited} onChange={setIsAccredited}>
+        <Stack>
+          <Radio value="yes" label="Yes I am" />
+          <Radio value="no" label="I am not an accredited investor" />
+        </Stack>
+      </Radio.Group>
+
+      {isAccredited === "yes" && (
+        <>
+          <QuestionWithDot>
+            Please choose how you would like to verify your accreditation?
+          </QuestionWithDot>
+          <Radio.Group
+            value={verificationMethod}
+            onChange={setVerificationMethod}
+          >
+            <Stack gap={"md"}>
+              <Radio value="third_party" label="Third Party Verification" />
+              <Radio value="self_attestation" label="Self Attestation" />
+            </Stack>
+          </Radio.Group>
+        </>
+      )}
+
+      {isAccredited === "yes" && verificationMethod === "self_attestation" && (
+        <>
+          <QuestionWithDot>Upload Documents</QuestionWithDot>
+          <Dropzone
+            onDrop={(files) => console.log(files)}
+            accept={[MIME_TYPES.pdf, MIME_TYPES.png, MIME_TYPES.jpeg]}
+            maxSize={3 * 1024 ** 2}
+          >
+            <Button
+              onClick={() => openRef.current?.()}
+              style={{ pointerEvents: "all" }}
+            >
+              Select files
+            </Button>
+          </Dropzone>
+        </>
+      )}
     </Stack>
   );
 };
@@ -419,6 +495,16 @@ const Onboarding: React.FC = () => {
       detailedInfo:
         "These questions help us comply with financial regulations and identify potential conflicts of interest.",
       content: <AccountPurposeForm />,
+      icon: IconScale,
+      tooltip: "Click for more information about compliance requirements",
+    },
+    {
+      label: "Investor Accreditation",
+      description:
+        "Sources of net worth and funding (Significant sources only)",
+      detailedInfo:
+        "These questions help us comply with financial regulations and identify potential conflicts of interest.",
+      content: <AccreditationForm />,
       icon: IconScale,
       tooltip: "Click for more information about compliance requirements",
     },

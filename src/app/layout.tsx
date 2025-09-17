@@ -4,6 +4,7 @@ import { Geist, Geist_Mono, Lato } from "next/font/google";
 
 import "./globals.css";
 import "@mantine/core/styles.css";
+import "@mantine/dropzone/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/core/styles.layer.css";
 import "@mantine/notifications/styles.css";
