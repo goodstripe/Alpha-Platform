@@ -32,6 +32,7 @@ import AccordionStep, {
 } from "../components/AccordionStep/AccordionStep";
 import PersonalInfoForm from "../components/AccordionStep/Personal-Information/PersonalInfoForm";
 import PhoneNumberInputWithCountryCode from "../components/NumberInputWithCountryCode/NumberInputWithCountryCode";
+import { useRouter } from "next/navigation";
 
 export interface Step
   extends Omit<
@@ -413,7 +414,7 @@ const AccountCredentialsForm = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
-    <Stack gap="md" style={{ maxWidth: 400, margin: "0 auto" }}>
+    <Stack gap="md">
       <TextInput
         label="User ID"
         placeholder="Choose a user ID"
@@ -442,6 +443,7 @@ const AccountCredentialsForm = () => {
 };
 
 const Onboarding: React.FC = () => {
+  const router = useRouter();
   const [active, setActive] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [accountType, setAccountType] = useState("");
@@ -461,8 +463,14 @@ const Onboarding: React.FC = () => {
 
   const completeCurrentStep = () => {
     if (!completedSteps.includes(active)) {
-      setCompletedSteps([...completedSteps, active]);
+      const updatedSteps = [...completedSteps, active];
+      setCompletedSteps(updatedSteps);
+
+      if (updatedSteps.length === steps.length) {
+        router.push("/dashboard");
+      }
     }
+
     if (active < steps.length - 1) {
       setActive(active + 1);
     }
