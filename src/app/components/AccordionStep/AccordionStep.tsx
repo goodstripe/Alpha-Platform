@@ -233,8 +233,8 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
           >
             {children}
             {isActive && !isCompleted && (
-              <Group align="end">
-                <Button onClick={onCompleteStep} mt={"lg"}>
+              <Group style={{ marginLeft: "auto" }} mt={"lg"}>
+                <Button onClick={onCompleteStep}>
                   {isFinalStep ? "Finish" : "Next"}
                 </Button>
               </Group>

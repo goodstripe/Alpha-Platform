@@ -92,32 +92,42 @@ const AccountTypeSelection: React.FC = () => {
 const BrokerageOptions: React.FC = () => {
   return (
     <div>
-      <Text size="sm" mb="md">
-        Configure your brokerage account preferences:
-      </Text>
-      <Stack gap="md">
-        <Select
-          label="Trading Experience"
-          placeholder="Select your experience level"
-          data={[
-            { value: "beginner", label: "Beginner" },
-            { value: "intermediate", label: "Intermediate" },
-            { value: "advanced", label: "Advanced" },
-          ]}
-        />
-        <Checkbox
-          label="Enable options trading"
-          description="Higher risk investment strategy"
-        />
-        <Checkbox
-          label="Enable margin trading"
-          description="Borrow funds to invest"
-        />
-        <Checkbox
-          label="Enable cryptocurrency trading"
-          description="Trade digital currencies"
-        />
+      <Stack gap={5}>
+        <Text size="md">Account Type(s)</Text>
+        <Text size="xs" mb="md">
+          Select an account
+        </Text>
       </Stack>
+
+      <Radio.Group>
+        <Stack mt="xs">
+          <Radio value="single" label="Single Account" />
+          <Radio value="joint" label="Joint Account" />
+          <Radio value="entity" label="Entity Account" />
+        </Stack>
+      </Radio.Group>
+    </div>
+  );
+};
+
+const RetirementOptions: React.FC = () => {
+  return (
+    <div>
+      <Stack gap={5}>
+        <Text size="md">Account Details</Text>
+        <Text size="xs" mb="md">
+          Select Type of account
+        </Text>
+      </Stack>
+
+      <Radio.Group>
+        <Stack mt="xs">
+          <Radio value="traditional" label="Traditional IRA" />
+          <Radio value="rollover" label="Rollover IRA" />
+          <Radio value="roth" label="Roth IRA" />
+          <Radio value="sep" label="SEP IRA" />
+        </Stack>
+      </Radio.Group>
     </div>
   );
 };
@@ -143,8 +153,6 @@ const Onboarding: React.FC = () => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
   const handleStepClick = (step: number) => {
-    // Allow navigation only to completed steps or the next logical step
-    // But disable navigation to steps beyond the first incomplete step
     const maxAllowedStep =
       completedSteps.length > 0 ? Math.max(...completedSteps) + 1 : 0;
 
@@ -178,10 +186,10 @@ const Onboarding: React.FC = () => {
             Are you an existing customer?
           </Text>
           <Radio.Group>
-            <Group mt="xs">
+            <Stack mt="xs">
               <Radio value="yes" label="Yes" />
               <Radio value="no" label="No" />
-            </Group>
+            </Stack>
           </Radio.Group>
         </div>
       ),
@@ -199,10 +207,10 @@ const Onboarding: React.FC = () => {
             Select Account Type
           </Text>
           <Radio.Group>
-            <Group mt="xs">
-              <Radio value="yes" label="Brokerage Account" />
-              <Radio value="no" label="Retirement Account" />
-            </Group>
+            <Stack mt="xs">
+              <Radio value="brokerage" label="Brokerage Account" />
+              <Radio value="retirement" label="Retirement Account" />
+            </Stack>
           </Radio.Group>
         </div>
       ),
