@@ -133,6 +133,7 @@ export interface Step
     | "onCompleteStep"
     | "isFinalStep"
     | "children"
+    | "completedSteps"
   > {
   content: React.ReactNode;
 }
@@ -142,10 +143,14 @@ const Onboarding: React.FC = () => {
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
 
   const handleStepClick = (step: number) => {
-    // Allow navigation to any completed step or the next logical step
+    // Allow navigation only to completed steps or the next logical step
+    // But disable navigation to steps beyond the first incomplete step
+    const maxAllowedStep =
+      completedSteps.length > 0 ? Math.max(...completedSteps) + 1 : 0;
+
     if (
+      step <= maxAllowedStep ||
       completedSteps.includes(step) ||
-      step === active + 1 ||
       step === active
     ) {
       setActive(step);
@@ -161,10 +166,12 @@ const Onboarding: React.FC = () => {
     }
   };
 
-  const steps: Step[] = [
+  const steps: (Step & { detailedInfo: string })[] = [
     {
       label: "Customer Verification",
       description: "Step 1: Verify your identity",
+      detailedInfo:
+        "Identity verification is required by financial regulations to prevent fraud. We use bank-level encryption to protect your personal information. You'll need to provide a government-issued ID and may need to take a photo for verification purposes.",
       content: (
         <div>
           <Text size="sm" mb="md">
@@ -181,26 +188,31 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconUserCircle,
-      tooltip:
-        "We use bank-level security to protect your personal information",
+      tooltip: "Click for more information about verification",
     },
     {
       label: "Account Type",
       description: "Step 2: Choose account type",
+      detailedInfo:
+        "Select the account type that best fits your financial goals. Individual accounts are for personal use, joint accounts allow shared access with another person, corporate accounts are for business entities, and retirement accounts offer tax advantages for long-term savings.",
       content: <AccountTypeSelection />,
       icon: IconBuildingBank,
-      tooltip: "You can add more account types later in your account settings",
+      tooltip: "Click for more information about account types",
     },
     {
       label: "Brokerage Account",
       description: "Step 3: Brokerage details",
+      detailedInfo:
+        "Configure your investment preferences to match your experience level and risk tolerance. Options and margin trading involve higher risks and require additional approvals. Cryptocurrency trading is available for qualified investors seeking exposure to digital assets.",
       content: <BrokerageOptions />,
       icon: IconPigMoney,
-      tooltip: "Options and margin trading require additional approvals",
+      tooltip: "Click for more information about brokerage options",
     },
     {
       label: "Retirement Account",
       description: "Step 4: Retirement options",
+      detailedInfo:
+        "Retirement accounts offer tax advantages to help you save for the future. Traditional IRAs provide tax-deferred growth, Roth IRAs offer tax-free withdrawals in retirement, and SEP IRAs are designed for self-employed individuals and small business owners.",
       content: (
         <div>
           <Text size="sm" mb="md">
@@ -222,19 +234,22 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconKey,
-      tooltip:
-        "Consider consulting a tax advisor for retirement account selection",
+      tooltip: "Click for more information about retirement accounts",
     },
     {
       label: "Personal Information",
       description: "Step 5: Your details",
+      detailedInfo:
+        "Providing accurate personal information ensures we can properly service your account and comply with regulatory requirements. Your information is protected with industry-standard security measures and will only be used for account management and required reporting.",
       content: <PersonalInfoForm />,
       icon: IconUser,
-      tooltip: "This information helps us personalize your experience",
+      tooltip: "Click for more information about data collection",
     },
     {
       label: "Joint Account Info",
       description: "Step 6: Joint account holder",
+      detailedInfo:
+        "For joint accounts, both holders have equal access and rights to the account. Each account holder will need to complete identity verification separately. Joint accounts can be set up with rights of survivorship or other ownership arrangements depending on your needs.",
       content: (
         <div>
           <Text size="sm" mb="md">
@@ -269,12 +284,13 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconUsers,
-      tooltip:
-        "Joint account holders have equal access and rights to the account",
+      tooltip: "Click for more information about joint accounts",
     },
     {
       label: "Entity Information",
       description: "Step 7: Business details",
+      detailedInfo:
+        "Business accounts require documentation to verify the legal existence of the entity and the authority of individuals to act on its behalf. You may need to provide articles of incorporation, partnership agreements, or other formation documents depending on your entity type.",
       content: (
         <div>
           <Text size="sm" mb="md">
@@ -311,8 +327,7 @@ const Onboarding: React.FC = () => {
         </div>
       ),
       icon: IconBuilding,
-      tooltip:
-        "We need documentation for business verification after submission",
+      tooltip: "Click for more information about business accounts",
     },
   ];
 
@@ -350,6 +365,8 @@ const Onboarding: React.FC = () => {
                   onCompleteStep={completeCurrentStep}
                   isFinalStep={index === steps.length - 1}
                   tooltip={step.tooltip}
+                  detailedInfo={step.detailedInfo}
+                  completedSteps={completedSteps}
                 >
                   {step.content}
                 </AccordionStep>

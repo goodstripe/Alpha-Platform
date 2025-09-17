@@ -8,11 +8,14 @@ import {
   UnstyledButton,
   rem,
   Tooltip,
+  Text,
+  Button,
 } from "@mantine/core";
 import {
   IconChevronDown,
   IconCircleCheck,
   IconInfoCircle,
+  IconLock,
 } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -29,6 +32,8 @@ export interface AccordionStepProps {
   onCompleteStep: () => void;
   isFinalStep: boolean;
   tooltip?: string;
+  detailedInfo?: string;
+  completedSteps: number[];
 }
 
 const AccordionStep: React.FC<AccordionStepProps> = ({
@@ -44,8 +49,12 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
   onCompleteStep,
   isFinalStep,
   tooltip,
+  detailedInfo,
+  completedSteps,
 }) => {
   const [opened, { toggle }] = useDisclosure(isActive);
+  const [infoExpanded, { toggle: toggleInfo }] = useDisclosure(false);
+  const isDisabled = !isCompleted && !isActive && step > completedSteps.length;
 
   React.useEffect(() => {
     if (isActive && !opened) toggle();
@@ -54,7 +63,6 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
 
   return (
     <Group align="flex-start" gap={0} wrap="nowrap">
-      {/* Step number and connecting line */}
       <Box style={{ position: "relative", width: rem(50) }}>
         <Box
           style={{
@@ -65,15 +73,18 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
               ? "var(--mantine-color-teal-6)"
               : isActive
               ? "var(--mantine-color-blue-6)"
+              : isDisabled
+              ? "var(--mantine-color-gray-2)"
               : "var(--mantine-color-gray-3)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            color: "white",
+            color: isDisabled ? "var(--mantine-color-gray-5)" : "white",
             fontWeight: 600,
             margin: "0 auto",
             zIndex: 2,
             position: "relative",
+            cursor: isDisabled ? "not-allowed" : "pointer",
           }}
         >
           {isCompleted ? (
@@ -83,7 +94,6 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
           )}
         </Box>
 
-        {/* Connecting line */}
         {!isLast && (
           <Box
             style={{
@@ -94,6 +104,8 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
               width: rem(2),
               backgroundColor: isCompleted
                 ? "var(--mantine-color-teal-6)"
+                : isDisabled
+                ? "var(--mantine-color-gray-2)"
                 : "var(--mantine-color-gray-3)",
               transform: "translateX(-50%)",
               zIndex: 1,
@@ -102,12 +114,13 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
         )}
       </Box>
 
-      {/* Step content */}
       <Box style={{ flex: 1, marginBottom: rem(20) }}>
         <UnstyledButton
           onClick={() => {
-            onStepClick(step);
-            toggle();
+            if (!isDisabled) {
+              onStepClick(step);
+              toggle();
+            }
           }}
           style={{
             width: "100%",
@@ -115,50 +128,96 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
             borderRadius: "var(--mantine-radius-md)",
             backgroundColor: isActive
               ? "var(--mantine-color-blue-light)"
+              : isDisabled
+              ? "var(--mantine-color-gray-1)"
               : "transparent",
             border: `1px solid ${
               isActive
                 ? "var(--mantine-color-blue-light)"
+                : isDisabled
+                ? "var(--mantine-color-gray-2)"
                 : "var(--mantine-color-gray-3)"
             }`,
+            cursor: isDisabled ? "not-allowed" : "pointer",
+            opacity: isDisabled ? 0.6 : 1,
           }}
+          disabled={isDisabled}
         >
           <Group justify="space-between" wrap="nowrap">
             <div style={{ flex: 1 }}>
               <div
-                style={{ display: "flex", alignItems: "center", gap: rem(8) }}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: rem(8),
+                  color: isDisabled ? "var(--mantine-color-gray-5)" : "inherit",
+                }}
               >
                 <span style={{ fontWeight: 700, fontSize: rem(18) }}>
                   {label}
                 </span>
-                {tooltip && (
-                  <Tooltip label={tooltip} position="right" withArrow>
+                {tooltip && !isDisabled && (
+                  <UnstyledButton
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleInfo();
+                    }}
+                    style={{ display: "flex", alignItems: "center" }}
+                  >
                     <IconInfoCircle
                       size={18}
                       color="var(--mantine-color-blue-6)"
                     />
+                  </UnstyledButton>
+                )}
+                {isDisabled && (
+                  <Tooltip
+                    label="Complete previous steps first"
+                    position="right"
+                    withArrow
+                  >
+                    <IconLock size={18} color="var(--mantine-color-gray-5)" />
                   </Tooltip>
                 )}
               </div>
-              <div
-                style={{ fontSize: rem(14), color: "gray", fontWeight: 400 }}
-              >
-                {description}
-              </div>
+
+              <Collapse in={infoExpanded && !isDisabled}>
+                <Text
+                  size="sm"
+                  mt="xs"
+                  style={{ color: "var(--mantine-color-blue-7)" }}
+                >
+                  {detailedInfo}
+                </Text>
+              </Collapse>
+
+              {!infoExpanded && (
+                <div
+                  style={{
+                    fontSize: rem(14),
+                    color: isDisabled ? "var(--mantine-color-gray-5)" : "gray",
+                    fontWeight: 400,
+                  }}
+                >
+                  {description}
+                </div>
+              )}
             </div>
-            <IconChevronDown
-              style={{
-                width: rem(24),
-                height: rem(24),
-                transform: opened ? "rotate(180deg)" : "none",
-                transition: "transform 200ms ease",
-              }}
-              color={
-                isActive
-                  ? "var(--mantine-color-blue-6)"
-                  : "var(--mantine-color-gray-5)"
-              }
-            />
+            {!isDisabled && (
+              <IconChevronDown
+                style={{
+                  width: rem(24),
+                  height: rem(24),
+                  transform: opened ? "rotate(180deg)" : "none",
+                  transition: "transform 200ms ease",
+                }}
+                color={
+                  isActive
+                    ? "var(--mantine-color-blue-6)"
+                    : "var(--mantine-color-gray-5)"
+                }
+              />
+            )}
           </Group>
         </UnstyledButton>
 
@@ -174,21 +233,11 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
           >
             {children}
             {isActive && !isCompleted && (
-              <button
-                onClick={onCompleteStep}
-                style={{
-                  marginTop: "1rem",
-                  padding: "0.5rem 1.5rem",
-                  backgroundColor: "var(--mantine-color-blue-6)",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "var(--mantine-radius-sm)",
-                  cursor: "pointer",
-                  fontWeight: 600,
-                }}
-              >
-                {isFinalStep ? "Finish" : "Complete Step"}
-              </button>
+              <Group align="end">
+                <Button onClick={onCompleteStep} mt={"md"}>
+                  {isFinalStep ? "Finish" : "Next"}
+                </Button>
+              </Group>
             )}
           </Box>
         </Collapse>
