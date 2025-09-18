@@ -10,7 +10,7 @@ import {
   Divider,
   useComputedColorScheme,
 } from "@mantine/core";
-import CustomLineChart from "../Charts/LineChart";
+import CustomLineChart from "../Charts/CustomLineChart";
 
 const chartData = [
   { period: "D", value: 10000 },
