@@ -12,16 +12,6 @@ import {
 } from "@mantine/core";
 import CustomLineChart from "../Charts/CustomLineChart";
 
-const chartData = [
-  { period: "D", value: 10000 },
-  { period: "W", value: 46000 },
-  { period: "M", value: 20000 },
-  { period: "3M", value: 48000 },
-  { period: "Y", value: 44045 },
-  { period: "Y", value: 20000 },
-  { period: "Y", value: 50045 },
-];
-
 const Accounts: React.FC = () => {
   const theme = useMantineTheme();
   const colorScheme = useComputedColorScheme("light");
@@ -37,6 +27,10 @@ const Accounts: React.FC = () => {
         backgroundColor: dark ? theme.colors.dark[7] : theme.white,
       }}
     >
+      <Text fw={600} size="sm" mb="md" c={dark ? theme.white : theme.black}>
+        Accounts
+      </Text>
+
       <Stack gap="md">
         {/* Account Value */}
         <Card
@@ -49,7 +43,7 @@ const Accounts: React.FC = () => {
         >
           <Stack gap="xs">
             <Text size="sm" c="dimmed">
-              Account
+              Account Value
             </Text>
             <Text fw={700} fz="xl">
               $44,045
