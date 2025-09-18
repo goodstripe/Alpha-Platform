@@ -16,7 +16,7 @@ const PhoneNumberInputWithCountryCode: React.FC = () => {
         ]}
         value={countryCode}
         onChange={(value) => value && setCountryCode(value)}
-        style={{ width: 150 }}
+        style={{ width: 95 }}
         label="Country Code"
       />
       <NumberInput

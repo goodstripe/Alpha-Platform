@@ -1,9 +1,21 @@
+"use client";
+
 import { useState } from "react";
-import { Text, TextInput, Group, Box, Anchor } from "@mantine/core";
+import {
+  Text,
+  TextInput,
+  Group,
+  Box,
+  Anchor,
+  useMantineTheme,
+} from "@mantine/core";
+import { useMediaQuery } from "@mantine/hooks";
 import PhoneNumberInputWithCountryCode from "@/app/components/NumberInputWithCountryCode/NumberInputWithCountryCode";
 
 const LoginSwitcher = () => {
   const [loginMethod, setLoginMethod] = useState<"phone" | "email">("phone");
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   return (
     <Box>
@@ -25,9 +37,13 @@ const LoginSwitcher = () => {
       </Group>
 
       {loginMethod === "phone" ? (
-        <PhoneNumberInputWithCountryCode />
+        <PhoneNumberInputWithCountryCode size={isMobile ? "sm" : "md"} />
       ) : (
-        <TextInput label="" placeholder="Enter your email" />
+        <TextInput
+          label=""
+          placeholder="Enter your email"
+          size={isMobile ? "sm" : "md"}
+        />
       )}
     </Box>
   );
