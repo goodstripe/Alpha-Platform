@@ -274,22 +274,6 @@ const FinancialInformationForm: React.FC<{
   );
 };
 
-const QuestionWithDot = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <Flex align="start" gap="xs" wrap="nowrap">
-      <Box
-        w={6}
-        h={6}
-        bg="black"
-        style={{ borderRadius: "50%", marginTop: 8, flexShrink: 0 }}
-      />
-      <Text size="sm" fw={500}>
-        {children}
-      </Text>
-    </Flex>
-  );
-};
-
 const ComplianceQuestions: React.FC<{
   data: FormData["compliance"];
   onChange: (data: Partial<FormData["compliance"]>) => void;
@@ -297,11 +281,11 @@ const ComplianceQuestions: React.FC<{
   return (
     <Stack gap="lg">
       <div>
-        <QuestionWithDot>
+        <Text size="sm" fw={500} mb="xs">
           Do you, or does a family or household member, work for a broker-dealer
           or a securities or futures exchange, futures commission merchant,
           retail foreign exchange dealer, or securities or futures regulator?
-        </QuestionWithDot>
+        </Text>
         <Radio.Group
           name="compliance1"
           value={data.question1}
@@ -315,10 +299,10 @@ const ComplianceQuestions: React.FC<{
       </div>
 
       <div>
-        <QuestionWithDot>
+        <Text size="sm" fw={500} mb="xs">
           Do you, or does a family or household member, serve on a board of
           directors, or as another policymaker at a public company?
-        </QuestionWithDot>
+        </Text>
         <Radio.Group
           name="compliance2"
           value={data.question2}
@@ -332,10 +316,10 @@ const ComplianceQuestions: React.FC<{
       </div>
 
       <div>
-        <QuestionWithDot>
+        <Text size="sm" fw={500} mb="xs">
           Do you, or does a family or household member, own 10% or more of a
           public company?
-        </QuestionWithDot>
+        </Text>
         <Radio.Group
           name="compliance3"
           value={data.question3}
@@ -349,10 +333,10 @@ const ComplianceQuestions: React.FC<{
       </div>
 
       <div>
-        <QuestionWithDot>
+        <Text size="sm" fw={500} mb="xs">
           Have you been notified by the IRS that you are subject to backup
           withholding?
-        </QuestionWithDot>
+        </Text>
         <Radio.Group
           name="compliance4"
           value={data.question4}
@@ -388,9 +372,9 @@ const AccountPurposeForm: React.FC<{
         onChange={(value) => value !== null && onChange({ source: value })}
       />
 
-      <QuestionWithDot>
+      <Text size="sm" fw={500}>
         Does any portion of your net worth and funding come from outside the US?
-      </QuestionWithDot>
+      </Text>
       <Radio.Group
         value={data.foreignFunds}
         onChange={(value) => onChange({ foreignFunds: value })}
@@ -401,9 +385,9 @@ const AccountPurposeForm: React.FC<{
         </Stack>
       </Radio.Group>
 
-      <QuestionWithDot>
+      <Text size="sm" fw={500}>
         What is the purpose and expected use of this account?
-      </QuestionWithDot>
+      </Text>
       <Select
         label="Select Purpose"
         placeholder="Select Purpose"
@@ -429,7 +413,9 @@ const AccreditationForm: React.FC<{
 
   return (
     <Stack gap="md">
-      <QuestionWithDot>Are you an accredited investor?</QuestionWithDot>
+      <Text size="sm" fw={500}>
+        Are you an accredited investor?
+      </Text>
       <Radio.Group
         value={data.isAccredited}
         onChange={(value) => onChange({ isAccredited: value })}
@@ -442,9 +428,9 @@ const AccreditationForm: React.FC<{
 
       {data.isAccredited === "yes" && (
         <>
-          <QuestionWithDot>
+          <Text size="sm" fw={500}>
             Please choose how you would like to verify your accreditation?
-          </QuestionWithDot>
+          </Text>
           <Radio.Group
             value={data.verificationMethod}
             onChange={(value) => onChange({ verificationMethod: value })}
@@ -460,7 +446,9 @@ const AccreditationForm: React.FC<{
       {data.isAccredited === "yes" &&
         data.verificationMethod === "self_attestation" && (
           <>
-            <QuestionWithDot>Upload Documents</QuestionWithDot>
+            <Text size="sm" fw={500}>
+              Upload Documents
+            </Text>
             <Dropzone
               onDrop={(files) => onChange({ documents: files })}
               accept={[MIME_TYPES.pdf, MIME_TYPES.png, MIME_TYPES.jpeg]}
@@ -488,9 +476,9 @@ const TrustedContactPersonForm: React.FC<{
 }> = ({ data, onChange }) => {
   return (
     <Stack gap="md">
-      <QuestionWithDot>
+      <Text size="sm" fw={500}>
         Important note about designating a trusted contact person.
-      </QuestionWithDot>
+      </Text>
 
       <Radio.Group
         value={data.designate}
@@ -676,7 +664,9 @@ const Onboarding: React.FC = () => {
         "Identity verification is required by financial regulations to prevent fraud. We use bank-level encryption to protect your personal information. Existing customers may have a streamlined verification process.",
       content: (
         <div>
-          <QuestionWithDot>Are you an existing customer?</QuestionWithDot>
+          <Text size="sm" fw={500} mb="xs">
+            Are you an existing customer?
+          </Text>
           <Radio.Group
             value={formData.customerVerification.isExistingCustomer}
             onChange={(value) =>
@@ -703,7 +693,9 @@ const Onboarding: React.FC = () => {
         "Select the account type that best fits your financial goals. Brokerage accounts are for general investing, while retirement accounts offer tax advantages for long-term savings. Your choice will determine available investment options and tax treatment.",
       content: (
         <div>
-          <QuestionWithDot>Select Account Type -</QuestionWithDot>
+          <Text size="sm" fw={500} mb="xs">
+            Select Account Type -
+          </Text>
           <Radio.Group
             value={formData.accountType.type}
             onChange={(value) => updateFormData("accountType", { type: value })}
