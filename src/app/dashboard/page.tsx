@@ -1,36 +1,22 @@
 "use client";
-import {
-  Container,
-  px,
-  SimpleGrid,
-  Skeleton,
-  Stack,
-  useMantineTheme,
-} from "@mantine/core";
 
-const getChild = (height: number) => (
-  <Skeleton height={height} radius="md" animate={false} />
-);
-const BASE_HEIGHT = 360;
-const getSubHeight = (children: number, spacing: number) =>
-  BASE_HEIGHT / children - spacing * ((children - 1) / children);
+import { Container, SimpleGrid, Stack, useMantineTheme } from "@mantine/core";
+import Orders from "../components/Dashboard/Orders";
+import Positions from "../components/Dashboard/Positions";
+import Accounts from "../components/Dashboard/Accounts";
+import WatchList from "../components/Dashboard/WatchList";
 
 export default function Subgrid() {
   const theme = useMantineTheme();
   return (
     <Container>
       <SimpleGrid cols={{ base: 1, xs: 4 }}>
-        {getChild(BASE_HEIGHT)}
+        <Accounts />
         <Stack>
-          {getChild(getSubHeight(2, px(theme.spacing.md) as number))}
-          {getChild(getSubHeight(2, px(theme.spacing.md) as number))}
+          <Positions />
+          <Orders />
         </Stack>
-        <Stack>
-          {getChild(getSubHeight(3, px(theme.spacing.md) as number))}
-          {getChild(getSubHeight(3, px(theme.spacing.md) as number))}
-          {getChild(getSubHeight(3, px(theme.spacing.md) as number))}
-        </Stack>
-        {getChild(BASE_HEIGHT)}
+        <WatchList />
       </SimpleGrid>
     </Container>
   );
