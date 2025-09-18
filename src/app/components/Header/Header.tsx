@@ -95,9 +95,9 @@ export default function Header() {
           {/* Left Section - Logo and Search */}
           <Group
             gap={{
-              base: "md",
-              sm: "lg",
-              md: "70px",
+              base: "xl",
+              sm: "2xl",
+              md: "140px",
             }}
           >
             <Image
@@ -113,6 +113,7 @@ export default function Header() {
 
             {/* Desktop Search */}
             <Box
+              ml={{ base: 20, sm: 40, md: 140 }}
               style={{
                 maxWidth: 250,
                 minWidth: 200,
@@ -128,7 +129,7 @@ export default function Header() {
                     stroke={1.5}
                   />
                 }
-                radius="md"
+                radius="xl"
                 size="sm"
                 styles={{
                   input: {
