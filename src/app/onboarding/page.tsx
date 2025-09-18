@@ -860,7 +860,7 @@ const Onboarding: React.FC = () => {
       ></AppShell.Header>
 
       <AppShell.Main style={{ paddingTop: "var(--app-shell-header-height)" }}>
-        <Center>
+        <Center mt={"xl"}>
           <Box style={{ width: "100%", maxWidth: rem(800) }}>
             <Stack align="center" mb={30}>
               <Title size={32} c="dark" fw={700}>
