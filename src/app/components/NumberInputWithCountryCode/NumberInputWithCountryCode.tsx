@@ -37,7 +37,7 @@ const PhoneNumberInputWithCountryCode: React.FC<
       align="flex-start"
       mt={10}
       style={{
-        color: colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+        color: colorScheme === "dark" ? theme.colors.dark[0] : theme.white,
       }}
     >
       <Select
