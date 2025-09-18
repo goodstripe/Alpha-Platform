@@ -83,7 +83,7 @@ const LogIn = () => {
               mt="xl"
               size={isMobile ? "sm" : "md"}
               radius="md"
-              onClick={() => router.push("/onboarding")}
+              onClick={() => router.push("/dashboard")}
             >
               Sign in
             </Button>
