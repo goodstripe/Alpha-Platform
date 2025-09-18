@@ -1,5 +1,3 @@
-"use client";
-
 import React, { useState } from "react";
 import {
   NumberInput,
@@ -7,19 +5,11 @@ import {
   Group,
   useMantineTheme,
   useMantineColorScheme,
-  rem,
 } from "@mantine/core";
 
-interface PhoneNumberInputWithCountryCodeProps {
-  size?: "xs" | "sm" | "md" | "lg" | "xl";
-}
-
-const PhoneNumberInputWithCountryCode: React.FC<
-  PhoneNumberInputWithCountryCodeProps
-> = ({ size = "md" }) => {
+const PhoneNumberInputWithCountryCode: React.FC = () => {
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
-  const dark = colorScheme === "dark";
 
   const [countryCode, setCountryCode] = useState("+1");
   const [phoneNumber, setPhoneNumber] = useState<number | undefined>(undefined);
@@ -29,11 +19,12 @@ const PhoneNumberInputWithCountryCode: React.FC<
       gap="sm"
       align="flex-start"
       mt={10}
-      wrap="nowrap"
-      style={{ width: "100%" }}
+      style={{
+        color: colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+      }}
     >
       <Select
-        size={size}
+        size="sm"
         data={[
           { value: "+1", label: "+1 (US)" },
           { value: "+44", label: "+44 (UK)" },
@@ -41,21 +32,10 @@ const PhoneNumberInputWithCountryCode: React.FC<
         ]}
         value={countryCode}
         onChange={(value) => value && setCountryCode(value)}
-        w={rem(95)}
+        style={{ width: 95 }}
         label="Country Code"
-        styles={{
-          input: {
-            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1],
-            borderColor: dark ? theme.colors.dark[4] : theme.colors.gray[3],
-            "&:focus": {
-              borderColor: theme.colors.blue[5],
-            },
-          },
-        }}
       />
-
       <NumberInput
-        size={size}
         value={phoneNumber}
         onChange={(value) =>
           setPhoneNumber(typeof value === "number" ? value : undefined)
@@ -66,15 +46,6 @@ const PhoneNumberInputWithCountryCode: React.FC<
         min={0}
         hideControls
         style={{ flex: 1 }}
-        styles={{
-          input: {
-            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1],
-            borderColor: dark ? theme.colors.dark[4] : theme.colors.gray[3],
-            "&:focus": {
-              borderColor: theme.colors.blue[5],
-            },
-          },
-        }}
       />
     </Group>
   );
