@@ -61,6 +61,7 @@ export default function Positions() {
             withRowBorders
             horizontalSpacing="sm"
             verticalSpacing="xs"
+            stickyHeader
             bg={isDark ? theme.colors.dark[6] : theme.white}
           >
             <Table.Thead>
