@@ -45,11 +45,11 @@ const PhoneNumberInputWithCountryCode: React.FC<
         data={[
           { value: "+1", label: "+1 (US)" },
           { value: "+44", label: "+44 (UK)" },
-          { value: "+30", label: "+30 (Greece)" },
+          { value: "+30", label: "+30 (GRC)" },
         ]}
         value={countryCode}
         onChange={(val) => val && setCountryCode(val)}
-        style={{ width: 95 }}
+        style={{ width: 115 }}
         label="Country Code"
       />
       <NumberInput
