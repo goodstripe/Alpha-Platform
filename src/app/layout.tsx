@@ -1,4 +1,4 @@
-import { ColorSchemeScript, MantineProvider } from "@mantine/core";
+import { MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lato } from "next/font/google";
 
@@ -8,7 +8,6 @@ import "@mantine/dropzone/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/core/styles.layer.css";
 import "@mantine/notifications/styles.css";
-import Header from "./components/Header/Header";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,9 +37,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <ColorSchemeScript defaultColorScheme="light" />
-      </head>
+      <head></head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${lato.variable}`}
       >
@@ -50,7 +47,6 @@ export default function RootLayout({
             fontFamily: "Lato, sans-serif",
           }}
         >
-          <Header />
           {children}
         </MantineProvider>
       </body>

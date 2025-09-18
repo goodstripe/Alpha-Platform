@@ -68,7 +68,9 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
           </Group>
         </Container>
       </AppShell.Header>
-      <AppShell.Main p={0}>{children}</AppShell.Main>
+      <AppShell.Main p={0} style={{ minHeight: "calc(100vh - 60px)" }}>
+        {children}
+      </AppShell.Main>
     </AppShell>
   );
 }
