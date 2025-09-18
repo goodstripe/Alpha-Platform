@@ -62,51 +62,28 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
     }
   }, [isActive]);
 
-  // Enhanced auto-scroll when step becomes active and opened
   useEffect(() => {
     if (isActive && opened && contentRef.current) {
-      // Longer timeout to ensure collapsed content is fully expanded
       setTimeout(() => {
         const element = contentRef.current;
         if (element) {
-          // Get the full height of the expanded element including all content
           const rect = element.getBoundingClientRect();
           const viewportHeight = window.innerHeight;
-
-          // Find the content box (the expanded form/content area)
-          const contentBox = element.querySelector(
-            '[style*="border-top: none"]'
-          );
-          const contentHeight = contentBox
-            ? contentBox.getBoundingClientRect().height
-            : 0;
-
-          // Calculate total element height including expanded content
           const totalElementHeight = rect.height;
-
-          // More aggressive scroll calculation
           const elementTop = rect.top + window.scrollY;
-
-          // If the element + its content is larger than viewport, position it at top
-          // Otherwise position it higher up for better visibility
           let scrollTo;
           if (totalElementHeight > viewportHeight * 0.8) {
-            // For large forms, scroll to put the header near the top
-            scrollTo = elementTop - viewportHeight * 0.1; // 10% from top
+            scrollTo = elementTop - viewportHeight * 0.1;
           } else {
-            // For smaller content, position higher in viewport
-            scrollTo = elementTop - viewportHeight * 0.3; // 30% from top
+            scrollTo = elementTop - viewportHeight * 0.3;
           }
-
-          // Ensure we don't scroll above the document
           scrollTo = Math.max(0, scrollTo);
-
           window.scrollTo({
             top: scrollTo,
             behavior: "smooth",
           });
         }
-      }, 300); // Increased timeout for content expansion
+      }, 300);
     }
   }, [isActive, opened]);
 
@@ -153,23 +130,18 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
             cursor: isDisabled ? "not-allowed" : "pointer",
           }}
         >
-          {/* Always show the step number, even when completed */}
           {step + 1}
         </Box>
 
-        {!isLast && (
+        {isCompleted && !isLast && (
           <Box
             style={{
               position: "absolute",
               left: "50%",
               top: rem(32),
-              height: rem(40),
+              height: "calc(100% + 15px)",
               width: rem(2),
-              backgroundColor: isCompleted
-                ? "var(--mantine-color-teal-6)"
-                : isDisabled
-                ? "var(--mantine-color-gray-2)"
-                : "var(--mantine-color-gray-3)",
+              backgroundColor: "var(--mantine-color-teal-6)",
               transform: "translateX(-50%)",
               zIndex: 1,
             }}
