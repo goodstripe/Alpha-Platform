@@ -8,14 +8,14 @@ import WatchList from "../components/Dashboard/WatchList";
 
 export default function Subgrid() {
   return (
-    <Container fluid p="md">
-      <Grid gutter="md">
+    <Container fluid p="10px 100px">
+      <Grid gutter="lg">
         <Grid.Col span={{ base: 12, md: 2 }}>
           <Accounts />
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, md: 8 }}>
-          <Stack gap="md">
+          <Stack gap="lg">
             <Positions />
             <Orders />
           </Stack>
