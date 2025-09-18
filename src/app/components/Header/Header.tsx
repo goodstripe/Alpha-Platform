@@ -17,6 +17,7 @@ import {
   Drawer,
   Stack,
   UnstyledButton,
+  Tooltip,
 } from "@mantine/core";
 import {
   IconSearch,
@@ -27,10 +28,10 @@ import {
   IconLogout,
   IconSettings,
   IconHomeFilled,
-  IconClockHour9Filled,
   IconArrowsExchange,
   IconMenu2,
   IconX,
+  IconShoppingCartFilled,
 } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
@@ -51,9 +52,9 @@ export default function Header() {
       label: "Dashboard",
     },
     {
-      icon: IconClockHour9Filled,
-      route: "/history",
-      label: "History",
+      icon: IconShoppingCartFilled,
+      route: "/orders",
+      label: "Orders",
     },
     {
       icon: IconArrowsExchange,
@@ -92,26 +93,21 @@ export default function Header() {
       >
         <Flex align="center" justify="space-between" h="100%">
           {/* Left Section - Logo and Search */}
-          <Group
-            gap={{
-              base: "md",
-              sm: "lg",
-              md: "70px",
-            }}
-          >
-            <Image
-              src="/aeonx_logo.png"
-              alt="AEONX Logo"
-              width={120}
-              height={40}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
+          <Group gap={rem(140)}>
+            <div
+              style={{ position: "relative", width: "120px", height: "40px" }}
+            >
+              <Image
+                src="/aeonx_logo.png"
+                alt="AEONX Logo"
+                fill
+                style={{ objectFit: "contain" }}
+              />
+            </div>
 
             {/* Desktop Search */}
             <Box
+              ml={{ base: 20, sm: 40, md: 140 }}
               style={{
                 maxWidth: 250,
                 minWidth: 200,
@@ -127,7 +123,7 @@ export default function Header() {
                     stroke={1.5}
                   />
                 }
-                radius="md"
+                radius="xl"
                 size="sm"
                 styles={{
                   input: {
@@ -197,35 +193,42 @@ export default function Header() {
               const isActive = isActiveRoute(item.route);
 
               return (
-                <ActionIcon
+                <Tooltip
                   key={item.route}
-                  variant={isActive ? "filled" : "subtle"}
-                  size="lg"
-                  radius="md"
-                  color={isActive ? "blue" : undefined}
-                  onClick={() => handleNavigation(item.route)}
-                  title={item.label}
-                  style={{
-                    backgroundColor: isActive
-                      ? dark
-                        ? theme.colors.blue[8]
-                        : theme.colors.blue[6]
-                      : undefined,
-                    color: isActive
-                      ? "white"
-                      : dark
-                      ? theme.colors.gray[4]
-                      : theme.colors.gray[6],
-                  }}
+                  label={item.label}
+                  position="bottom"
+                  withArrow
+                  transitionProps={{ duration: 200 }}
                 >
-                  <Icon
+                  <ActionIcon
+                    variant={isActive ? "filled" : "subtle"}
+                    size="lg"
+                    radius="md"
+                    color={isActive ? "blue" : undefined}
+                    onClick={() => handleNavigation(item.route)}
+                    title={item.label}
                     style={{
-                      width: rem(20),
-                      height: rem(20),
-                      color: isActive ? "white" : undefined,
+                      backgroundColor: isActive
+                        ? dark
+                          ? theme.colors.blue[8]
+                          : theme.colors.blue[6]
+                        : undefined,
+                      color: isActive
+                        ? "white"
+                        : dark
+                        ? theme.colors.gray[4]
+                        : theme.colors.gray[6],
                     }}
-                  />
-                </ActionIcon>
+                  >
+                    <Icon
+                      style={{
+                        width: rem(20),
+                        height: rem(20),
+                        color: isActive ? "white" : undefined,
+                      }}
+                    />
+                  </ActionIcon>
+                </Tooltip>
               );
             })}
           </Group>
@@ -233,85 +236,96 @@ export default function Header() {
           {/* Right Section */}
           <Group gap={{ base: 2, sm: 4 }}>
             {/* Mobile Search Icon */}
-            <ActionIcon
-              variant="subtle"
-              size="md"
-              radius="md"
-              hiddenFrom="md"
-              onClick={toggleMobileSearch}
-            >
-              <IconSearch
-                style={{ width: rem(16), height: rem(16) }}
-                stroke={1.5}
-              />
-            </ActionIcon>
+            <Tooltip label="Search" position="bottom" withArrow>
+              <ActionIcon
+                variant="subtle"
+                size="md"
+                radius="md"
+                hiddenFrom="md"
+                onClick={toggleMobileSearch}
+              >
+                <IconSearch
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </Tooltip>
 
             {/* Mobile Menu Icon */}
-            <ActionIcon
-              variant="subtle"
-              size="md"
-              radius="md"
-              hiddenFrom="md"
-              onClick={() => setMobileMenuOpened(true)}
-            >
-              <IconMenu2
-                style={{ width: rem(18), height: rem(18) }}
-                stroke={1.5}
-              />
-            </ActionIcon>
+            <Tooltip label="Menu" position="bottom" withArrow>
+              <ActionIcon
+                variant="subtle"
+                size="md"
+                radius="md"
+                hiddenFrom="md"
+                onClick={() => setMobileMenuOpened(true)}
+              >
+                <IconMenu2
+                  style={{ width: rem(18), height: rem(18) }}
+                  stroke={1.5}
+                />
+              </ActionIcon>
+            </Tooltip>
 
             {/* Theme Toggle */}
-            <ActionIcon
-              variant="subtle"
-              size="md"
-              radius="md"
-              onClick={() => toggleColorScheme()}
-              title={`Switch to ${dark ? "light" : "dark"} mode`}
+            <Tooltip
+              label={`Switch to ${dark ? "light" : "dark"} mode`}
+              position="bottom"
+              withArrow
             >
-              {dark ? (
-                <IconSun
-                  style={{ width: rem(16), height: rem(16) }}
-                  stroke={1.5}
-                />
-              ) : (
-                <IconMoon
-                  style={{ width: rem(16), height: rem(16) }}
-                  stroke={1.5}
-                />
-              )}
-            </ActionIcon>
+              <ActionIcon
+                variant="subtle"
+                size="md"
+                radius="md"
+                onClick={() => toggleColorScheme()}
+              >
+                {dark ? (
+                  <IconSun
+                    style={{ width: rem(16), height: rem(16) }}
+                    stroke={1.5}
+                  />
+                ) : (
+                  <IconMoon
+                    style={{ width: rem(16), height: rem(16) }}
+                    stroke={1.5}
+                  />
+                )}
+              </ActionIcon>
+            </Tooltip>
 
             {/* User Menu - Hidden on mobile */}
             <Box visibleFrom="sm">
               <Menu shadow="md" width={200} position="bottom-end" offset={5}>
                 <Menu.Target>
-                  <Group
-                    gap={4}
-                    style={{
-                      cursor: "pointer",
-                      padding: `${rem(4)} ${rem(6)}`,
-                      borderRadius: rem(6),
-                      transition: "background-color 150ms ease",
-                      "&:hover": {
-                        backgroundColor: dark
-                          ? theme.colors.dark[6]
-                          : theme.colors.gray[1],
-                      },
-                    }}
-                  >
-                    <Avatar size={28} radius="xl" color="blue">
-                      JO
-                    </Avatar>
-                    <Box visibleFrom="md">
-                      <Text size="xs" fw={500}>
-                        Joshua Olano
-                      </Text>
-                    </Box>
-                    <IconChevronDown
-                      style={{ width: rem(10), height: rem(10) }}
-                      stroke={1.5}
-                    />
-                  </Group>
+                  <Tooltip label="Account menu" position="bottom" withArrow>
+                    <Group
+                      gap={4}
+                      style={{
+                        cursor: "pointer",
+                        padding: `${rem(4)} ${rem(6)}`,
+                        borderRadius: rem(6),
+                        transition: "background-color 150ms ease",
+                        "&:hover": {
+                          backgroundColor: dark
+                            ? theme.colors.dark[6]
+                            : theme.colors.gray[1],
+                        },
+                      }}
+                    >
+                      <Avatar size={28} radius="xl" color="blue">
+                        JO
+                      </Avatar>
+                      <Box visibleFrom="md">
+                        <Text size="xs" fw={500}>
+                          Joshua Olano
+                        </Text>
+                      </Box>
+                      <IconChevronDown
+                        style={{ width: rem(10), height: rem(10) }}
+                        stroke={1.5}
+                      />
+                    </Group>
+                  </Tooltip>
                 </Menu.Target>
 
                 <Menu.Dropdown>

@@ -1,7 +1,11 @@
 "use client";
 
 import React from "react";
-import { AppShell } from "@mantine/core";
+import {
+  AppShell,
+  useMantineTheme,
+  useMantineColorScheme,
+} from "@mantine/core";
 import Header from "../components/Header/Header";
 
 interface MainLayoutProps {
@@ -9,12 +13,25 @@ interface MainLayoutProps {
 }
 
 export default function MainLayout({ children }: MainLayoutProps) {
+  const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+
   return (
     <AppShell header={{ height: 60 }} padding="md">
       <AppShell.Header>
         <Header />
       </AppShell.Header>
-      <AppShell.Main>{children}</AppShell.Main>
+
+      <AppShell.Main
+        style={{
+          backgroundColor:
+            colorScheme === "dark"
+              ? theme.colors.dark[7]
+              : theme.colors.gray[2],
+        }}
+      >
+        {children}
+      </AppShell.Main>
     </AppShell>
   );
 }
