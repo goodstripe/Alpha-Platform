@@ -28,11 +28,10 @@ import {
   IconLogout,
   IconSettings,
   IconHomeFilled,
-  IconClockHour9Filled,
   IconArrowsExchange,
   IconMenu2,
   IconX,
-  IconShoppingCartFilled, // Added shopping cart icon for orders
+  IconShoppingCartFilled,
 } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
@@ -53,7 +52,7 @@ export default function Header() {
       label: "Dashboard",
     },
     {
-      icon: IconShoppingCartFilled, // Changed from clock to shopping cart
+      icon: IconShoppingCartFilled,
       route: "/orders",
       label: "Orders",
     },
