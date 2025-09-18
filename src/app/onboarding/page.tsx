@@ -50,14 +50,73 @@ export interface Step
   content: React.ReactNode;
 }
 
-const BrokerageOptions: React.FC = () => {
+// Form data interfaces
+interface FormData {
+  customerVerification: {
+    isExistingCustomer: string;
+  };
+  accountType: {
+    type: string;
+  };
+  accountDetails: {
+    brokerageType: string;
+    retirementType: string;
+  };
+  citizenship: {
+    status: string;
+    ssn: string;
+    secondCountry: string;
+    taxId: string;
+  };
+  financialInfo: {
+    annualIncome: string;
+    liquidNetWorth: string;
+    totalNetWorth: string;
+    investmentExperience: string;
+  };
+  compliance: {
+    question1: string;
+    question2: string;
+    question3: string;
+    question4: string;
+  };
+  accountPurpose: {
+    source: string;
+    foreignFunds: string;
+    purpose: string;
+  };
+  accreditation: {
+    isAccredited: string;
+    verificationMethod: string;
+    documents: File[];
+  };
+  trustedContact: {
+    designate: string;
+    firstName: string;
+    lastName: string;
+    countryCode: string;
+    phoneNumber: string;
+    email: string;
+    relationship: string;
+  };
+  credentials: {
+    userId: string;
+    password: string;
+    confirmPassword: string;
+  };
+}
+
+const BrokerageOptions: React.FC<{
+  value: string;
+  onChange: (value: string) => void;
+}> = ({ value, onChange }) => {
   return (
     <div>
       <Text size="md" mb={"md"}>
         Select an Account -
       </Text>
 
-      <Radio.Group>
+      <Radio.Group value={value} onChange={onChange}>
         <Stack mt="xs">
           <Radio value="single" label="Single Account" />
           <Radio value="joint" label="Joint Account" />
@@ -68,7 +127,10 @@ const BrokerageOptions: React.FC = () => {
   );
 };
 
-const RetirementOptions: React.FC = () => {
+const RetirementOptions: React.FC<{
+  value: string;
+  onChange: (value: string) => void;
+}> = ({ value, onChange }) => {
   return (
     <div>
       <Stack gap={5}>
@@ -78,7 +140,7 @@ const RetirementOptions: React.FC = () => {
         </Text>
       </Stack>
 
-      <Radio.Group withAsterisk>
+      <Radio.Group withAsterisk value={value} onChange={onChange}>
         <Stack mt="xs">
           <Radio value="traditional" label="Traditional IRA" />
           <Radio value="rollover" label="Rollover IRA" />
@@ -90,15 +152,16 @@ const RetirementOptions: React.FC = () => {
   );
 };
 
-const CitizenshipForm: React.FC = () => {
-  const [citizenship, setCitizenship] = useState<string>("");
-
+const CitizenshipForm: React.FC<{
+  data: FormData["citizenship"];
+  onChange: (data: Partial<FormData["citizenship"]>) => void;
+}> = ({ data, onChange }) => {
   return (
     <Box>
       <Radio.Group
         label="Select your citizenship status"
-        value={citizenship}
-        onChange={setCitizenship}
+        value={data.status}
+        onChange={(value) => onChange({ status: value })}
       >
         <Stack mt={"xs"}>
           <Radio value="US Citizen" label="US Citizen" />
@@ -108,27 +171,35 @@ const CitizenshipForm: React.FC = () => {
       </Radio.Group>
 
       <Stack mt="md" gap="md">
-        {(citizenship === "US Citizen" || citizenship === "Dual Citizen") && (
+        {(data.status === "US Citizen" || data.status === "Dual Citizen") && (
           <TextInput
             withAsterisk
             label="Social Security Number"
             placeholder="Enter your SSN"
+            value={data.ssn}
+            onChange={(event) => onChange({ ssn: event.currentTarget.value })}
           />
         )}
 
-        {citizenship === "Dual Citizen" && (
+        {data.status === "Dual Citizen" && (
           <TextInput
             withAsterisk
             label="Second Country Citizenship"
             placeholder="Enter second country's citizenship"
+            value={data.secondCountry}
+            onChange={(event) =>
+              onChange({ secondCountry: event.currentTarget.value })
+            }
           />
         )}
 
-        {citizenship === "Non US Citizen" && (
+        {data.status === "Non US Citizen" && (
           <TextInput
             withAsterisk
             label="Tax ID"
             placeholder="Enter your Tax ID"
+            value={data.taxId}
+            onChange={(event) => onChange({ taxId: event.currentTarget.value })}
           />
         )}
       </Stack>
@@ -136,12 +207,10 @@ const CitizenshipForm: React.FC = () => {
   );
 };
 
-const FinancialInformationForm: React.FC = () => {
-  const [annualIncome, setAnnualIncome] = useState("");
-  const [liquidNetWorth, setLiquidNetWorth] = useState("");
-  const [totalNetWorth, setTotalNetWorth] = useState("");
-  const [investmentExperience, setInvestmentExperience] = useState("");
-
+const FinancialInformationForm: React.FC<{
+  data: FormData["financialInfo"];
+  onChange: (data: Partial<FormData["financialInfo"]>) => void;
+}> = ({ data, onChange }) => {
   const netOptions = [
     { value: "0-25000", label: "$0 - $25,000" },
     { value: "25001-50000", label: "$25,001 - 50,000" },
@@ -158,8 +227,10 @@ const FinancialInformationForm: React.FC = () => {
         label="Annual Income"
         placeholder="Enter annual income"
         withAsterisk
-        value={annualIncome}
-        onChange={(event) => setAnnualIncome(event.currentTarget.value)}
+        value={data.annualIncome}
+        onChange={(event) =>
+          onChange({ annualIncome: event.currentTarget.value })
+        }
       />
 
       <Select
@@ -167,8 +238,10 @@ const FinancialInformationForm: React.FC = () => {
         placeholder="Select Range"
         withAsterisk
         data={netOptions}
-        value={liquidNetWorth}
-        onChange={(value) => value !== null && setLiquidNetWorth(value)}
+        value={data.liquidNetWorth}
+        onChange={(value) =>
+          value !== null && onChange({ liquidNetWorth: value })
+        }
       />
 
       <Select
@@ -176,8 +249,10 @@ const FinancialInformationForm: React.FC = () => {
         placeholder="Select Range"
         withAsterisk
         data={netOptions}
-        value={totalNetWorth}
-        onChange={(value) => value !== null && setTotalNetWorth(value)}
+        value={data.totalNetWorth}
+        onChange={(value) =>
+          value !== null && onChange({ totalNetWorth: value })
+        }
       />
 
       <Select
@@ -190,8 +265,10 @@ const FinancialInformationForm: React.FC = () => {
           { value: "intermediate", label: "Intermediate" },
           { value: "expert", label: "Expert" },
         ]}
-        value={investmentExperience}
-        onChange={(value) => value !== null && setInvestmentExperience(value)}
+        value={data.investmentExperience}
+        onChange={(value) =>
+          value !== null && onChange({ investmentExperience: value })
+        }
       />
     </Stack>
   );
@@ -213,7 +290,10 @@ const QuestionWithDot = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const ComplianceQuestions: React.FC = () => {
+const ComplianceQuestions: React.FC<{
+  data: FormData["compliance"];
+  onChange: (data: Partial<FormData["compliance"]>) => void;
+}> = ({ data, onChange }) => {
   return (
     <Stack gap="lg">
       <div>
@@ -222,7 +302,11 @@ const ComplianceQuestions: React.FC = () => {
           or a securities or futures exchange, futures commission merchant,
           retail foreign exchange dealer, or securities or futures regulator?
         </QuestionWithDot>
-        <Radio.Group name="compliance1">
+        <Radio.Group
+          name="compliance1"
+          value={data.question1}
+          onChange={(value) => onChange({ question1: value })}
+        >
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
             <Radio value="no" label="No" />
@@ -235,7 +319,11 @@ const ComplianceQuestions: React.FC = () => {
           Do you, or does a family or household member, serve on a board of
           directors, or as another policymaker at a public company?
         </QuestionWithDot>
-        <Radio.Group name="compliance2">
+        <Radio.Group
+          name="compliance2"
+          value={data.question2}
+          onChange={(value) => onChange({ question2: value })}
+        >
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
             <Radio value="no" label="No" />
@@ -248,7 +336,11 @@ const ComplianceQuestions: React.FC = () => {
           Do you, or does a family or household member, own 10% or more of a
           public company?
         </QuestionWithDot>
-        <Radio.Group name="compliance3">
+        <Radio.Group
+          name="compliance3"
+          value={data.question3}
+          onChange={(value) => onChange({ question3: value })}
+        >
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
             <Radio value="no" label="No" />
@@ -261,7 +353,11 @@ const ComplianceQuestions: React.FC = () => {
           Have you been notified by the IRS that you are subject to backup
           withholding?
         </QuestionWithDot>
-        <Radio.Group name="compliance4">
+        <Radio.Group
+          name="compliance4"
+          value={data.question4}
+          onChange={(value) => onChange({ question4: value })}
+        >
           <Group mt="xs">
             <Radio value="yes" label="Yes" />
             <Radio value="no" label="No" />
@@ -272,7 +368,10 @@ const ComplianceQuestions: React.FC = () => {
   );
 };
 
-const AccountPurposeForm = () => {
+const AccountPurposeForm: React.FC<{
+  data: FormData["accountPurpose"];
+  onChange: (data: Partial<FormData["accountPurpose"]>) => void;
+}> = ({ data, onChange }) => {
   return (
     <Stack gap="md">
       <Select
@@ -285,12 +384,17 @@ const AccountPurposeForm = () => {
           { value: "inheritance", label: "Inheritance" },
           { value: "other", label: "Other" },
         ]}
+        value={data.source}
+        onChange={(value) => value !== null && onChange({ source: value })}
       />
 
       <QuestionWithDot>
         Does any portion of your net worth and funding come from outside the US?
       </QuestionWithDot>
-      <Radio.Group>
+      <Radio.Group
+        value={data.foreignFunds}
+        onChange={(value) => onChange({ foreignFunds: value })}
+      >
         <Stack>
           <Radio value="yes" label="Yes" />
           <Radio value="no" label="No" />
@@ -310,36 +414,40 @@ const AccountPurposeForm = () => {
           { value: "education", label: "Education Funding" },
           { value: "other", label: "Other" },
         ]}
+        value={data.purpose}
+        onChange={(value) => value !== null && onChange({ purpose: value })}
       />
     </Stack>
   );
 };
 
-const AccreditationForm = () => {
-  const [isAccredited, setIsAccredited] = useState<string | null>(null);
-  const [verificationMethod, setVerificationMethod] = useState<string | null>(
-    null
-  );
+const AccreditationForm: React.FC<{
+  data: FormData["accreditation"];
+  onChange: (data: Partial<FormData["accreditation"]>) => void;
+}> = ({ data, onChange }) => {
   const openRef = useRef<() => void>(null);
 
   return (
     <Stack gap="md">
       <QuestionWithDot>Are you an accredited investor?</QuestionWithDot>
-      <Radio.Group value={isAccredited} onChange={setIsAccredited}>
+      <Radio.Group
+        value={data.isAccredited}
+        onChange={(value) => onChange({ isAccredited: value })}
+      >
         <Stack>
           <Radio value="yes" label="Yes I am" />
           <Radio value="no" label="I am not an accredited investor" />
         </Stack>
       </Radio.Group>
 
-      {isAccredited === "yes" && (
+      {data.isAccredited === "yes" && (
         <>
           <QuestionWithDot>
             Please choose how you would like to verify your accreditation?
           </QuestionWithDot>
           <Radio.Group
-            value={verificationMethod}
-            onChange={setVerificationMethod}
+            value={data.verificationMethod}
+            onChange={(value) => onChange({ verificationMethod: value })}
           >
             <Stack gap={"md"}>
               <Radio value="third_party" label="Third Party Verification" />
@@ -349,47 +457,69 @@ const AccreditationForm = () => {
         </>
       )}
 
-      {isAccredited === "yes" && verificationMethod === "self_attestation" && (
-        <>
-          <QuestionWithDot>Upload Documents</QuestionWithDot>
-          <Dropzone
-            onDrop={(files) => console.log(files)}
-            accept={[MIME_TYPES.pdf, MIME_TYPES.png, MIME_TYPES.jpeg]}
-            maxSize={3 * 1024 ** 2}
-          >
-            <Button
-              onClick={() => openRef.current?.()}
-              style={{ pointerEvents: "all" }}
+      {data.isAccredited === "yes" &&
+        data.verificationMethod === "self_attestation" && (
+          <>
+            <QuestionWithDot>Upload Documents</QuestionWithDot>
+            <Dropzone
+              onDrop={(files) => onChange({ documents: files })}
+              accept={[MIME_TYPES.pdf, MIME_TYPES.png, MIME_TYPES.jpeg]}
+              maxSize={3 * 1024 ** 2}
             >
-              Select files
-            </Button>
-          </Dropzone>
-        </>
-      )}
+              <Button
+                onClick={() => openRef.current?.()}
+                style={{ pointerEvents: "all" }}
+              >
+                Select files
+              </Button>
+            </Dropzone>
+            {data.documents?.length > 0 && (
+              <Text size="sm">{data.documents.length} file(s) selected</Text>
+            )}
+          </>
+        )}
     </Stack>
   );
 };
 
-const TrustedContactPersonForm = () => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
+const TrustedContactPersonForm: React.FC<{
+  data: FormData["trustedContact"];
+  onChange: (data: Partial<FormData["trustedContact"]>) => void;
+}> = ({ data, onChange }) => {
   return (
     <Stack gap="md">
       <QuestionWithDot>
         Important note about designating a trusted contact person.
       </QuestionWithDot>
 
-      <Radio.Group value={selectedOption} onChange={setSelectedOption}>
+      <Radio.Group
+        value={data.designate}
+        onChange={(value) => onChange({ designate: value })}
+      >
         <Stack>
           <Radio value="yes" label="Yes" />
           <Radio value="no" label="No" />
         </Stack>
       </Radio.Group>
 
-      {selectedOption === "yes" && (
+      {data.designate === "yes" && (
         <Stack gap="md">
-          <TextInput label="First Name" placeholder="Enter first name" />
-          <TextInput label="Last Name" placeholder="Enter last name" />
+          <TextInput
+            label="First Name"
+            placeholder="Enter first name"
+            value={data.firstName}
+            onChange={(event) =>
+              onChange({ firstName: event.currentTarget.value })
+            }
+          />
+          <TextInput
+            label="Last Name"
+            placeholder="Enter last name"
+            value={data.lastName}
+            onChange={(event) =>
+              onChange({ lastName: event.currentTarget.value })
+            }
+          />
           <Select
             label="Country Code"
             placeholder="Select Country Code"
@@ -398,44 +528,64 @@ const TrustedContactPersonForm = () => {
               { value: "+44", label: "+44 (UK)" },
               { value: "+91", label: "+91 (India)" },
             ]}
+            value={data.countryCode}
+            onChange={(value) =>
+              value !== null && onChange({ countryCode: value })
+            }
           />
-          <PhoneNumberInputWithCountryCode />
-          <TextInput label="Email Address" placeholder="Enter email address" />
-          <TextInput label="Relationship" placeholder="Enter relationship" />
+          <PhoneNumberInputWithCountryCode
+            value={data.phoneNumber}
+            onChange={(value) => onChange({ phoneNumber: value })}
+          />
+          <TextInput
+            label="Email Address"
+            placeholder="Enter email address"
+            value={data.email}
+            onChange={(event) => onChange({ email: event.currentTarget.value })}
+          />
+          <TextInput
+            label="Relationship"
+            placeholder="Enter relationship"
+            value={data.relationship}
+            onChange={(event) =>
+              onChange({ relationship: event.currentTarget.value })
+            }
+          />
         </Stack>
       )}
     </Stack>
   );
 };
 
-const AccountCredentialsForm = () => {
-  const [userId, setUserId] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+const AccountCredentialsForm: React.FC<{
+  data: FormData["credentials"];
+  onChange: (data: Partial<FormData["credentials"]>) => void;
+}> = ({ data, onChange }) => {
   return (
     <Stack gap="md">
       <TextInput
         label="User ID"
         placeholder="Choose a user ID"
-        value={userId}
-        onChange={(event) => setUserId(event.currentTarget.value)}
+        value={data.userId}
+        onChange={(event) => onChange({ userId: event.currentTarget.value })}
         required
       />
 
       <PasswordInput
         label="Password"
         placeholder="Create a password"
-        value={password}
-        onChange={(event) => setPassword(event.currentTarget.value)}
+        value={data.password}
+        onChange={(event) => onChange({ password: event.currentTarget.value })}
         required
       />
 
       <PasswordInput
         label="Confirm Password"
         placeholder="Confirm your password"
-        value={confirmPassword}
-        onChange={(event) => setConfirmPassword(event.currentTarget.value)}
+        value={data.confirmPassword}
+        onChange={(event) =>
+          onChange({ confirmPassword: event.currentTarget.value })
+        }
         required
       />
     </Stack>
@@ -446,7 +596,49 @@ const Onboarding: React.FC = () => {
   const router = useRouter();
   const [active, setActive] = useState(0);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
-  const [accountType, setAccountType] = useState("");
+
+  // Centralized form data state
+  const [formData, setFormData] = useState<FormData>({
+    customerVerification: { isExistingCustomer: "" },
+    accountType: { type: "" },
+    accountDetails: { brokerageType: "", retirementType: "" },
+    citizenship: { status: "", ssn: "", secondCountry: "", taxId: "" },
+    financialInfo: {
+      annualIncome: "",
+      liquidNetWorth: "",
+      totalNetWorth: "",
+      investmentExperience: "",
+    },
+    compliance: { question1: "", question2: "", question3: "", question4: "" },
+    accountPurpose: { source: "", foreignFunds: "", purpose: "" },
+    accreditation: { isAccredited: "", verificationMethod: "", documents: [] },
+    trustedContact: {
+      designate: "",
+      firstName: "",
+      lastName: "",
+      countryCode: "",
+      phoneNumber: "",
+      email: "",
+      relationship: "",
+    },
+    credentials: { userId: "", password: "", confirmPassword: "" },
+  });
+
+  const updateFormData = <K extends keyof FormData>(
+    section: K,
+    data: Partial<FormData[K]>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [section]: { ...prev[section], ...data },
+    }));
+
+    // If user is editing a completed step, remove it from completed steps
+    // so the submit button appears again
+    if (completedSteps.includes(active)) {
+      setCompletedSteps((prev) => prev.filter((step) => step !== active));
+    }
+  };
 
   const handleStepClick = (step: number) => {
     const maxAllowedStep =
@@ -485,7 +677,14 @@ const Onboarding: React.FC = () => {
       content: (
         <div>
           <QuestionWithDot>Are you an existing customer?</QuestionWithDot>
-          <Radio.Group>
+          <Radio.Group
+            value={formData.customerVerification.isExistingCustomer}
+            onChange={(value) =>
+              updateFormData("customerVerification", {
+                isExistingCustomer: value,
+              })
+            }
+          >
             <Stack mt="xs">
               <Radio value="yes" label="Yes" />
               <Radio value="no" label="No" />
@@ -506,8 +705,8 @@ const Onboarding: React.FC = () => {
         <div>
           <QuestionWithDot>Select Account Type -</QuestionWithDot>
           <Radio.Group
-            value={accountType}
-            onChange={setAccountType}
+            value={formData.accountType.type}
+            onChange={(value) => updateFormData("accountType", { type: value })}
             withAsterisk
           >
             <Stack mt="xs">
@@ -526,10 +725,20 @@ const Onboarding: React.FC = () => {
       detailedInfo:
         "Configure your account ownership structure and investment preferences. Individual accounts are for personal use, joint accounts allow shared access, and entity accounts are for businesses or trusts. Retirement accounts have specific tax-advantaged structures.",
       content:
-        accountType === "brokerage" ? (
-          <BrokerageOptions />
+        formData.accountType.type === "brokerage" ? (
+          <BrokerageOptions
+            value={formData.accountDetails.brokerageType}
+            onChange={(value) =>
+              updateFormData("accountDetails", { brokerageType: value })
+            }
+          />
         ) : (
-          <RetirementOptions />
+          <RetirementOptions
+            value={formData.accountDetails.retirementType}
+            onChange={(value) =>
+              updateFormData("accountDetails", { retirementType: value })
+            }
+          />
         ),
       icon: IconPigMoney,
       tooltip: "Customize your account based on your investment needs",
@@ -539,7 +748,7 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "Accurate personal information ensures we can properly service your account and comply with regulatory requirements. This includes legal name, date of birth, and contact information. Your data is protected with industry-standard security measures.",
-      content: <PersonalInfoForm />,
+      content: <PersonalInfoForm />, // This would need similar treatment if you want to persist its state
       icon: IconUser,
       tooltip: "Your information is securely stored and encrypted",
     },
@@ -548,7 +757,12 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "Citizenship status determines tax reporting requirements and account eligibility. US citizens and residents have different tax obligations than non-residents. Accurate tax identification numbers are required for IRS reporting purposes.",
-      content: <CitizenshipForm />,
+      content: (
+        <CitizenshipForm
+          data={formData.citizenship}
+          onChange={(data) => updateFormData("citizenship", data)}
+        />
+      ),
       icon: IconKey,
       tooltip: "Tax information is required for regulatory compliance",
     },
@@ -557,7 +771,12 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "Understanding your financial situation helps us provide appropriate investment recommendations and comply with suitability requirements. This information is used to ensure investment recommendations align with your financial capacity and experience level.",
-      content: <FinancialInformationForm />,
+      content: (
+        <FinancialInformationForm
+          data={formData.financialInfo}
+          onChange={(data) => updateFormData("financialInfo", data)}
+        />
+      ),
       icon: IconUsers,
       tooltip: "This helps us tailor investment options to your situation",
     },
@@ -566,7 +785,12 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "These questions help identify potential conflicts of interest and ensure compliance with FINRA and SEC regulations. They screen for relationships with financial institutions, public company affiliations, and other situations that might require special handling.",
-      content: <ComplianceQuestions />,
+      content: (
+        <ComplianceQuestions
+          data={formData.compliance}
+          onChange={(data) => updateFormData("compliance", data)}
+        />
+      ),
       icon: IconScale,
       tooltip: "Required by financial regulatory authorities",
     },
@@ -575,7 +799,12 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "Understanding the source of your funds and your investment objectives helps us comply with anti-money laundering regulations and provide suitable investment recommendations. This includes identifying foreign sources of funds and specific account purposes.",
-      content: <AccountPurposeForm />,
+      content: (
+        <AccountPurposeForm
+          data={formData.accountPurpose}
+          onChange={(data) => updateFormData("accountPurpose", data)}
+        />
+      ),
       icon: IconPigMoney,
       tooltip: "Helps ensure appropriate account usage and compliance",
     },
@@ -584,7 +813,12 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "Accredited investor status determines eligibility for certain private investment opportunities. Verification can be done through third-party services or self-attestation with supporting documentation. Different accreditation criteria apply based on income, net worth, or professional credentials.",
-      content: <AccreditationForm />,
+      content: (
+        <AccreditationForm
+          data={formData.accreditation}
+          onChange={(data) => updateFormData("accreditation", data)}
+        />
+      ),
       icon: IconScale,
       tooltip: "Determines access to certain investment opportunities",
     },
@@ -593,7 +827,12 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "A trusted contact person helps protect your account by providing someone we can contact in case of concerns about your health, cognitive ability, or potential financial exploitation. This person cannot transact on your account but can help ensure your financial safety.",
-      content: <TrustedContactPersonForm />,
+      content: (
+        <TrustedContactPersonForm
+          data={formData.trustedContact}
+          onChange={(data) => updateFormData("trustedContact", data)}
+        />
+      ),
       icon: IconUserCircle,
       tooltip: "Added security feature for account protection",
     },
@@ -602,7 +841,12 @@ const Onboarding: React.FC = () => {
       description: "",
       detailedInfo:
         "Create secure login credentials to protect your account. Your user ID must be unique, and your password should include a combination of letters, numbers, and special characters. Strong credentials help prevent unauthorized access to your investment account.",
-      content: <AccountCredentialsForm />,
+      content: (
+        <AccountCredentialsForm
+          data={formData.credentials}
+          onChange={(data) => updateFormData("credentials", data)}
+        />
+      ),
       icon: IconKey,
       tooltip: "Create strong credentials to protect your account",
     },
