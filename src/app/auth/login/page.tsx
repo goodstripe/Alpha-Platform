@@ -69,7 +69,7 @@ const LogIn = () => {
               radius="md"
             />
             <Group justify="space-between" mt="lg">
-              <Checkbox label="Remember me" size={isMobile ? "sm" : "md"} />
+              <Checkbox label="Remember me" />
               <Anchor
                 component="button"
                 size="sm"
