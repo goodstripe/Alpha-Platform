@@ -479,7 +479,7 @@ const Onboarding: React.FC = () => {
   const steps: (Step & { detailedInfo: string })[] = [
     {
       label: "Customer Verification",
-      description: "Step 1: Verify your identity status",
+      description: "", // Empty string
       detailedInfo:
         "Identity verification is required by financial regulations to prevent fraud. We use bank-level encryption to protect your personal information. Existing customers may have a streamlined verification process.",
       content: (
@@ -499,7 +499,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Account Type",
-      description: "Step 2: Choose your account category",
+      description: "", // Empty string
       detailedInfo:
         "Select the account type that best fits your financial goals. Brokerage accounts are for general investing, while retirement accounts offer tax advantages for long-term savings. Your choice will determine available investment options and tax treatment.",
       content: (
@@ -522,7 +522,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Account Details",
-      description: "Step 3: Configure account specifics",
+      description: "", // Empty string
       detailedInfo:
         "Configure your account ownership structure and investment preferences. Individual accounts are for personal use, joint accounts allow shared access, and entity accounts are for businesses or trusts. Retirement accounts have specific tax-advantaged structures.",
       content:
@@ -536,7 +536,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Personal Information",
-      description: "Step 4: Provide basic identification details",
+      description: "", // Empty string
       detailedInfo:
         "Accurate personal information ensures we can properly service your account and comply with regulatory requirements. This includes legal name, date of birth, and contact information. Your data is protected with industry-standard security measures.",
       content: <PersonalInfoForm />,
@@ -545,7 +545,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Citizenship & Tax Information",
-      description: "Step 5: Provide citizenship and tax details",
+      description: "", // Empty string
       detailedInfo:
         "Citizenship status determines tax reporting requirements and account eligibility. US citizens and residents have different tax obligations than non-residents. Accurate tax identification numbers are required for IRS reporting purposes.",
       content: <CitizenshipForm />,
@@ -554,7 +554,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Financial Profile",
-      description: "Step 6: Share your financial background",
+      description: "", // Empty string
       detailedInfo:
         "Understanding your financial situation helps us provide appropriate investment recommendations and comply with suitability requirements. This information is used to ensure investment recommendations align with your financial capacity and experience level.",
       content: <FinancialInformationForm />,
@@ -563,7 +563,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Regulatory Compliance",
-      description: "Step 7: Answer required compliance questions",
+      description: "", // Empty string
       detailedInfo:
         "These questions help identify potential conflicts of interest and ensure compliance with FINRA and SEC regulations. They screen for relationships with financial institutions, public company affiliations, and other situations that might require special handling.",
       content: <ComplianceQuestions />,
@@ -572,7 +572,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Account Funding & Purpose",
-      description: "Step 8: Describe funding sources and account objectives",
+      description: "", // Empty string
       detailedInfo:
         "Understanding the source of your funds and your investment objectives helps us comply with anti-money laundering regulations and provide suitable investment recommendations. This includes identifying foreign sources of funds and specific account purposes.",
       content: <AccountPurposeForm />,
@@ -581,7 +581,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Investor Accreditation",
-      description: "Step 9: Verify investor qualification status",
+      description: "", // Empty string
       detailedInfo:
         "Accredited investor status determines eligibility for certain private investment opportunities. Verification can be done through third-party services or self-attestation with supporting documentation. Different accreditation criteria apply based on income, net worth, or professional credentials.",
       content: <AccreditationForm />,
@@ -590,8 +590,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Trusted Contact Person",
-      description:
-        "Step 10: Designate emergency contact for account protection",
+      description: "", // Empty string
       detailedInfo:
         "A trusted contact person helps protect your account by providing someone we can contact in case of concerns about your health, cognitive ability, or potential financial exploitation. This person cannot transact on your account but can help ensure your financial safety.",
       content: <TrustedContactPersonForm />,
@@ -600,7 +599,7 @@ const Onboarding: React.FC = () => {
     },
     {
       label: "Account Security",
-      description: "Step 11: Set up login credentials",
+      description: "", // Empty string
       detailedInfo:
         "Create secure login credentials to protect your account. Your user ID must be unique, and your password should include a combination of letters, numbers, and special characters. Strong credentials help prevent unauthorized access to your investment account.",
       content: <AccountCredentialsForm />,
