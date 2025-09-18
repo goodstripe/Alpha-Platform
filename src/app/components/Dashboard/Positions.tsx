@@ -14,7 +14,6 @@ const Positions = () => {
     <Box
       h={100}
       p="md"
-      w={600}
       style={{
         backgroundColor:
           colorScheme === "dark" ? theme.colors.dark[6] : theme.white,
