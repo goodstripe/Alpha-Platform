@@ -51,7 +51,7 @@ const SetPassword = () => {
             radius="md"
             onClick={() => router.push("/onboarding")}
           >
-            Set New Password
+            Submit
           </Button>
 
           <Group justify="center" mt={20}>
