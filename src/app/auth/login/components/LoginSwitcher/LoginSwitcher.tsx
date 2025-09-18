@@ -40,7 +40,7 @@ const LoginSwitcher = () => {
         <PhoneNumberInputWithCountryCode />
       ) : (
         <TextInput
-          label=""
+          label="Email"
           placeholder="Enter your email"
           size={isMobile ? "sm" : "md"}
         />
