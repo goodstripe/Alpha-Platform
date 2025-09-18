@@ -41,6 +41,7 @@ const LoginSwitcher = () => {
       ) : (
         <TextInput
           label="Email"
+          withAsterisk
           placeholder="Enter your email"
           size={isMobile ? "sm" : "md"}
         />
