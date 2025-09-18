@@ -49,7 +49,7 @@ const Accounts: React.FC = () => {
         >
           <Stack gap="xs">
             <Text size="sm" c="dimmed">
-              Account Value
+              Account
             </Text>
             <Text fw={700} fz="xl">
               $44,045
