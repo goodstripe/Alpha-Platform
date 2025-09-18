@@ -212,10 +212,12 @@ export default function Orders() {
         backgroundColor: isDark ? theme.colors.dark[7] : theme.white,
       }}
     >
+      {/* Title */}
       <Text fw={600} size="sm" mb="xs" c={isDark ? theme.white : theme.black}>
         Orders
       </Text>
 
+      {/* Table container with border + radius like Positions */}
       <Box
         style={{
           border: `1px solid ${
@@ -227,9 +229,8 @@ export default function Orders() {
       >
         <ScrollArea.Autosize mah={700}>
           <Table
-            withRowBorders
-            withTableBorder
             highlightOnHover
+            withRowBorders
             horizontalSpacing="sm"
             verticalSpacing="xs"
             stickyHeader
@@ -252,7 +253,7 @@ export default function Orders() {
                   {/* Symbol + Company */}
                   <Table.Td>
                     <Group gap="xs">
-                      <Avatar src={row.logo} size={22} radius="sm" />
+                      <Avatar src={row.logo} size="sm" radius="sm" />
                       <Box>
                         <Text fw={600} size="xs">
                           {row.symbol}
@@ -264,7 +265,7 @@ export default function Orders() {
                     </Group>
                   </Table.Td>
 
-                  {/* Side */}
+                  {/* Side with badge */}
                   <Table.Td>
                     {row.side === "Buy" ? (
                       <Badge

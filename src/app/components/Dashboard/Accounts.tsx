@@ -44,7 +44,7 @@ const Accounts: React.FC = () => {
           radius="md"
           shadow="sm"
           style={{
-            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1],
+            backgroundColor: dark ? theme.colors.dark[6] : theme.white,
           }}
         >
           <Stack gap="xs">
@@ -68,7 +68,7 @@ const Accounts: React.FC = () => {
           radius="md"
           shadow="sm"
           style={{
-            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1],
+            backgroundColor: dark ? theme.colors.dark[6] : theme.white,
           }}
         >
           <Stack gap={0}>
@@ -87,7 +87,7 @@ const Accounts: React.FC = () => {
           radius="md"
           shadow="sm"
           style={{
-            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1],
+            backgroundColor: dark ? theme.colors.dark[6] : theme.white,
           }}
         >
           <Stack gap={0}>
@@ -106,7 +106,7 @@ const Accounts: React.FC = () => {
           radius="md"
           shadow="sm"
           style={{
-            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[0],
+            backgroundColor: dark ? theme.colors.dark[6] : theme.white,
           }}
         >
           <Stack gap="xs">

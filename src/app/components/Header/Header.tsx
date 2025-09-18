@@ -93,23 +93,17 @@ export default function Header() {
       >
         <Flex align="center" justify="space-between" h="100%">
           {/* Left Section - Logo and Search */}
-          <Group
-            gap={{
-              base: "xl",
-              sm: "2xl",
-              md: "140px",
-            }}
-          >
-            <Image
-              src="/aeonx_logo.png"
-              alt="AEONX Logo"
-              width={120}
-              height={40}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-              }}
-            />
+          <Group gap={rem(140)}>
+            <div
+              style={{ position: "relative", width: "120px", height: "40px" }}
+            >
+              <Image
+                src="/aeonx_logo.png"
+                alt="AEONX Logo"
+                fill
+                style={{ objectFit: "contain" }}
+              />
+            </div>
 
             {/* Desktop Search */}
             <Box
