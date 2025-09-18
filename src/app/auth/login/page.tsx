@@ -9,11 +9,9 @@ import {
   Paper,
   PasswordInput,
   Text,
-  TextInput,
   Title,
   useMantineTheme,
   Container,
-  Box,
 } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useMediaQuery } from "@mantine/hooks";
