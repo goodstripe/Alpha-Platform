@@ -5,6 +5,7 @@ import Orders from "../components/Dashboard/Orders";
 import Positions from "../components/Dashboard/Positions";
 import Accounts from "../components/Dashboard/Accounts";
 import WatchList from "../components/Dashboard/WatchList";
+import OrderDetails from "../components/Dashboard/OrderDetails";
 
 export default function Subgrid() {
   return (
@@ -22,7 +23,10 @@ export default function Subgrid() {
         </Grid.Col>
 
         <Grid.Col span={{ base: 12, md: 3 }}>
-          <WatchList />
+          <Stack gap="lg">
+            <OrderDetails />
+            {/* <WatchList /> */}
+          </Stack>
         </Grid.Col>
       </Grid>
     </Container>

@@ -1,209 +1,114 @@
 "use client";
 
+import React from "react";
 import {
   Card,
-  Text,
   Group,
-  Badge,
-  Divider,
-  Table,
-  useMantineTheme,
-  useMantineColorScheme,
-  Box,
-  ScrollArea,
+  Text,
+  Avatar,
+  Menu,
+  ActionIcon,
+  rem,
 } from "@mantine/core";
+import {
+  IconDotsVertical,
+  IconArrowsLeftRight,
+  IconBell,
+  IconShare3,
+  IconX,
+} from "@tabler/icons-react";
 
-export default function OrderDetails() {
-  const theme = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDark = colorScheme === "dark";
+interface WatchlistItemProps {
+  symbol: string;
+  company: string;
+  price: number;
+  change: number; // positive or negative
+  logo?: string;
+  onTrade?: () => void;
+  onAlert?: () => void;
+  onShare?: () => void;
+  onRemove?: () => void;
+}
 
-  // Example dummy data
-  const order = {
-    ticker: "CART",
-    company: "Maplebear Inc.",
-    type: "Market - Day",
-    side: "Sell",
-    amount: "$3,401.38",
-    quantity: 100,
-    avgPrice: "$34.02",
-    portfolioPercent: "0.059%",
-    status: "Filled",
-    executions: [
-      {
-        status: "Approved",
-        date: "2024-04-23 19:38:28",
-        quantity: 0,
-        price: "$0",
-      },
-      {
-        status: "Filled",
-        date: "2024-04-23 19:38:28",
-        quantity: 100,
-        price: "$34.02",
-      },
-    ],
-  };
+export default function WatchlistItem({
+  symbol,
+  company,
+  price,
+  change,
+  logo,
+  onTrade,
+  onAlert,
+  onShare,
+  onRemove,
+}: WatchlistItemProps) {
+  const isPositive = change >= 0;
 
   return (
-    <Card
-      shadow="sm"
-      radius="md"
-      p="md"
-      withBorder
-      style={{
-        backgroundColor: isDark ? theme.colors.dark[7] : theme.white,
-      }}
-    >
-      {/* Header */}
-      <Group justify="space-between" mb="md">
-        <Text fw={600} size="sm" c={isDark ? theme.white : theme.black}>
-          Order Details
-        </Text>
-        <Badge
-          color={order.status === "Filled" ? "green" : "yellow"}
-          variant="light"
-          radius="sm"
-        >
-          {order.status}
-        </Badge>
+    <Card withBorder padding="sm" radius="md" mb="xs">
+      <Group justify="space-between" align="center">
+        {/* Left Section */}
+        <Group gap="xs">
+          <Avatar src={logo} size={32} radius="sm" />
+          <div>
+            <Text fw={600} size="sm">
+              {symbol}
+            </Text>
+            <Text size="xs" c="dimmed">
+              {company}
+            </Text>
+          </div>
+        </Group>
+
+        {/* Right Section */}
+        <Group gap="xs">
+          <div style={{ textAlign: "right" }}>
+            <Text fw={600} size="sm">
+              {price?.toFixed(2)}
+            </Text>
+            <Text size="xs" c={isPositive ? "green" : "red"} fw={500}>
+              {isPositive ? "+" : ""}
+              {change?.toFixed(2)} ({((change / price) * 100).toFixed(2)}%)
+            </Text>
+          </div>
+
+          {/* Menu */}
+          <Menu shadow="md" width={160} position="bottom-end">
+            <Menu.Target>
+              <ActionIcon variant="subtle">
+                <IconDotsVertical size={18} />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown>
+              <Menu.Item
+                leftSection={<IconArrowsLeftRight size={16} />}
+                onClick={onTrade}
+              >
+                Trade
+              </Menu.Item>
+              <Menu.Item
+                leftSection={<IconBell size={16} />}
+                disabled
+                onClick={onAlert}
+              >
+                Set Alert
+              </Menu.Item>
+              <Menu.Item
+                leftSection={<IconShare3 size={16} />}
+                onClick={onShare}
+              >
+                Share
+              </Menu.Item>
+              <Menu.Item
+                color="red"
+                leftSection={<IconX size={16} />}
+                onClick={onRemove}
+              >
+                Remove
+              </Menu.Item>
+            </Menu.Dropdown>
+          </Menu>
+        </Group>
       </Group>
-
-      {/* Order Info Grid */}
-      <Box
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: "0.5rem",
-          marginBottom: "1rem",
-        }}
-      >
-        <div>
-          <Text size="xs" c="dimmed">
-            Ticker:
-          </Text>
-          <Text size="sm" fw={600}>
-            {order.ticker}
-          </Text>
-        </div>
-
-        <div>
-          <Text size="xs" c="dimmed">
-            Company:
-          </Text>
-          <Text size="sm" fw={600}>
-            {order.company}
-          </Text>
-        </div>
-
-        <div>
-          <Text size="xs" c="dimmed">
-            Type & Duration:
-          </Text>
-          <Text size="sm">{order.type}</Text>
-        </div>
-
-        <div>
-          <Text size="xs" c="dimmed">
-            Side:
-          </Text>
-          <Text
-            size="sm"
-            c={
-              order.side === "Buy" ? theme.colors.green[6] : theme.colors.red[6]
-            }
-            fw={600}
-          >
-            {order.side}
-          </Text>
-        </div>
-
-        <div>
-          <Text size="xs" c="dimmed">
-            Amount:
-          </Text>
-          <Text size="sm" fw={600}>
-            {order.amount}
-          </Text>
-        </div>
-
-        <div>
-          <Text size="xs" c="dimmed">
-            Quantity:
-          </Text>
-          <Text size="sm">{order.quantity}</Text>
-        </div>
-
-        <div>
-          <Text size="xs" c="dimmed">
-            Average Price:
-          </Text>
-          <Text size="sm">{order.avgPrice}</Text>
-        </div>
-
-        <div>
-          <Text size="xs" c="dimmed">
-            Portfolio Percent:
-          </Text>
-          <Text size="sm">{order.portfolioPercent}</Text>
-        </div>
-      </Box>
-
-      <Divider my="sm" />
-
-      {/* Executions */}
-      <Text size="sm" fw={600} mb="xs" c={isDark ? theme.white : theme.black}>
-        Executions
-      </Text>
-
-      <Box
-        style={{
-          border: `1px solid ${
-            isDark ? theme.colors.dark[4] : theme.colors.gray[3]
-          }`,
-          borderRadius: theme.radius.md,
-          overflow: "hidden",
-        }}
-      >
-        <ScrollArea.Autosize mah={180}>
-          <Table
-            highlightOnHover
-            withRowBorders
-            horizontalSpacing="sm"
-            verticalSpacing="xs"
-            stickyHeader
-            bg={isDark ? theme.colors.dark[6] : theme.white}
-          >
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Status</Table.Th>
-                <Table.Th>Date</Table.Th>
-                <Table.Th>Quantity</Table.Th>
-                <Table.Th>Price</Table.Th>
-              </Table.Tr>
-            </Table.Thead>
-
-            <Table.Tbody>
-              {order.executions.map((exe, index) => (
-                <Table.Tr key={index}>
-                  <Table.Td>
-                    <Text size="xs">{exe.status}</Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="xs">{exe.date}</Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="xs">{exe.quantity}</Text>
-                  </Table.Td>
-                  <Table.Td>
-                    <Text size="xs">{exe.price}</Text>
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
-        </ScrollArea.Autosize>
-      </Box>
     </Card>
   );
 }
