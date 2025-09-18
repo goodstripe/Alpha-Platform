@@ -1,9 +1,37 @@
 "use client";
+import {
+  Container,
+  px,
+  SimpleGrid,
+  Skeleton,
+  Stack,
+  useMantineTheme,
+} from "@mantine/core";
 
-import React from "react";
+const getChild = (height: number) => (
+  <Skeleton height={height} radius="md" animate={false} />
+);
+const BASE_HEIGHT = 360;
+const getSubHeight = (children: number, spacing: number) =>
+  BASE_HEIGHT / children - spacing * ((children - 1) / children);
 
-const page = () => {
-  return <div>page</div>;
-};
-
-export default page;
+export default function Subgrid() {
+  const theme = useMantineTheme();
+  return (
+    <Container>
+      <SimpleGrid cols={{ base: 1, xs: 4 }}>
+        {getChild(BASE_HEIGHT)}
+        <Stack>
+          {getChild(getSubHeight(2, px(theme.spacing.md) as number))}
+          {getChild(getSubHeight(2, px(theme.spacing.md) as number))}
+        </Stack>
+        <Stack>
+          {getChild(getSubHeight(3, px(theme.spacing.md) as number))}
+          {getChild(getSubHeight(3, px(theme.spacing.md) as number))}
+          {getChild(getSubHeight(3, px(theme.spacing.md) as number))}
+        </Stack>
+        {getChild(BASE_HEIGHT)}
+      </SimpleGrid>
+    </Container>
+  );
+}
