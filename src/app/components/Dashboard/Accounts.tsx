@@ -11,6 +11,7 @@ import {
   useComputedColorScheme,
 } from "@mantine/core";
 import { LineChart } from "@mantine/charts";
+import CustomLineChart from "../Charts/LineChart";
 
 const chartData = [
   { period: "D", value: 10000 },
@@ -58,17 +59,7 @@ const Accounts: React.FC = () => {
               -$8,844.65 (16.72%)
             </Text>
 
-            <LineChart
-              h={120}
-              data={chartData}
-              dataKey="period"
-              series={[{ name: "value", color: "blue.6" }]}
-              curveType="linear"
-              withXAxis={false}
-              withYAxis={false}
-              withDots={false}
-              withTooltip={false}
-            />
+            <CustomLineChart />
           </Stack>
         </Card>
 
