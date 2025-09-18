@@ -46,14 +46,13 @@ export default function Positions() {
         Positions
       </Text>
 
-      {/* Rounded wrapper for the table */}
       <Box
         style={{
           border: `1px solid ${
             isDark ? theme.colors.dark[4] : theme.colors.gray[3]
           }`,
           borderRadius: theme.radius.md,
-          overflow: "hidden", // ✅ clips table inside
+          overflow: "hidden",
         }}
       >
         <ScrollArea.Autosize mah={220}>
@@ -62,7 +61,6 @@ export default function Positions() {
             withRowBorders
             horizontalSpacing="sm"
             verticalSpacing="xs"
-            fontSize="xs"
           >
             <Table.Thead>
               <Table.Tr>
