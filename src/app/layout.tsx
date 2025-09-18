@@ -1,4 +1,4 @@
-import { MantineProvider } from "@mantine/core";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Lato } from "next/font/google";
 
@@ -38,11 +38,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head />
+      <head>
+        <ColorSchemeScript defaultColorScheme="light" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${lato.variable}`}
       >
         <MantineProvider
+          defaultColorScheme="light"
           theme={{
             fontFamily: "Lato, sans-serif",
           }}

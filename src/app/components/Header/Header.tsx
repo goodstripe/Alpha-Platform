@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import {
-  AppShell,
   Group,
   Text,
   TextInput,
@@ -36,7 +35,7 @@ import {
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 
-export default function ResponsiveHeader() {
+export default function Header() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
   const theme = useMantineTheme();
   const dark = colorScheme === "dark";
@@ -44,48 +43,6 @@ export default function ResponsiveHeader() {
   const pathname = usePathname();
   const [mobileMenuOpened, setMobileMenuOpened] = useState(false);
   const [mobileSearchOpened, setMobileSearchOpened] = useState(false);
-
-  if (pathname?.startsWith("/auth")) {
-    return (
-      <AppShell header={{ height: 60 }} padding="md">
-        <AppShell.Header>
-          <Container fluid h="100%" p="0px 30px">
-            <Group align="center" justify="space-between" h="100%">
-              <Image
-                src="/aeonx_logo.png"
-                alt="AEONX Logo"
-                width={120}
-                height={40}
-                style={{
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
-              />
-              <ActionIcon
-                variant="subtle"
-                size="md"
-                radius="md"
-                onClick={() => toggleColorScheme()}
-                title={`Switch to ${dark ? "light" : "dark"} mode`}
-              >
-                {dark ? (
-                  <IconSun
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                ) : (
-                  <IconMoon
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                )}
-              </ActionIcon>
-            </Group>
-          </Container>
-        </AppShell.Header>
-      </AppShell>
-    );
-  }
 
   const navigationItems = [
     {
@@ -106,7 +63,6 @@ export default function ResponsiveHeader() {
   ];
 
   const isActiveRoute = (route: string) => {
-    // Only match exact routes for navigation items, don't interfere with other routes
     if (route === "/dashboard") {
       return pathname === "/" || pathname === "/dashboard";
     }
@@ -123,304 +79,53 @@ export default function ResponsiveHeader() {
   };
 
   return (
-    <AppShell header={{ height: 60 }} padding="md">
-      <AppShell.Header>
-        <Container
-          fluid
-          h="100%"
-          p={{
-            base: "0px 16px",
-            xs: "0px 20px",
-            sm: "0px 24px",
-            md: "0px 30px",
-          }}
-        >
-          <Flex align="center" justify="space-between" h="100%">
-            {/* Left Section - Logo and Search */}
-            <Group
-              gap={{
-                base: "md",
-                sm: "lg",
-                md: "70px",
-              }}
-            >
-              <Image
-                src="/aeonx_logo.png"
-                alt="AEONX Logo"
-                width={120}
-                height={40}
-                style={{
-                  maxWidth: "100%",
-                  height: "auto",
-                }}
-              />
-
-              {/* Desktop Search */}
-              <Box
-                style={{
-                  maxWidth: 250,
-                  minWidth: 200,
-                }}
-                visibleFrom="lg"
-              >
-                <TextInput
-                  placeholder="Search"
-                  w={250}
-                  leftSection={
-                    <IconSearch
-                      style={{ width: rem(16), height: rem(16) }}
-                      stroke={1.5}
-                    />
-                  }
-                  radius="md"
-                  size="sm"
-                  styles={{
-                    input: {
-                      backgroundColor: dark
-                        ? theme.colors.dark[6]
-                        : theme.colors.gray[1],
-                      border: `1px solid ${
-                        dark ? theme.colors.dark[4] : theme.colors.gray[3]
-                      }`,
-                      "&:focus": {
-                        borderColor: theme.colors.blue[5],
-                      },
-                    },
-                  }}
-                />
-              </Box>
-
-              {/* Tablet Search */}
-              <Box
-                style={{
-                  maxWidth: 180,
-                  minWidth: 150,
-                }}
-                visibleFrom="md"
-                hiddenFrom="lg"
-              >
-                <TextInput
-                  placeholder="Search"
-                  w={180}
-                  leftSection={
-                    <IconSearch
-                      style={{ width: rem(16), height: rem(16) }}
-                      stroke={1.5}
-                    />
-                  }
-                  radius="md"
-                  size="sm"
-                  styles={{
-                    input: {
-                      backgroundColor: dark
-                        ? theme.colors.dark[6]
-                        : theme.colors.gray[1],
-                      border: `1px solid ${
-                        dark ? theme.colors.dark[4] : theme.colors.gray[3]
-                      }`,
-                      "&:focus": {
-                        borderColor: theme.colors.blue[5],
-                      },
-                    },
-                  }}
-                />
-              </Box>
-            </Group>
-
-            {/* Center Section - Desktop Navigation Icons */}
-            <Group
-              gap="sm"
+    <>
+      <Container
+        fluid
+        h="100%"
+        p={{
+          base: "0px 16px",
+          xs: "0px 20px",
+          sm: "0px 24px",
+          md: "0px 30px",
+        }}
+      >
+        <Flex align="center" justify="space-between" h="100%">
+          {/* Left Section - Logo and Search */}
+          <Group
+            gap={{
+              base: "md",
+              sm: "lg",
+              md: "70px",
+            }}
+          >
+            <Image
+              src="/aeonx_logo.png"
+              alt="AEONX Logo"
+              width={120}
+              height={40}
               style={{
-                position: "absolute",
-                left: "50%",
-                transform: "translateX(-50%)",
+                maxWidth: "100%",
+                height: "auto",
               }}
-              visibleFrom="md"
-            >
-              {navigationItems.map((item) => {
-                const Icon = item.icon;
-                const isActive = isActiveRoute(item.route);
+            />
 
-                return (
-                  <ActionIcon
-                    key={item.route}
-                    variant={isActive ? "filled" : "subtle"}
-                    size="lg"
-                    radius="md"
-                    color={isActive ? "blue" : undefined}
-                    onClick={() => handleNavigation(item.route)}
-                    title={item.label}
-                    style={{
-                      backgroundColor: isActive
-                        ? dark
-                          ? theme.colors.blue[8]
-                          : theme.colors.blue[6]
-                        : undefined,
-                      color: isActive
-                        ? "white"
-                        : dark
-                        ? theme.colors.gray[4]
-                        : theme.colors.gray[6],
-                    }}
-                  >
-                    <Icon
-                      style={{
-                        width: rem(20),
-                        height: rem(20),
-                        color: isActive ? "white" : undefined,
-                      }}
-                    />
-                  </ActionIcon>
-                );
-              })}
-            </Group>
-
-            {/* Right Section */}
-            <Group gap={{ base: 2, sm: 4 }}>
-              {/* Mobile Search Icon */}
-              <ActionIcon
-                variant="subtle"
-                size="md"
-                radius="md"
-                hiddenFrom="md"
-                onClick={toggleMobileSearch}
-              >
-                <IconSearch
-                  style={{ width: rem(16), height: rem(16) }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-
-              {/* Mobile Menu Icon */}
-              <ActionIcon
-                variant="subtle"
-                size="md"
-                radius="md"
-                hiddenFrom="md"
-                onClick={() => setMobileMenuOpened(true)}
-              >
-                <IconMenu2
-                  style={{ width: rem(18), height: rem(18) }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-
-              {/* Theme Toggle */}
-              <ActionIcon
-                variant="subtle"
-                size="md"
-                radius="md"
-                onClick={() => toggleColorScheme()}
-                title={`Switch to ${dark ? "light" : "dark"} mode`}
-              >
-                {dark ? (
-                  <IconSun
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                ) : (
-                  <IconMoon
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                )}
-              </ActionIcon>
-
-              {/* User Menu - Hidden on mobile */}
-              <Box visibleFrom="sm">
-                <Menu shadow="md" width={200} position="bottom-end" offset={5}>
-                  <Menu.Target>
-                    <Group
-                      gap={4}
-                      style={{
-                        cursor: "pointer",
-                        padding: `${rem(4)} ${rem(6)}`,
-                        borderRadius: rem(6),
-                        transition: "background-color 150ms ease",
-                        "&:hover": {
-                          backgroundColor: dark
-                            ? theme.colors.dark[6]
-                            : theme.colors.gray[1],
-                        },
-                      }}
-                    >
-                      <Avatar size={28} radius="xl" color="blue">
-                        JO
-                      </Avatar>
-                      <Box visibleFrom="md">
-                        <Text size="xs" fw={500}>
-                          Joshua Olano
-                        </Text>
-                      </Box>
-                      <IconChevronDown
-                        style={{ width: rem(10), height: rem(10) }}
-                        stroke={1.5}
-                      />
-                    </Group>
-                  </Menu.Target>
-
-                  <Menu.Dropdown>
-                    <Menu.Label>Account</Menu.Label>
-                    <Menu.Item
-                      leftSection={
-                        <IconUser style={{ width: rem(14), height: rem(14) }} />
-                      }
-                    >
-                      Profile
-                    </Menu.Item>
-                    <Menu.Item
-                      leftSection={
-                        <IconSettings
-                          style={{ width: rem(14), height: rem(14) }}
-                        />
-                      }
-                    >
-                      Settings
-                    </Menu.Item>
-                    <Menu.Divider />
-                    <Menu.Item
-                      color="red"
-                      leftSection={
-                        <IconLogout
-                          style={{ width: rem(14), height: rem(14) }}
-                        />
-                      }
-                    >
-                      Logout
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
-              </Box>
-            </Group>
-          </Flex>
-
-          {/* Mobile Search Bar */}
-          {mobileSearchOpened && (
+            {/* Desktop Search */}
             <Box
-              p="md"
               style={{
-                borderTop: `1px solid ${
-                  dark ? theme.colors.dark[4] : theme.colors.gray[3]
-                }`,
+                maxWidth: 250,
+                minWidth: 200,
               }}
-              hiddenFrom="md"
+              visibleFrom="lg"
             >
               <TextInput
                 placeholder="Search"
+                w={250}
                 leftSection={
                   <IconSearch
                     style={{ width: rem(16), height: rem(16) }}
                     stroke={1.5}
                   />
-                }
-                rightSection={
-                  <ActionIcon
-                    variant="subtle"
-                    size="sm"
-                    onClick={toggleMobileSearch}
-                  >
-                    <IconX style={{ width: rem(14), height: rem(14) }} />
-                  </ActionIcon>
                 }
                 radius="md"
                 size="sm"
@@ -439,9 +144,256 @@ export default function ResponsiveHeader() {
                 }}
               />
             </Box>
-          )}
-        </Container>
-      </AppShell.Header>
+
+            {/* Tablet Search */}
+            <Box
+              style={{
+                maxWidth: 180,
+                minWidth: 150,
+              }}
+              visibleFrom="md"
+              hiddenFrom="lg"
+            >
+              <TextInput
+                placeholder="Search"
+                w={180}
+                leftSection={
+                  <IconSearch
+                    style={{ width: rem(16), height: rem(16) }}
+                    stroke={1.5}
+                  />
+                }
+                radius="md"
+                size="sm"
+                styles={{
+                  input: {
+                    backgroundColor: dark
+                      ? theme.colors.dark[6]
+                      : theme.colors.gray[1],
+                    border: `1px solid ${
+                      dark ? theme.colors.dark[4] : theme.colors.gray[3]
+                    }`,
+                    "&:focus": {
+                      borderColor: theme.colors.blue[5],
+                    },
+                  },
+                }}
+              />
+            </Box>
+          </Group>
+
+          {/* Center Section - Desktop Navigation Icons */}
+          <Group
+            gap="sm"
+            style={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+            visibleFrom="md"
+          >
+            {navigationItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = isActiveRoute(item.route);
+
+              return (
+                <ActionIcon
+                  key={item.route}
+                  variant={isActive ? "filled" : "subtle"}
+                  size="lg"
+                  radius="md"
+                  color={isActive ? "blue" : undefined}
+                  onClick={() => handleNavigation(item.route)}
+                  title={item.label}
+                  style={{
+                    backgroundColor: isActive
+                      ? dark
+                        ? theme.colors.blue[8]
+                        : theme.colors.blue[6]
+                      : undefined,
+                    color: isActive
+                      ? "white"
+                      : dark
+                      ? theme.colors.gray[4]
+                      : theme.colors.gray[6],
+                  }}
+                >
+                  <Icon
+                    style={{
+                      width: rem(20),
+                      height: rem(20),
+                      color: isActive ? "white" : undefined,
+                    }}
+                  />
+                </ActionIcon>
+              );
+            })}
+          </Group>
+
+          {/* Right Section */}
+          <Group gap={{ base: 2, sm: 4 }}>
+            {/* Mobile Search Icon */}
+            <ActionIcon
+              variant="subtle"
+              size="md"
+              radius="md"
+              hiddenFrom="md"
+              onClick={toggleMobileSearch}
+            >
+              <IconSearch
+                style={{ width: rem(16), height: rem(16) }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+
+            {/* Mobile Menu Icon */}
+            <ActionIcon
+              variant="subtle"
+              size="md"
+              radius="md"
+              hiddenFrom="md"
+              onClick={() => setMobileMenuOpened(true)}
+            >
+              <IconMenu2
+                style={{ width: rem(18), height: rem(18) }}
+                stroke={1.5}
+              />
+            </ActionIcon>
+
+            {/* Theme Toggle */}
+            <ActionIcon
+              variant="subtle"
+              size="md"
+              radius="md"
+              onClick={() => toggleColorScheme()}
+              title={`Switch to ${dark ? "light" : "dark"} mode`}
+            >
+              {dark ? (
+                <IconSun
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                />
+              ) : (
+                <IconMoon
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                />
+              )}
+            </ActionIcon>
+
+            {/* User Menu - Hidden on mobile */}
+            <Box visibleFrom="sm">
+              <Menu shadow="md" width={200} position="bottom-end" offset={5}>
+                <Menu.Target>
+                  <Group
+                    gap={4}
+                    style={{
+                      cursor: "pointer",
+                      padding: `${rem(4)} ${rem(6)}`,
+                      borderRadius: rem(6),
+                      transition: "background-color 150ms ease",
+                      "&:hover": {
+                        backgroundColor: dark
+                          ? theme.colors.dark[6]
+                          : theme.colors.gray[1],
+                      },
+                    }}
+                  >
+                    <Avatar size={28} radius="xl" color="blue">
+                      JO
+                    </Avatar>
+                    <Box visibleFrom="md">
+                      <Text size="xs" fw={500}>
+                        Joshua Olano
+                      </Text>
+                    </Box>
+                    <IconChevronDown
+                      style={{ width: rem(10), height: rem(10) }}
+                      stroke={1.5}
+                    />
+                  </Group>
+                </Menu.Target>
+
+                <Menu.Dropdown>
+                  <Menu.Label>Account</Menu.Label>
+                  <Menu.Item
+                    leftSection={
+                      <IconUser style={{ width: rem(14), height: rem(14) }} />
+                    }
+                  >
+                    Profile
+                  </Menu.Item>
+                  <Menu.Item
+                    leftSection={
+                      <IconSettings
+                        style={{ width: rem(14), height: rem(14) }}
+                      />
+                    }
+                  >
+                    Settings
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item
+                    color="red"
+                    leftSection={
+                      <IconLogout style={{ width: rem(14), height: rem(14) }} />
+                    }
+                  >
+                    Logout
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Box>
+          </Group>
+        </Flex>
+
+        {/* Mobile Search Bar */}
+        {mobileSearchOpened && (
+          <Box
+            p="md"
+            style={{
+              borderTop: `1px solid ${
+                dark ? theme.colors.dark[4] : theme.colors.gray[3]
+              }`,
+            }}
+            hiddenFrom="md"
+          >
+            <TextInput
+              placeholder="Search"
+              leftSection={
+                <IconSearch
+                  style={{ width: rem(16), height: rem(16) }}
+                  stroke={1.5}
+                />
+              }
+              rightSection={
+                <ActionIcon
+                  variant="subtle"
+                  size="sm"
+                  onClick={toggleMobileSearch}
+                >
+                  <IconX style={{ width: rem(14), height: rem(14) }} />
+                </ActionIcon>
+              }
+              radius="md"
+              size="sm"
+              styles={{
+                input: {
+                  backgroundColor: dark
+                    ? theme.colors.dark[6]
+                    : theme.colors.gray[1],
+                  border: `1px solid ${
+                    dark ? theme.colors.dark[4] : theme.colors.gray[3]
+                  }`,
+                  "&:focus": {
+                    borderColor: theme.colors.blue[5],
+                  },
+                },
+              }}
+            />
+          </Box>
+        )}
+      </Container>
 
       {/* Mobile Navigation Drawer */}
       <Drawer
@@ -554,12 +506,6 @@ export default function ResponsiveHeader() {
           </Stack>
         </Stack>
       </Drawer>
-
-      <AppShell.Main>
-        <Container size="xl">
-          <Text>Your main content goes here</Text>
-        </Container>
-      </AppShell.Main>
-    </AppShell>
+    </>
   );
 }

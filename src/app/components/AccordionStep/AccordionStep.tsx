@@ -72,6 +72,18 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
     return null;
   }
 
+  const handleStepClick = () => {
+    if (!isDisabled) {
+      onStepClick(step);
+      toggle();
+    }
+  };
+
+  const handleInfoClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleInfo();
+  };
+
   return (
     <Group align="flex-start" gap={0} wrap="nowrap">
       <Box style={{ position: "relative", width: rem(50) }}>
@@ -127,12 +139,7 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
 
       <Box style={{ flex: 1, marginBottom: rem(20) }}>
         <UnstyledButton
-          onClick={() => {
-            if (!isDisabled) {
-              onStepClick(step);
-              toggle();
-            }
-          }}
+          onClick={handleStepClick}
           style={{
             width: "100%",
             padding: "var(--mantine-spacing-md)",
@@ -168,18 +175,21 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
                   {label}
                 </span>
                 {tooltip && !isDisabled && (
-                  <UnstyledButton
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleInfo();
+                  <Box
+                    component="span"
+                    onClick={handleInfoClick}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      padding: rem(2),
                     }}
-                    style={{ display: "flex", alignItems: "center" }}
                   >
                     <IconInfoCircle
                       size={18}
                       color="var(--mantine-color-blue-6)"
                     />
-                  </UnstyledButton>
+                  </Box>
                 )}
                 {isDisabled && (
                   <Tooltip
