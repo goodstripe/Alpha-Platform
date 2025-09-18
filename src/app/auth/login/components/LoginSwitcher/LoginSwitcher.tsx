@@ -37,7 +37,7 @@ const LoginSwitcher = () => {
       </Group>
 
       {loginMethod === "phone" ? (
-        <PhoneNumberInputWithCountryCode size={isMobile ? "sm" : "md"} />
+        <PhoneNumberInputWithCountryCode />
       ) : (
         <TextInput
           label=""

@@ -234,7 +234,7 @@ export default function Header() {
           </Group>
 
           {/* Right Section */}
-          <Group gap={{ base: 2, sm: 4 }}>
+          <Group>
             {/* Mobile Search Icon */}
             <Tooltip label="Search" position="bottom" withArrow>
               <ActionIcon

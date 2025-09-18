@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   NumberInput,
   Select,
@@ -7,12 +7,29 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 
-const PhoneNumberInputWithCountryCode: React.FC = () => {
+interface PhoneNumberInputWithCountryCodeProps {
+  value?: string;
+  onChange?: (value: string) => void;
+}
+
+const PhoneNumberInputWithCountryCode: React.FC<
+  PhoneNumberInputWithCountryCodeProps
+> = ({ value, onChange }) => {
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
 
-  const [countryCode, setCountryCode] = useState("+1");
-  const [phoneNumber, setPhoneNumber] = useState<number | undefined>(undefined);
+  const match = value?.match(/^(\+\d+)(.*)$/);
+  const initialCode = match?.[1] || "+1";
+  const initialNumber = match?.[2] || "";
+
+  const [countryCode, setCountryCode] = React.useState(initialCode);
+  const [phoneNumber, setPhoneNumber] = React.useState<string>(initialNumber);
+
+  React.useEffect(() => {
+    if (onChange) {
+      onChange(`${countryCode}${phoneNumber}`);
+    }
+  }, [countryCode, phoneNumber, onChange]);
 
   return (
     <Group
@@ -31,14 +48,14 @@ const PhoneNumberInputWithCountryCode: React.FC = () => {
           { value: "+30", label: "+30 (Greece)" },
         ]}
         value={countryCode}
-        onChange={(value) => value && setCountryCode(value)}
+        onChange={(val) => val && setCountryCode(val)}
         style={{ width: 95 }}
         label="Country Code"
       />
       <NumberInput
         value={phoneNumber}
-        onChange={(value) =>
-          setPhoneNumber(typeof value === "number" ? value : undefined)
+        onChange={(val) =>
+          setPhoneNumber(typeof val === "number" ? String(val) : "")
         }
         withAsterisk
         placeholder="Enter phone number"

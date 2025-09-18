@@ -73,7 +73,7 @@ const SignUp = () => {
               radius="md"
             />
 
-            <PhoneNumberInputWithCountryCode size={isMobile ? "sm" : "md"} />
+            <PhoneNumberInputWithCountryCode />
 
             <NumberInput
               placeholder="Verification Code"

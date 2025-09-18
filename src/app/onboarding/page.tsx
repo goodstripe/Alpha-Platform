@@ -525,6 +525,7 @@ const TrustedContactPersonForm: React.FC<{
             value={data.phoneNumber}
             onChange={(value) => onChange({ phoneNumber: value })}
           />
+
           <TextInput
             label="Email Address"
             placeholder="Enter email address"
