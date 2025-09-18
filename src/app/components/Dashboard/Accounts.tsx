@@ -10,7 +10,6 @@ import {
   Divider,
   useComputedColorScheme,
 } from "@mantine/core";
-import { LineChart } from "@mantine/charts";
 import CustomLineChart from "../Charts/LineChart";
 
 const chartData = [
@@ -35,7 +34,7 @@ const Accounts: React.FC = () => {
       p="md"
       shadow="sm"
       style={{
-        backgroundColor: dark ? theme.colors.dark[7] : theme.white, // Outer box white
+        backgroundColor: dark ? theme.colors.dark[7] : theme.white,
       }}
     >
       <Stack gap="md">
@@ -45,7 +44,7 @@ const Accounts: React.FC = () => {
           radius="md"
           shadow="sm"
           style={{
-            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1], // Light grey inner card
+            backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1],
           }}
         >
           <Stack gap="xs">
