@@ -37,7 +37,7 @@ const PhoneNumberInputWithCountryCode: React.FC<
       align="flex-start"
       mt={10}
       style={{
-        color: colorScheme === "dark" ? theme.colors.dark[0] : theme.white,
+        color: colorScheme === "dark" ? theme.white : theme.black,
       }}
     >
       <Select
@@ -52,6 +52,7 @@ const PhoneNumberInputWithCountryCode: React.FC<
         style={{ width: 115 }}
         label="Country Code"
       />
+
       <NumberInput
         value={phoneNumber}
         onChange={(val) =>
