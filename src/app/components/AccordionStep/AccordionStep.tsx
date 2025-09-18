@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Group,
   Box,
@@ -11,12 +11,7 @@ import {
   Text,
   Button,
 } from "@mantine/core";
-import {
-  IconChevronDown,
-  IconCircleCheck,
-  IconInfoCircle,
-  IconLock,
-} from "@tabler/icons-react";
+import { IconChevronDown, IconInfoCircle, IconLock } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 
 export interface AccordionStepProps {
@@ -40,12 +35,10 @@ export interface AccordionStepProps {
 const AccordionStep: React.FC<AccordionStepProps> = ({
   step,
   label,
-  description,
   children,
   isActive,
   isCompleted,
   onStepClick,
-  icon: IconComponent,
   isLast,
   onCompleteStep,
   isFinalStep,
@@ -56,17 +49,66 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
 }) => {
   const [opened, { toggle, open, close }] = useDisclosure(isActive);
   const [infoExpanded, { toggle: toggleInfo }] = useDisclosure(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const isDisabled = !isCompleted && !isActive && step > completedSteps.length;
   const isFutureStep = step > completedSteps.length;
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isActive && !opened) {
       open();
     } else if (!isActive && opened) {
       close();
     }
   }, [isActive]);
+
+  // Enhanced auto-scroll when step becomes active and opened
+  useEffect(() => {
+    if (isActive && opened && contentRef.current) {
+      // Longer timeout to ensure collapsed content is fully expanded
+      setTimeout(() => {
+        const element = contentRef.current;
+        if (element) {
+          // Get the full height of the expanded element including all content
+          const rect = element.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+
+          // Find the content box (the expanded form/content area)
+          const contentBox = element.querySelector(
+            '[style*="border-top: none"]'
+          );
+          const contentHeight = contentBox
+            ? contentBox.getBoundingClientRect().height
+            : 0;
+
+          // Calculate total element height including expanded content
+          const totalElementHeight = rect.height;
+
+          // More aggressive scroll calculation
+          const elementTop = rect.top + window.scrollY;
+
+          // If the element + its content is larger than viewport, position it at top
+          // Otherwise position it higher up for better visibility
+          let scrollTo;
+          if (totalElementHeight > viewportHeight * 0.8) {
+            // For large forms, scroll to put the header near the top
+            scrollTo = elementTop - viewportHeight * 0.1; // 10% from top
+          } else {
+            // For smaller content, position higher in viewport
+            scrollTo = elementTop - viewportHeight * 0.3; // 30% from top
+          }
+
+          // Ensure we don't scroll above the document
+          scrollTo = Math.max(0, scrollTo);
+
+          window.scrollTo({
+            top: scrollTo,
+            behavior: "smooth",
+          });
+        }
+      }, 300); // Increased timeout for content expansion
+    }
+  }, [isActive, opened]);
 
   if (hideFutureSteps && isFutureStep) {
     return null;
@@ -85,7 +127,7 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
   };
 
   return (
-    <Group align="flex-start" gap={0} wrap="nowrap">
+    <Group align="flex-start" gap={0} wrap="nowrap" ref={contentRef}>
       <Box style={{ position: "relative", width: rem(50) }}>
         <Box
           style={{
@@ -103,18 +145,16 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
             alignItems: "center",
             justifyContent: "center",
             color: isDisabled ? "var(--mantine-color-gray-5)" : "white",
-            fontWeight: 600,
+            fontWeight: 700,
+            fontSize: rem(14),
             margin: "0 auto",
             zIndex: 2,
             position: "relative",
             cursor: isDisabled ? "not-allowed" : "pointer",
           }}
         >
-          {isCompleted ? (
-            <IconCircleCheck size={20} />
-          ) : (
-            <IconComponent size={20} />
-          )}
+          {/* Always show the step number, even when completed */}
+          {step + 1}
         </Box>
 
         {!isLast && (
@@ -206,23 +246,11 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
                 <Text
                   size="sm"
                   mt="xs"
-                  style={{ color: "var(--mantine-color-blue-7)" }}
+                  style={{ color: "var(--mantine-color-gray-6)" }}
                 >
                   {detailedInfo}
                 </Text>
               </Collapse>
-
-              {!infoExpanded && (
-                <div
-                  style={{
-                    fontSize: rem(14),
-                    color: isDisabled ? "var(--mantine-color-gray-5)" : "gray",
-                    fontWeight: 400,
-                  }}
-                >
-                  {description}
-                </div>
-              )}
             </div>
             {!isDisabled && (
               <IconChevronDown
@@ -254,9 +282,9 @@ const AccordionStep: React.FC<AccordionStepProps> = ({
           >
             {children}
             {isActive && !isCompleted && (
-              <Group style={{ marginLeft: "auto" }} mt={"lg"}>
+              <Group justify="flex-end" mt={"lg"}>
                 <Button onClick={onCompleteStep}>
-                  {isFinalStep ? "Finish" : "Next"}
+                  {isFinalStep ? "Finish" : "Submit"}
                 </Button>
               </Group>
             )}

@@ -8,62 +8,85 @@ import {
   Paper,
   PasswordInput,
   Title,
+  useMantineTheme,
+  Container,
 } from "@mantine/core";
+import { useRouter } from "next/navigation";
+import { useMediaQuery } from "@mantine/hooks";
+
 import classes from "../signup/AuthenticationImage.module.css";
 import { LeftSideInAuth } from "../signup/LeftSideInAuth";
-import { useRouter } from "next/navigation";
 
 const SetPassword = () => {
   const router = useRouter();
+  const theme = useMantineTheme();
+  const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.sm})`);
 
   return (
     <div className={classes.wrapper}>
-      <LeftSideInAuth />
+      {!isMobile && <LeftSideInAuth />}
 
       <div className={classes.rightSide}>
-        <Paper className={classes.form}>
-          <Title size={30} mb={30}>
-            Set Your Password
-          </Title>
-
-          <PasswordInput
-            label="Password"
-            placeholder="Enter your new password"
-            withAsterisk
-            mt="md"
-            size="md"
-            radius="md"
-          />
-
-          <PasswordInput
-            label="Confirm Password"
-            placeholder="Confirm your new password"
-            withAsterisk
-            mt="md"
-            size="md"
-            radius="md"
-          />
-
-          <Button
-            fullWidth
-            mt="xl"
-            size="md"
-            radius="md"
-            onClick={() => router.push("/onboarding")}
+        <Container
+          size="md"
+          px={isMobile ? "md" : "xl"}
+          style={{ width: "100%" }}
+        >
+          <Paper
+            className={classes.form}
+            shadow={isMobile ? "none" : "xl"}
+            style={{
+              backgroundColor: isMobile ? "transparent" : undefined,
+              padding: isMobile ? 0 : "xl",
+              width: "100%",
+              maxWidth: "500px",
+              margin: "0 auto",
+            }}
           >
-            Set New Password
-          </Button>
+            <Title size={isMobile ? 24 : 30} mb={30} ta="center">
+              Set Your Password
+            </Title>
 
-          <Group justify="center" mt={20}>
-            <Anchor
-              href="#"
-              fw={500}
-              onClick={() => router.push("/auth/login")}
+            <PasswordInput
+              label="Password"
+              placeholder="Enter your new password"
+              withAsterisk
+              mt="md"
+              size={isMobile ? "sm" : "md"}
+              radius="md"
+            />
+
+            <PasswordInput
+              label="Confirm Password"
+              placeholder="Confirm your new password"
+              withAsterisk
+              mt="md"
+              size={isMobile ? "sm" : "md"}
+              radius="md"
+            />
+
+            <Button
+              fullWidth
+              mt="xl"
+              size={isMobile ? "sm" : "md"}
+              radius="md"
+              onClick={() => router.push("/onboarding")}
             >
-              Return
-            </Anchor>
-          </Group>
-        </Paper>
+              Submit
+            </Button>
+
+            <Group justify="center" mt={20}>
+              <Anchor
+                href="#"
+                fw={500}
+                onClick={() => router.push("/auth/login")}
+                size="sm"
+              >
+                Return to Login
+              </Anchor>
+            </Group>
+          </Paper>
+        </Container>
       </div>
     </div>
   );

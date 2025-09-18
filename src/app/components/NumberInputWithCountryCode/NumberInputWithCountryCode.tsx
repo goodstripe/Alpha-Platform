@@ -1,12 +1,28 @@
 import React, { useState } from "react";
-import { NumberInput, Select, Group } from "@mantine/core";
+import {
+  NumberInput,
+  Select,
+  Group,
+  useMantineTheme,
+  useMantineColorScheme,
+} from "@mantine/core";
 
 const PhoneNumberInputWithCountryCode: React.FC = () => {
+  const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+
   const [countryCode, setCountryCode] = useState("+1");
   const [phoneNumber, setPhoneNumber] = useState<number | undefined>(undefined);
 
   return (
-    <Group gap="sm" align="flex-start" mt={10}>
+    <Group
+      gap="sm"
+      align="flex-start"
+      mt={10}
+      style={{
+        color: colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+      }}
+    >
       <Select
         size="sm"
         data={[
@@ -16,7 +32,7 @@ const PhoneNumberInputWithCountryCode: React.FC = () => {
         ]}
         value={countryCode}
         onChange={(value) => value && setCountryCode(value)}
-        style={{ width: 150 }}
+        style={{ width: 95 }}
         label="Country Code"
       />
       <NumberInput
