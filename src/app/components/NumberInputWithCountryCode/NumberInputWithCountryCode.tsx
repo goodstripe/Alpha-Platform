@@ -6,6 +6,7 @@ import {
   Select,
   Group,
   useMantineTheme,
+  useMantineColorScheme,
   rem,
 } from "@mantine/core";
 
@@ -17,7 +18,8 @@ const PhoneNumberInputWithCountryCode: React.FC<
   PhoneNumberInputWithCountryCodeProps
 > = ({ size = "md" }) => {
   const theme = useMantineTheme();
-  const dark = theme.colorScheme === "dark";
+  const { colorScheme } = useMantineColorScheme();
+  const dark = colorScheme === "dark";
 
   const [countryCode, setCountryCode] = useState("+1");
   const [phoneNumber, setPhoneNumber] = useState<number | undefined>(undefined);
