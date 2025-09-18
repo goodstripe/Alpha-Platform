@@ -118,7 +118,7 @@ const ForgetPassword = () => {
                   mt="xl"
                   size={isMobile ? "sm" : "md"}
                   radius="md"
-                  onClick={() => router.push("/onboarding")}
+                  onClick={() => router.push("/auth/login")}
                 >
                   Continue
                 </Button>
