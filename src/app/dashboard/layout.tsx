@@ -7,6 +7,7 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import Header from "../components/Header/Header";
+import DoubleFooter from "../components/DoubleFooter.tsx/DoubleFooter";
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -32,6 +33,9 @@ export default function MainLayout({ children }: MainLayoutProps) {
       >
         {children}
       </AppShell.Main>
+      <AppShell.Footer>
+        <DoubleFooter />
+      </AppShell.Footer>
     </AppShell>
   );
 }

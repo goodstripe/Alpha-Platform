@@ -213,7 +213,7 @@ export default function Orders() {
       }}
     >
       {/* Title */}
-      <Text fw={600} size="sm" mb="xs" c={isDark ? theme.white : theme.black}>
+      <Text fw={600} mb="xs" c={isDark ? theme.white : theme.black}>
         Orders
       </Text>
 

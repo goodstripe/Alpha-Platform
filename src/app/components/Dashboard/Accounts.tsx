@@ -27,7 +27,7 @@ const Accounts: React.FC = () => {
         backgroundColor: dark ? theme.colors.dark[7] : theme.white,
       }}
     >
-      <Text fw={600} size="sm" mb="md" c={dark ? theme.white : theme.black}>
+      <Text fw={600} mb="md" c={dark ? theme.white : theme.black}>
         Accounts
       </Text>
 

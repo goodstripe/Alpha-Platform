@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
 import Image from "next/image";
+import DoubleFooter from "../components/DoubleFooter.tsx/DoubleFooter";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -71,6 +72,10 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
       <AppShell.Main p={0} style={{ minHeight: "calc(100vh - 60px)" }}>
         {children}
       </AppShell.Main>
+
+      <AppShell.Footer>
+        <DoubleFooter showSecondFooter={false} />
+      </AppShell.Footer>
     </AppShell>
   );
 }

@@ -57,7 +57,7 @@ export default function OrderDetails() {
     >
       {/* Header */}
       <Group justify="space-between" mb="md">
-        <Text fw={600} size="sm" c={isDark ? theme.white : theme.black}>
+        <Text fw={600} c={isDark ? theme.white : theme.black}>
           Order Details
         </Text>
         <Badge
