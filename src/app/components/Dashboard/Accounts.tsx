@@ -9,6 +9,7 @@ import {
   useMantineTheme,
   Divider,
   useComputedColorScheme,
+  Select,
 } from "@mantine/core";
 import CustomLineChart from "../Charts/CustomLineChart";
 
@@ -27,9 +28,27 @@ const Accounts: React.FC = () => {
         backgroundColor: dark ? theme.colors.dark[7] : theme.white,
       }}
     >
-      <Text fw={600} mb="md" c={dark ? theme.white : theme.black}>
-        Accounts
-      </Text>
+      <Group justify="space-between" align="center" mb="md" wrap="wrap">
+        <Text fw={600} c={dark ? theme.white : theme.black}>
+          Accounts
+        </Text>
+        <Select
+          data={[
+            "A9289312 (Brokerage)",
+            "B9302393 (IRA)",
+            "X9893298 (Private Placement)",
+          ]}
+          defaultValue="A9289312 (Brokerage)"
+          size="sm"
+          w={{ base: "100%", sm: 220 }}
+          styles={{
+            input: {
+              backgroundColor: dark ? theme.colors.dark[6] : theme.white,
+              borderColor: dark ? theme.colors.dark[4] : theme.colors.gray[3],
+            },
+          }}
+        />
+      </Group>
 
       <Stack gap="md">
         {/* Account Value */}
