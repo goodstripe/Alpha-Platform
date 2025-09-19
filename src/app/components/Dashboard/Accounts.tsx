@@ -28,7 +28,7 @@ const Accounts: React.FC = () => {
         backgroundColor: dark ? theme.colors.dark[7] : theme.white,
       }}
     >
-      <Group justify="space-between" align="center" mb="md" wrap="wrap">
+      <Stack mb="md">
         <Text fw={600} c={dark ? theme.white : theme.black}>
           Accounts
         </Text>
@@ -48,7 +48,7 @@ const Accounts: React.FC = () => {
             },
           }}
         />
-      </Group>
+      </Stack>
 
       <Stack gap="md">
         {/* Account Value */}
