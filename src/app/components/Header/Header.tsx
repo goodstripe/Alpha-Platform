@@ -52,13 +52,13 @@ const menuData = {
   account: [
     {
       title: "Positions",
-      href: "/account/positions",
+      href: "",
       icon: IconChartLine,
       description: "View your current holdings and portfolio",
     },
     {
       title: "Order List",
-      href: "/account/orders",
+      href: "",
       icon: IconClipboardList,
       description: "Track your pending and completed orders",
     },
@@ -66,19 +66,19 @@ const menuData = {
   payTransfer: [
     {
       title: "Cash Transfers",
-      href: "/transfer/cash",
+      href: "",
       icon: IconCreditCard,
       description: "Transfer money to and from your account",
     },
     {
       title: "Securities Transfers",
-      href: "/transfer/securities",
+      href: "",
       icon: IconArrowsExchange,
       description: "Move securities between accounts",
     },
     {
       title: "Fees",
-      href: "/transfer/fees",
+      href: "",
       icon: IconReceipt,
       description: "View transaction fees and charges",
     },
@@ -86,13 +86,13 @@ const menuData = {
   whatWeOffer: [
     {
       title: "Public Securities",
-      href: "/offer/public",
+      href: "",
       icon: IconBuilding,
       description: "Explore publicly traded securities",
     },
     {
       title: "Private Placements",
-      href: "/offer/private",
+      href: "",
       icon: IconLock,
       description: "Access exclusive private investment opportunities",
     },
