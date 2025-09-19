@@ -12,7 +12,7 @@ import {
 } from "@mantine/core";
 import { IconSun, IconMoon } from "@tabler/icons-react";
 import Image from "next/image";
-import DoubleFooter from "../components/DoubleFooter.tsx/DoubleFooter";
+import DisclosureSection from "../components/Disclosure Section.tsx/DisclosureSection";
 
 interface AuthLayoutProps {
   children: React.ReactNode;
@@ -23,7 +23,6 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
   const [mounted, setMounted] = useState(false);
   const dark = colorScheme === "dark";
 
-  // Ensure component is mounted before showing theme-dependent content
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -73,9 +72,7 @@ export default function AuthLayout({ children }: AuthLayoutProps) {
         {children}
       </AppShell.Main>
 
-      <AppShell.Footer>
-        <DoubleFooter showSecondFooter={false} />
-      </AppShell.Footer>
+      <DisclosureSection />
     </AppShell>
   );
 }
