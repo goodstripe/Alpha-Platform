@@ -18,6 +18,13 @@ import {
   Stack,
   UnstyledButton,
   Tooltip,
+  HoverCard,
+  Center,
+  Divider,
+  Collapse,
+  ScrollArea,
+  Burger,
+  ThemeIcon,
 } from "@mantine/core";
 import {
   IconSearch,
@@ -27,14 +34,70 @@ import {
   IconUser,
   IconLogout,
   IconSettings,
-  IconHomeFilled,
-  IconArrowsExchange,
-  IconMenu2,
   IconX,
-  IconShoppingCartFilled,
+  IconChartLine,
+  IconClipboardList,
+  IconCreditCard,
+  IconArrowsExchange,
+  IconReceipt,
+  IconBuilding,
+  IconLock,
+  IconTrendingUp,
 } from "@tabler/icons-react";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
+import { useDisclosure } from "@mantine/hooks";
+
+const menuData = {
+  account: [
+    {
+      title: "Positions",
+      href: "/account/positions",
+      icon: IconChartLine,
+      description: "View your current holdings and portfolio",
+    },
+    {
+      title: "Order List",
+      href: "/account/orders",
+      icon: IconClipboardList,
+      description: "Track your pending and completed orders",
+    },
+  ],
+  payTransfer: [
+    {
+      title: "Cash Transfers",
+      href: "/transfer/cash",
+      icon: IconCreditCard,
+      description: "Transfer money to and from your account",
+    },
+    {
+      title: "Securities Transfers",
+      href: "/transfer/securities",
+      icon: IconArrowsExchange,
+      description: "Move securities between accounts",
+    },
+    {
+      title: "Fees",
+      href: "/transfer/fees",
+      icon: IconReceipt,
+      description: "View transaction fees and charges",
+    },
+  ],
+  whatWeOffer: [
+    {
+      title: "Public Securities",
+      href: "/offer/public",
+      icon: IconBuilding,
+      description: "Explore publicly traded securities",
+    },
+    {
+      title: "Private Placements",
+      href: "/offer/private",
+      icon: IconLock,
+      description: "Access exclusive private investment opportunities",
+    },
+  ],
+};
 
 export default function Header() {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -42,42 +105,99 @@ export default function Header() {
   const dark = colorScheme === "dark";
   const router = useRouter();
   const pathname = usePathname();
-  const [mobileMenuOpened, setMobileMenuOpened] = useState(false);
+  const [
+    mobileMenuOpened,
+    { toggle: toggleMobileMenu, close: closeMobileMenu },
+  ] = useDisclosure(false);
   const [mobileSearchOpened, setMobileSearchOpened] = useState(false);
-
-  const navigationItems = [
-    {
-      icon: IconHomeFilled,
-      route: "/dashboard",
-      label: "Dashboard",
-    },
-    {
-      icon: IconShoppingCartFilled,
-      route: "/orders",
-      label: "Orders",
-    },
-    {
-      icon: IconArrowsExchange,
-      route: "/transfer",
-      label: "Transfer",
-    },
-  ];
-
-  const isActiveRoute = (route: string) => {
-    if (route === "/dashboard") {
-      return pathname === "/" || pathname === "/dashboard";
-    }
-    return pathname === route;
-  };
+  const [mobileLinksOpened, { toggle: toggleMobileLinks }] =
+    useDisclosure(false);
 
   const handleNavigation = (route: string) => {
     router.push(route);
-    setMobileMenuOpened(false);
+    closeMobileMenu();
   };
 
   const toggleMobileSearch = () => {
     setMobileSearchOpened(!mobileSearchOpened);
   };
+
+  const linkStyle = {
+    display: "block",
+    lineHeight: 1,
+    padding: `${rem(8)} ${rem(12)}`,
+    borderRadius: theme.radius.sm,
+    textDecoration: "none",
+    color: dark ? theme.colors.dark[0] : theme.colors.gray[7],
+    fontSize: theme.fontSizes.sm,
+    fontWeight: 500,
+    "&:hover": {
+      backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[0],
+    },
+  };
+
+  const subLinkStyle = {
+    width: "100%",
+    padding: `${rem(12)} ${rem(16)}`,
+    borderRadius: theme.radius.md,
+    transition: "background-color 150ms ease",
+    "&:hover": {
+      backgroundColor: dark ? theme.colors.dark[5] : theme.colors.gray[0],
+    },
+  };
+
+  // Create submenu components
+  const createSubmenuLinks = (items: typeof menuData.account) =>
+    items.map((item) => (
+      <UnstyledButton
+        key={item.title}
+        style={subLinkStyle}
+        onClick={() => handleNavigation(item.href)}
+      >
+        <Group wrap="nowrap" align="flex-start">
+          <ThemeIcon size={34} variant="default" radius="md">
+            <item.icon size={20} color={theme.colors.blue[6]} />
+          </ThemeIcon>
+          <div>
+            <Text size="sm" fw={500}>
+              {item.title}
+            </Text>
+            <Text size="xs" c="dimmed">
+              {item.description}
+            </Text>
+          </div>
+        </Group>
+      </UnstyledButton>
+    ));
+
+  // Mobile submenu links
+  const createMobileSubmenuLinks = (items: typeof menuData.account) =>
+    items.map((item) => (
+      <UnstyledButton
+        key={item.title}
+        onClick={() => handleNavigation(item.href)}
+        style={{
+          display: "block",
+          width: "100%",
+          padding: `${rem(12)} ${rem(24)}`,
+          borderRadius: theme.radius.sm,
+          color: dark ? theme.colors.gray[3] : theme.colors.gray[6],
+          fontSize: theme.fontSizes.sm,
+        }}
+      >
+        <Group gap="sm" align="center">
+          <item.icon size={18} />
+          <div>
+            <Text size="sm" fw={500}>
+              {item.title}
+            </Text>
+            <Text size="xs" c="dimmed">
+              {item.description}
+            </Text>
+          </div>
+        </Group>
+      </UnstyledButton>
+    ));
 
   return (
     <>
@@ -92,28 +212,178 @@ export default function Header() {
         }}
       >
         <Flex align="center" justify="space-between" h="100%">
-          {/* Left Section - Logo and Search */}
-          <Group gap={rem(140)}>
-            <div
-              style={{ position: "relative", width: "120px", height: "40px" }}
-            >
-              <Image
-                src="/aeonx_logo.png"
-                alt="AEONX Logo"
-                fill
-                style={{ objectFit: "contain" }}
-              />
-            </div>
+          {/* Left Section - Logo */}
+          <div style={{ position: "relative", width: "120px", height: "40px" }}>
+            <Image
+              src="/aeonx_logo.png"
+              alt="AEONX Logo"
+              fill
+              style={{ objectFit: "contain" }}
+            />
+          </div>
 
-            {/* Desktop Search */}
-            <Box
-              ml={{ base: 20, sm: 40, md: 140 }}
-              style={{
-                maxWidth: 250,
-                minWidth: 200,
-              }}
-              visibleFrom="lg"
+          {/* Center Section - Desktop Navigation Menu */}
+          <Group gap="sm" visibleFrom="md">
+            {/* Account Menu */}
+            <HoverCard
+              width={320}
+              position="bottom"
+              radius="md"
+              shadow="xl"
+              withinPortal
+              openDelay={100}
+              closeDelay={100}
             >
+              <HoverCard.Target>
+                <UnstyledButton style={linkStyle}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      Account
+                    </Box>
+                    <IconChevronDown size={16} />
+                  </Center>
+                </UnstyledButton>
+              </HoverCard.Target>
+              <HoverCard.Dropdown
+                style={{
+                  overflow: "hidden",
+                  border: `1px solid ${
+                    dark ? theme.colors.dark[4] : theme.colors.gray[2]
+                  }`,
+                  backgroundColor: dark ? theme.colors.dark[6] : theme.white,
+                }}
+              >
+                <Box p="md">
+                  <Text
+                    fw={600}
+                    size="sm"
+                    mb="sm"
+                    c={dark ? theme.colors.gray[2] : theme.colors.gray[8]}
+                  >
+                    Account Overview
+                  </Text>
+                  <Stack gap="xs">{createSubmenuLinks(menuData.account)}</Stack>
+                </Box>
+              </HoverCard.Dropdown>
+            </HoverCard>
+
+            {/* Pay & Transfer Menu */}
+            <HoverCard
+              width={340}
+              position="bottom"
+              radius="md"
+              shadow="xl"
+              withinPortal
+              openDelay={100}
+              closeDelay={100}
+            >
+              <HoverCard.Target>
+                <UnstyledButton style={linkStyle}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      Pay & Transfer
+                    </Box>
+                    <IconChevronDown size={16} />
+                  </Center>
+                </UnstyledButton>
+              </HoverCard.Target>
+              <HoverCard.Dropdown
+                style={{
+                  overflow: "hidden",
+                  border: `1px solid ${
+                    dark ? theme.colors.dark[4] : theme.colors.gray[2]
+                  }`,
+                  backgroundColor: dark ? theme.colors.dark[6] : theme.white,
+                }}
+              >
+                <Box p="md">
+                  <Text
+                    fw={600}
+                    size="sm"
+                    mb="sm"
+                    c={dark ? theme.colors.gray[2] : theme.colors.gray[8]}
+                  >
+                    Transfer Options
+                  </Text>
+                  <Stack gap="xs">
+                    {createSubmenuLinks(menuData.payTransfer)}
+                  </Stack>
+                </Box>
+              </HoverCard.Dropdown>
+            </HoverCard>
+
+            {/* Trade */}
+            <UnstyledButton
+              style={linkStyle}
+              onClick={() => handleNavigation("/trade")}
+            >
+              <Group gap="xs">
+                <IconTrendingUp size={16} />
+                Trade
+              </Group>
+            </UnstyledButton>
+
+            {/* What We Offer Menu */}
+            <HoverCard
+              width={350}
+              position="bottom"
+              radius="md"
+              shadow="xl"
+              withinPortal
+              openDelay={100}
+              closeDelay={100}
+            >
+              <HoverCard.Target>
+                <UnstyledButton style={linkStyle}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      What We Offer
+                    </Box>
+                    <IconChevronDown size={16} />
+                  </Center>
+                </UnstyledButton>
+              </HoverCard.Target>
+              <HoverCard.Dropdown
+                style={{
+                  overflow: "hidden",
+                  border: `1px solid ${
+                    dark ? theme.colors.dark[4] : theme.colors.gray[2]
+                  }`,
+                  backgroundColor: dark ? theme.colors.dark[6] : theme.white,
+                }}
+              >
+                <Box p="md">
+                  <Text
+                    fw={600}
+                    size="sm"
+                    mb="sm"
+                    c={dark ? theme.colors.gray[2] : theme.colors.gray[8]}
+                  >
+                    Investment Options
+                  </Text>
+                  <Stack gap="xs">
+                    {createSubmenuLinks(menuData.whatWeOffer)}
+                  </Stack>
+                </Box>
+              </HoverCard.Dropdown>
+            </HoverCard>
+
+            {/* Markets */}
+            <UnstyledButton
+              style={linkStyle}
+              onClick={() => handleNavigation("/markets")}
+            >
+              <Group gap="xs">
+                <IconBuilding size={16} />
+                Markets
+              </Group>
+            </UnstyledButton>
+          </Group>
+
+          {/* Right Section */}
+          <Group>
+            {/* Desktop Search */}
+            <Box visibleFrom="lg">
               <TextInput
                 placeholder="Search"
                 w={250}
@@ -141,107 +411,13 @@ export default function Header() {
               />
             </Box>
 
-            {/* Tablet Search */}
-            <Box
-              style={{
-                maxWidth: 180,
-                minWidth: 150,
-              }}
-              visibleFrom="md"
-              hiddenFrom="lg"
-            >
-              <TextInput
-                placeholder="Search"
-                w={180}
-                leftSection={
-                  <IconSearch
-                    style={{ width: rem(16), height: rem(16) }}
-                    stroke={1.5}
-                  />
-                }
-                radius="md"
-                size="sm"
-                styles={{
-                  input: {
-                    backgroundColor: dark
-                      ? theme.colors.dark[6]
-                      : theme.colors.gray[1],
-                    border: `1px solid ${
-                      dark ? theme.colors.dark[4] : theme.colors.gray[3]
-                    }`,
-                    "&:focus": {
-                      borderColor: theme.colors.blue[5],
-                    },
-                  },
-                }}
-              />
-            </Box>
-          </Group>
-
-          {/* Center Section - Desktop Navigation Icons */}
-          <Group
-            gap="sm"
-            style={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-            }}
-            visibleFrom="md"
-          >
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = isActiveRoute(item.route);
-
-              return (
-                <Tooltip
-                  key={item.route}
-                  label={item.label}
-                  position="bottom"
-                  withArrow
-                  transitionProps={{ duration: 200 }}
-                >
-                  <ActionIcon
-                    variant={isActive ? "filled" : "subtle"}
-                    size="lg"
-                    radius="md"
-                    color={isActive ? "blue" : undefined}
-                    onClick={() => handleNavigation(item.route)}
-                    title={item.label}
-                    style={{
-                      backgroundColor: isActive
-                        ? dark
-                          ? theme.colors.blue[8]
-                          : theme.colors.blue[6]
-                        : undefined,
-                      color: isActive
-                        ? "white"
-                        : dark
-                        ? theme.colors.gray[4]
-                        : theme.colors.gray[6],
-                    }}
-                  >
-                    <Icon
-                      style={{
-                        width: rem(20),
-                        height: rem(20),
-                        color: isActive ? "white" : undefined,
-                      }}
-                    />
-                  </ActionIcon>
-                </Tooltip>
-              );
-            })}
-          </Group>
-
-          {/* Right Section */}
-          <Group>
             {/* Mobile Search Icon */}
             <Tooltip label="Search" position="bottom" withArrow>
               <ActionIcon
                 variant="subtle"
                 size="md"
                 radius="md"
-                hiddenFrom="md"
+                hiddenFrom="lg"
                 onClick={toggleMobileSearch}
               >
                 <IconSearch
@@ -252,20 +428,12 @@ export default function Header() {
             </Tooltip>
 
             {/* Mobile Menu Icon */}
-            <Tooltip label="Menu" position="bottom" withArrow>
-              <ActionIcon
-                variant="subtle"
-                size="md"
-                radius="md"
-                hiddenFrom="md"
-                onClick={() => setMobileMenuOpened(true)}
-              >
-                <IconMenu2
-                  style={{ width: rem(18), height: rem(18) }}
-                  stroke={1.5}
-                />
-              </ActionIcon>
-            </Tooltip>
+            <Burger
+              opened={mobileMenuOpened}
+              onClick={toggleMobileMenu}
+              hiddenFrom="md"
+              size="sm"
+            />
 
             {/* Theme Toggle */}
             <Tooltip
@@ -370,7 +538,7 @@ export default function Header() {
                 dark ? theme.colors.dark[4] : theme.colors.gray[3]
               }`,
             }}
-            hiddenFrom="md"
+            hiddenFrom="lg"
           >
             <TextInput
               placeholder="Search"
@@ -412,69 +580,119 @@ export default function Header() {
       {/* Mobile Navigation Drawer */}
       <Drawer
         opened={mobileMenuOpened}
-        onClose={() => setMobileMenuOpened(false)}
+        onClose={closeMobileMenu}
         position="right"
         size="sm"
         title="Navigation"
         overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
       >
-        <Stack gap="lg">
-          {/* User Profile - Mobile */}
-          <Group>
-            <Avatar size={40} radius="xl" color="blue">
-              JO
-            </Avatar>
-            <Box>
-              <Text size="sm" fw={500}>
-                Joshua Olano
-              </Text>
-              <Text size="xs" c="dimmed">
-                User Account
-              </Text>
-            </Box>
-          </Group>
-
-          {/* Navigation Items */}
+        <ScrollArea h="calc(100vh - 80px)">
           <Stack gap="xs">
-            {navigationItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = isActiveRoute(item.route);
+            {/* User Profile - Mobile */}
+            <Group mb="lg">
+              <Avatar size={40} radius="xl" color="blue">
+                JO
+              </Avatar>
+              <Box>
+                <Text size="sm" fw={500}>
+                  Joshua Olano
+                </Text>
+                <Text size="xs" c="dimmed">
+                  User Account
+                </Text>
+              </Box>
+            </Group>
 
-              return (
-                <UnstyledButton
-                  key={item.route}
-                  onClick={() => handleNavigation(item.route)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: rem(12),
-                    padding: `${rem(12)} ${rem(16)}`,
-                    borderRadius: rem(8),
-                    backgroundColor: isActive
-                      ? dark
-                        ? theme.colors.blue[8]
-                        : theme.colors.blue[0]
-                      : "transparent",
-                    color: isActive
-                      ? dark
-                        ? theme.colors.blue[2]
-                        : theme.colors.blue[7]
-                      : dark
-                      ? theme.colors.gray[3]
-                      : theme.colors.gray[7],
-                    fontWeight: isActive ? 500 : 400,
-                    transition: "all 0.2s ease",
-                  }}
-                >
-                  <Icon style={{ width: rem(20), height: rem(20) }} />
-                  <Text size="sm">{item.label}</Text>
-                </UnstyledButton>
-              );
-            })}
-          </Stack>
+            <Divider my="sm" />
 
-          {/* Account Actions */}
-          <Stack gap="xs" mt="xl">
+            {/* Account Menu */}
+            <UnstyledButton
+              onClick={toggleMobileLinks}
+              style={{
+                width: "100%",
+                padding: `${rem(12)} ${rem(16)}`,
+                borderRadius: theme.radius.sm,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text size="sm" fw={500}>
+                Account
+              </Text>
+              <IconChevronDown size={16} />
+            </UnstyledButton>
+            <Collapse in={mobileLinksOpened}>
+              <Stack gap="xs" pl="md">
+                {createMobileSubmenuLinks(menuData.account)}
+              </Stack>
+            </Collapse>
+
+            {/* Pay & Transfer */}
+            <UnstyledButton
+              style={{
+                width: "100%",
+                padding: `${rem(12)} ${rem(16)}`,
+                borderRadius: theme.radius.sm,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text size="sm" fw={500}>
+                Pay & Transfer
+              </Text>
+              <IconChevronDown size={16} />
+            </UnstyledButton>
+
+            {/* Trade */}
+            <UnstyledButton
+              onClick={() => handleNavigation("/trade")}
+              style={{
+                width: "100%",
+                padding: `${rem(12)} ${rem(16)}`,
+                borderRadius: theme.radius.sm,
+              }}
+            >
+              <Text size="sm" fw={500}>
+                Trade
+              </Text>
+            </UnstyledButton>
+
+            {/* What We Offer */}
+            <UnstyledButton
+              style={{
+                width: "100%",
+                padding: `${rem(12)} ${rem(16)}`,
+                borderRadius: theme.radius.sm,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text size="sm" fw={500}>
+                What We Offer
+              </Text>
+              <IconChevronDown size={16} />
+            </UnstyledButton>
+
+            {/* Markets */}
+            <UnstyledButton
+              onClick={() => handleNavigation("/markets")}
+              style={{
+                width: "100%",
+                padding: `${rem(12)} ${rem(16)}`,
+                borderRadius: theme.radius.sm,
+              }}
+            >
+              <Text size="sm" fw={500}>
+                Markets
+              </Text>
+            </UnstyledButton>
+
+            <Divider my="lg" />
+
+            {/* Account Actions */}
             <UnstyledButton
               style={{
                 display: "flex",
@@ -518,7 +736,7 @@ export default function Header() {
               <Text size="sm">Logout</Text>
             </UnstyledButton>
           </Stack>
-        </Stack>
+        </ScrollArea>
       </Drawer>
     </>
   );
