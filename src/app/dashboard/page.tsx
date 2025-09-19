@@ -20,6 +20,7 @@ export default function Subgrid() {
         <Grid.Col span={{ base: 12, md: 6 }}>
           <Stack gap="lg">
             <Positions />
+            <WatchList />
             <Orders />
           </Stack>
         </Grid.Col>
@@ -29,7 +30,6 @@ export default function Subgrid() {
             <OrderDetails />
             <Alerts />
             <LaunchPad />
-            {/* <WatchList /> */}
           </Stack>
         </Grid.Col>
       </Grid>

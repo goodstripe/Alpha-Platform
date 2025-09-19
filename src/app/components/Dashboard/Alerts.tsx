@@ -35,7 +35,7 @@ const Alerts = () => {
         <Text fw={600} c={dark ? "white" : "black"}>
           Alerts (2)
         </Text>
-        <Button size="xs" variant="light" color="gray">
+        <Button size="xs" variant="outline">
           Message Center
         </Button>
       </Group>

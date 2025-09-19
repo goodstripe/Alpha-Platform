@@ -1,114 +1,154 @@
 "use client";
 
-import React from "react";
 import {
-  Card,
+  Box,
   Group,
   Text,
-  Avatar,
-  Menu,
-  ActionIcon,
-  rem,
+  Select,
+  Table,
+  Button,
+  Divider,
+  Anchor,
+  useMantineTheme,
+  useMantineColorScheme,
 } from "@mantine/core";
-import {
-  IconDotsVertical,
-  IconArrowsLeftRight,
-  IconBell,
-  IconShare3,
-  IconX,
-} from "@tabler/icons-react";
+import { IconInfoCircle } from "@tabler/icons-react";
 
-interface WatchlistItemProps {
-  symbol: string;
-  company: string;
-  price: number;
-  change: number; // positive or negative
-  logo?: string;
-  onTrade?: () => void;
-  onAlert?: () => void;
-  onShare?: () => void;
-  onRemove?: () => void;
-}
+const WatchListSnapshot = () => {
+  const theme = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const dark = colorScheme === "dark";
 
-export default function WatchlistItem({
-  symbol,
-  company,
-  price,
-  change,
-  logo,
-  onTrade,
-  onAlert,
-  onShare,
-  onRemove,
-}: WatchlistItemProps) {
-  const isPositive = change >= 0;
+  // Table wrapper style (outer border + radius)
+  const tableWrapperStyle = {
+    border: `1px solid ${dark ? theme.colors.dark[4] : theme.colors.gray[3]}`,
+    borderRadius: theme.radius.md,
+    overflow: "hidden", // makes corners rounded properly
+  };
+
+  const thStyles = {
+    textAlign: "left" as const,
+    padding: "10px 12px",
+    fontWeight: 600,
+    fontSize: theme.fontSizes.sm,
+    backgroundColor: dark ? theme.colors.dark[6] : theme.colors.gray[1],
+    borderBottom: `1px solid ${
+      dark ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`,
+  };
+
+  const tdStyles = {
+    padding: "10px 12px",
+    fontSize: theme.fontSizes.sm,
+    borderBottom: `1px solid ${
+      dark ? theme.colors.dark[4] : theme.colors.gray[2]
+    }`,
+  };
 
   return (
-    <Card withBorder padding="sm" radius="md" mb="xs">
-      <Group justify="space-between" align="center">
-        {/* Left Section */}
-        <Group gap="xs">
-          <Avatar src={logo} size={32} radius="sm" />
-          <div>
-            <Text fw={600} size="sm">
-              {symbol}
-            </Text>
-            <Text size="xs" c="dimmed">
-              {company}
-            </Text>
-          </div>
-        </Group>
+    <Box
+      p="md"
+      bg={dark ? theme.colors.dark[7] : theme.white}
+      style={{
+        borderRadius: theme.radius.md,
+        border: `1px solid ${
+          dark ? theme.colors.dark[4] : theme.colors.gray[3]
+        }`,
+      }}
+    >
+      {/* Header */}
+      <Group justify="space-between" mb="sm">
+        <Text fw={600} c={dark ? "white" : "black"}>
+          Watch Lists Snapshot
+        </Text>
+      </Group>
 
-        {/* Right Section */}
-        <Group gap="xs">
-          <div style={{ textAlign: "right" }}>
-            <Text fw={600} size="sm">
-              {price?.toFixed(2)}
-            </Text>
-            <Text size="xs" c={isPositive ? "green" : "red"} fw={500}>
-              {isPositive ? "+" : ""}
-              {change?.toFixed(2)} ({((change / price) * 100).toFixed(2)}%)
-            </Text>
-          </div>
-
-          {/* Menu */}
-          <Menu shadow="md" width={160} position="bottom-end">
-            <Menu.Target>
-              <ActionIcon variant="subtle">
-                <IconDotsVertical size={18} />
-              </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown>
-              <Menu.Item
-                leftSection={<IconArrowsLeftRight size={16} />}
-                onClick={onTrade}
-              >
-                Trade
-              </Menu.Item>
-              <Menu.Item
-                leftSection={<IconBell size={16} />}
-                disabled
-                onClick={onAlert}
-              >
-                Set Alert
-              </Menu.Item>
-              <Menu.Item
-                leftSection={<IconShare3 size={16} />}
-                onClick={onShare}
-              >
-                Share
-              </Menu.Item>
-              <Menu.Item
-                color="red"
-                leftSection={<IconX size={16} />}
-                onClick={onRemove}
-              >
-                Remove
-              </Menu.Item>
-            </Menu.Dropdown>
-          </Menu>
+      {/* Account Select + Actions */}
+      <Group justify="space-between" mb="md">
+        <Select
+          data={["Test Watch Account", "Growth Portfolio", "Tech Stocks"]}
+          defaultValue="Test Watch Account"
+          w={250}
+        />
+        <Group gap="sm">
+          <Button size="xs" variant="outline">
+            Create New
+          </Button>
+          <Text size="sm" c="dimmed">
+            |
+          </Text>
+          <Button size="xs" variant="outline">
+            Edit
+          </Button>
         </Group>
       </Group>
-    </Card>
+
+      {/* Table with wrapper */}
+      <Box style={tableWrapperStyle}>
+        <Table highlightOnHover>
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th style={thStyles}>Symbol</Table.Th>
+              <Table.Th style={thStyles}></Table.Th>
+              <Table.Th style={thStyles}>Last Price $</Table.Th>
+              <Table.Th style={thStyles}>Change %</Table.Th>
+              <Table.Th style={thStyles}>Change $</Table.Th>
+              <Table.Th style={thStyles}>Volume</Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+          <Table.Tbody>
+            <Table.Tr>
+              <Table.Td style={tdStyles}>
+                <Group gap={4}>
+                  <Anchor c={dark ? "white" : "black"} fw={600}>
+                    AAPL
+                  </Anchor>
+                  <IconInfoCircle size={14} color={theme.colors.gray[6]} />
+                </Group>
+              </Table.Td>
+              <Table.Td style={tdStyles}>
+                <Button size="xs" variant="outline" color="gray">
+                  Trade
+                </Button>
+              </Table.Td>
+              <Table.Td style={tdStyles}>$238.62</Table.Td>
+              <Table.Td style={{ ...tdStyles, color: theme.colors.red[6] }}>
+                -0.15%
+              </Table.Td>
+              <Table.Td style={{ ...tdStyles, color: theme.colors.red[6] }}>
+                -$0.37
+              </Table.Td>
+              <Table.Td style={tdStyles}>14.91M</Table.Td>
+            </Table.Tr>
+          </Table.Tbody>
+        </Table>
+      </Box>
+
+      <Divider my="sm" />
+
+      {/* Footer */}
+      <Group justify="space-between" align="center">
+        <Group gap="sm">
+          <Text size="sm" c={dark ? "white" : "black"}>
+            1 total
+          </Text>
+          <Text size="sm" c="dimmed">
+            |
+          </Text>
+          <Anchor size="sm" c={dark ? "white" : "black"} underline="hover">
+            View full watch list
+          </Anchor>
+        </Group>
+
+        <Group gap={4}>
+          <Text size="xs" c="dimmed">
+            Delayed quotes as of Sep 18, 2025, 11:08 AM ET
+          </Text>
+          <IconInfoCircle size={14} color={theme.colors.gray[6]} />
+        </Group>
+      </Group>
+    </Box>
   );
-}
+};
+
+export default WatchListSnapshot;
