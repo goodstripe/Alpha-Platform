@@ -13,17 +13,19 @@ import {
   useMantineColorScheme,
 } from "@mantine/core";
 import { IconInfoCircle } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
 
 const WatchListSnapshot = () => {
   const theme = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const dark = colorScheme === "dark";
 
-  // Table wrapper style (outer border + radius)
+  const router = useRouter();
+
   const tableWrapperStyle = {
     border: `1px solid ${dark ? theme.colors.dark[4] : theme.colors.gray[3]}`,
     borderRadius: theme.radius.md,
-    overflow: "hidden", // makes corners rounded properly
+    overflow: "hidden",
   };
 
   const thStyles = {
@@ -107,7 +109,12 @@ const WatchListSnapshot = () => {
                 </Group>
               </Table.Td>
               <Table.Td style={tdStyles}>
-                <Button size="xs" variant="outline" color="gray">
+                <Button
+                  size="xs"
+                  variant="outline"
+                  color="gray"
+                  onClick={() => router.push("/trade")}
+                >
                   Trade
                 </Button>
               </Table.Td>
@@ -135,9 +142,9 @@ const WatchListSnapshot = () => {
           <Text size="sm" c="dimmed">
             |
           </Text>
-          <Anchor size="sm" c={dark ? "white" : "black"} underline="hover">
+          <Button size="xs" variant="outline" color="gray">
             View full watch list
-          </Anchor>
+          </Button>
         </Group>
 
         <Group gap={4}>
