@@ -126,7 +126,13 @@ const StockOrderForm = () => {
                 label="Quantity"
                 placeholder="Enter shares"
                 value={quantity}
-                onChange={(v) => setQuantity(v || undefined)}
+                onChange={(val) => {
+                  if (typeof val === "number") {
+                    setQuantity(val);
+                  } else {
+                    setQuantity(undefined);
+                  }
+                }}
               />
             </Grid.Col>
             <Grid.Col span={6}>
@@ -150,7 +156,13 @@ const StockOrderForm = () => {
               <NumberInput
                 label="Limit price"
                 value={limitPrice}
-                onChange={(v) => setLimitPrice(v || undefined)}
+                onChange={(val) => {
+                  if (typeof val === "number") {
+                    setLimitPrice(val);
+                  } else {
+                    setLimitPrice(undefined);
+                  }
+                }}
               />
             </Grid.Col>
             <Grid.Col span={6}>
